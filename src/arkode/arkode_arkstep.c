@@ -214,6 +214,9 @@ void* ARKStepCreate(ARKRhsFn fe, ARKRhsFn fi, sunrealtype t0, N_Vector y0,
   step_mem->forcing    = NULL;
   step_mem->nforcing   = 0;
 
+  /* Initialize saved fi alias */
+  step_mem->fn_implicit = NULL;
+
   /* Initialize main ARKODE infrastructure */
   retval = arkInit(ark_mem, t0, y0, FIRST_INIT);
   if (retval != ARK_SUCCESS)
@@ -1821,6 +1824,9 @@ int arkStep_TakeStep_Z(void* arkode_mem, sunrealtype* dsmPtr, int* nflagPtr)
   sunbooleantype deduce_stage;
   sunbooleantype save_stages;
   sunbooleantype stiffly_accurate;
+  sunbooleantype imex_method;
+  sunbooleantype save_fn_for_residual;
+  sunbooleantype save_fn_for_interp;
   ARKodeMem ark_mem;
   ARKodeARKStepMem step_mem;
   N_Vector zcor0;
@@ -1893,23 +1899,54 @@ int arkStep_TakeStep_Z(void* arkode_mem, sunrealtype* dsmPtr, int* nflagPtr)
     }
   }
 
-  /* Call the full RHS if needed e.g., an explicit first stage. If this is the
-     first step then we may need to evaluate or copy the RHS values from an
-     earlier evaluation (e.g., to compute h0). For subsequent steps treat this
-     RHS evaluation as an evaluation at the end of the just completed step to
-     potentially reuse (FSAL methods) or save (stiffly accurate methods with an
-     implicit first stage using Hermite interpolation) RHS evaluations from the
-     end of the last step. */
+  /*
+    Evaluate the full RHS if necessary. If this is the first step, then we
+    evaluate the RHS or copy a saved RHS evaluation from an earlier (e.g., from
+    computing h0) at (t0, y0). For subsequent steps treat this call as an
+    evaluation at the end of the just completed step (tn, yn) and potentially
+    reuse the evaluation (FSAL methods) or save the value for later use
+    (implicit methods using the trivial predictor or stiffly accurate methods
+    with an implicit first stage using Hermite interpolation).
 
-  if ((!implicit_stage ||
-       (stiffly_accurate && ark_mem->interp_type == ARK_INTERP_HERMITE)) &&
-      !(ark_mem->fn_is_current))
+    Note, saving Fi for reuse with the trivial predictor is only supported for
+    implicit methods and ImEx methods with an explicit first stage, currently.
+  */
+  save_fn_for_interp = (stiffly_accurate &&
+                        ark_mem->interp_type == ARK_INTERP_HERMITE);
+
+  imex_method = (step_mem->implicit && step_mem->explicit);
+
+  save_fn_for_residual = (step_mem->predictor == 0 &&
+                          (step_mem->mass_type == MASS_FIXED ||
+                           step_mem->mass_type == MASS_IDENTITY) &&
+                          ((step_mem->implicit && !(step_mem->explicit)) ||
+                           (imex_method && !implicit_stage)));
+
+  if (!(ark_mem->fn_is_current) &&
+      (!implicit_stage || save_fn_for_interp || save_fn_for_residual))
   {
     mode   = (ark_mem->initsetup) ? ARK_FULLRHS_START : ARK_FULLRHS_END;
     retval = ark_mem->step_fullrhs(ark_mem, ark_mem->tn, ark_mem->yn,
                                    ark_mem->fn, mode);
     if (retval) { return ARK_RHSFUNC_FAIL; }
     ark_mem->fn_is_current = SUNTRUE;
+  }
+
+  /* Set alias to implicit RHS evaluation for reuse with trivial predictor */
+  if (ark_mem->fn_is_current && save_fn_for_residual)
+  {
+    if (imex_method)
+    {
+      step_mem->fn_implicit = step_mem->Fi[0];
+    }
+    else
+    {
+      step_mem->fn_implicit = ark_mem->fn;
+    }
+  }
+  else
+  {
+    step_mem->fn_implicit = NULL;
   }
 
 #if SUNDIALS_LOGGING_LEVEL >= SUNDIALS_LOGGING_INFO
