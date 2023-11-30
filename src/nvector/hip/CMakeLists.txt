@@ -16,6 +16,10 @@
 
 install(CODE "MESSAGE(\"\nInstall NVECTOR_HIP\n\")")
 
+if(ENABLE_MPI)
+  set(_link_mpi_if_needed PUBLIC MPI::MPI_CXX)
+endif()
+
 # Create the library
 sundials_add_library(sundials_nvechip
   SOURCES
@@ -26,6 +30,7 @@ sundials_add_library(sundials_nvechip
     nvector
   LINK_LIBRARIES
     PUBLIC sundials_core
+    ${_link_mpi_if_needed}
   OBJECT_LIBRARIES
     sundials_sunmemhip_obj
   LINK_LIBRARIES

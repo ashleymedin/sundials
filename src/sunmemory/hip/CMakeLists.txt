@@ -12,6 +12,10 @@
 # SUNDIALS Copyright End
 # ---------------------------------------------------------------
 
+if(ENABLE_MPI)
+  set(_link_mpi_if_needed PUBLIC MPI::MPI_CXX)
+endif()
+
 # Create a library out of the generic sundials modules
 sundials_add_library(sundials_sunmemhip
   SOURCES
@@ -22,6 +26,7 @@ sundials_add_library(sundials_sunmemhip
     sunmemory
   LINK_LIBRARIES
     PUBLIC sundials_core
+    ${_link_mpi_if_needed}
     PRIVATE hip::device
   OBJECT_LIB_ONLY
 )
