@@ -134,5 +134,3 @@ include:
   - local: .gitlab/jobs/quartz-jobs.yml
   - local: .gitlab/jobs/lassen-templates.yml
   - local: .gitlab/jobs/lassen-jobs.yml
-  - local: .gitlab/jobs/corona-templates.yml
-  - local: .gitlab/jobs/corona-jobs.yml
