@@ -89,15 +89,3 @@ lassen-build-and-test:
   needs: [lassen-up-check]
   extends: [.build-and-test]
 
-# Quartz
-lassen-up-check:
-  variables:
-    CI_MACHINE: "quartz"
-  extends: [.machine-check]
-
-lassen-build-and-test:
-  variables:
-    CI_MACHINE: "quartz"
-  needs: [lassen-up-check]
-  extends: [.build-and-test]
-

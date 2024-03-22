@@ -108,18 +108,6 @@ stages:
     - echo ${ALLOC_NAME}
     - srun -p pdebug -N 1 -n ${NCPUS} --interactive -t ${DEFAULT_TIME}
       --job-name=${ALLOC_NAME} .gitlab/build_and_test.sh
-
-# CORAL systems use spectrum LSF instead of SLURM
-.build_blueos_3_ppc64le_ib_script:
-  script:
-    - echo ${ALLOC_NAME}
-    - bsub -q pdebug -J ${ALLOC_NAME} -nnodes 1 -W ${DEFAULT_TIME} -Is .gitlab/build_and_test.sh
-
-# Benchmark job for CORAL systems
-.build_blueos_3_ppc64le_ib_bench:
-  script:
-    - echo ${ALLOC_NAME}
-    - bsub -q ${BENCHMARK_QUEUE} -J ${ALLOC_NAME} -nnodes ${BENCHMARK_NNODES} -W ${DEFAULT_TIME} -Is .gitlab/build_and_bench.sh
 #######  CJB: end custom job templates from old .gitlab-ci.yml
 
 include:
@@ -132,5 +120,3 @@ include:
   # CJB: old style jobs
   - local: .gitlab/jobs/quartz-templates.yml
   - local: .gitlab/jobs/quartz-jobs.yml
-  - local: .gitlab/jobs/lassen-templates.yml
-  - local: .gitlab/jobs/lassen-jobs.yml
