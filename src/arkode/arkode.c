@@ -113,7 +113,7 @@ ARKodeMem arkCreate(SUNContext sunctx)
   ark_mem->liw = 41; /* fcn/data ptr, int, long int, sunindextype, sunbooleantype */
 
   /* No mallocs have been done yet */
-  ark_mem->MallocDone         = SUNFALSE;
+  ark_mem->MallocDone = SUNFALSE;
 
   /* No user-supplied step postprocessing function yet */
   ark_mem->ProcessStep = NULL;
@@ -1829,7 +1829,7 @@ SUNErrCode arkFreeVectors(ARKodeMem ark_mem)
   SUNCheckCall(sunVec_Destroy(&ark_mem->fn));
   SUNCheckCall(sunVec_Destroy(&ark_mem->Vabstol));
   SUNCheckCall(sunVec_Destroy(&ark_mem->constraints));
-  if (!ark_mem->rwt_is_ewt) {  SUNCheckCall(sunVec_Destroy(&ark_mem->rwt)); }
+  if (!ark_mem->rwt_is_ewt) { SUNCheckCall(sunVec_Destroy(&ark_mem->rwt)); }
   return SUN_SUCCESS;
 }
 
