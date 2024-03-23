@@ -873,13 +873,6 @@ void arkProcessError(ARKodeMem ark_mem, int error_code, int line,
 #endif
 
 int arkInit(ARKodeMem ark_mem, sunrealtype t0, N_Vector y0, int init_type);
-sunbooleantype arkAllocVec(ARKodeMem ark_mem, N_Vector tmpl, N_Vector* v);
-sunbooleantype arkAllocVecArray(int count, N_Vector tmpl, N_Vector** v,
-                                sunindextype lrw1, long int* lrw,
-                                sunindextype liw1, long int* liw);
-void arkFreeVec(ARKodeMem ark_mem, N_Vector* v);
-void arkFreeVecArray(int count, N_Vector** v, sunindextype lrw1, long int* lrw,
-                     sunindextype liw1, long int* liw);
 sunbooleantype arkResizeVec(ARKodeMem ark_mem, ARKVecResizeFn resize,
                             void* resize_data, sunindextype lrw_diff,
                             sunindextype liw_diff, N_Vector tmpl, N_Vector* v);

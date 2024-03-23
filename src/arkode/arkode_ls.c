@@ -247,7 +247,7 @@ int arkLSSetLinearSolver(void* arkode_mem, SUNLinearSolver LS, SUNMatrix A)
   }
 
   /* Allocate memory for ytemp and x */
-  if (!arkAllocVec(ark_mem, ark_mem->tempv1, &(arkls_mem->ytemp)))
+  if (sunVec_Clone(ark_mem->sunctx, ark_mem->tempv1, &(arkls_mem->ytemp)))
   {
     arkProcessError(ark_mem, ARKLS_MEM_FAIL, __LINE__, __func__, __FILE__,
                     MSG_LS_MEM_FAIL);
@@ -256,11 +256,11 @@ int arkLSSetLinearSolver(void* arkode_mem, SUNLinearSolver LS, SUNMatrix A)
     return (ARKLS_MEM_FAIL);
   }
 
-  if (!arkAllocVec(ark_mem, ark_mem->tempv1, &(arkls_mem->x)))
+  if (sunVec_Clone(ark_mem->sunctx, ark_mem->tempv1, &(arkls_mem->x)))
   {
     arkProcessError(ark_mem, ARKLS_MEM_FAIL, __LINE__, __func__, __FILE__,
                     MSG_LS_MEM_FAIL);
-    arkFreeVec(ark_mem, &(arkls_mem->ytemp));
+    (void)sunVec_Destroy(ark_mem->sunctx, &(arkls_mem->ytemp));
     free(arkls_mem);
     arkls_mem = NULL;
     return (ARKLS_MEM_FAIL);
@@ -283,8 +283,8 @@ int arkLSSetLinearSolver(void* arkode_mem, SUNLinearSolver LS, SUNMatrix A)
   {
     arkProcessError(ark_mem, retval, __LINE__, __func__, __FILE__,
                     "Failed to attach to time stepper module");
-    N_VDestroy(arkls_mem->x);
-    N_VDestroy(arkls_mem->ytemp);
+    (void)sunVec_Destroy(ark_mem->sunctx, &(arkls_mem->ytemp));
+    (void)sunVec_Destroy(ark_mem->sunctx, &(arkls_mem->x));
     free(arkls_mem);
     arkls_mem = NULL;
     return (retval);
@@ -488,7 +488,7 @@ int arkLSSetMassLinearSolver(void* arkode_mem, SUNLinearSolver LS, SUNMatrix M,
   }
 
   /* Allocate memory for x */
-  if (!arkAllocVec(ark_mem, ark_mem->tempv1, &(arkls_mem->x)))
+  if (sunVec_Clone(ark_mem->sunctx, ark_mem->tempv1, &(arkls_mem->x)))
   {
     arkProcessError(ark_mem, ARKLS_MEM_FAIL, __LINE__, __func__, __FILE__,
                     MSG_LS_MEM_FAIL);
@@ -510,7 +510,7 @@ int arkLSSetMassLinearSolver(void* arkode_mem, SUNLinearSolver LS, SUNMatrix M,
   {
     arkProcessError(ark_mem, retval, __LINE__, __func__, __FILE__,
                     "Failed to attach to time stepper module");
-    N_VDestroy(arkls_mem->x);
+    (void)sunVec_Destroy(ark_mem->sunctx, &(arkls_mem->x));
     if (!iterative) { SUNMatDestroy(arkls_mem->M_lu); }
     free(arkls_mem);
     arkls_mem = NULL;
@@ -2801,16 +2801,8 @@ int arkLsFree(void* arkode_mem)
   arkls_mem = (ARKLsMem)ark_step_lmem;
 
   /* Free N_Vector memory */
-  if (arkls_mem->ytemp)
-  {
-    N_VDestroy(arkls_mem->ytemp);
-    arkls_mem->ytemp = NULL;
-  }
-  if (arkls_mem->x)
-  {
-    N_VDestroy(arkls_mem->x);
-    arkls_mem->x = NULL;
-  }
+  (void)sunVec_Destroy(ark_mem->sunctx, &(arkls_mem->ytemp));
+  (void)sunVec_Destroy(ark_mem->sunctx, &(arkls_mem->x));
 
   /* Free savedJ memory */
   if (arkls_mem->savedJ)
@@ -3245,11 +3237,7 @@ int arkLsMassFree(void* arkode_mem)
   }
 
   /* Free N_Vector memory */
-  if (arkls_mem->x)
-  {
-    N_VDestroy(arkls_mem->x);
-    arkls_mem->x = NULL;
-  }
+  (void)sunVec_Destroy(ark_mem->sunctx, &(arkls_mem->x));
 
   /* Free M_lu memory (direct linear solvers) */
   if (!(arkls_mem->iterative) && arkls_mem->M_lu)

@@ -31,6 +31,8 @@
 #include <sunmatrix/sunmatrix_dense.h>
 
 #include "arkode/arkode_mri_tables_impl.h"
+#include "sundials/sundials_context.h"
+#include "sundials/sundials_types.h"
 
 #if defined(SUNDIALS_EXTENDED_PRECISION)
 #define GSYM "Lg"
@@ -125,6 +127,9 @@ int main(int argc, char* argv[])
 
   if (numfails) { cout << "\n\nFailed " << numfails << " tests!\n"; }
   else { cout << "\n\nAll tests passed!\n"; }
+
+  std::cout << std::endl;
+  SUNContext_PrintAllocStats(sunctx, stdout, SUN_OUTPUTFORMAT_TABLE);
 
   // Return test status
   return numfails;
@@ -328,9 +333,9 @@ int run_tests(MRISTEP_METHOD_TYPE type, sunrealtype t0, int nsteps,
     flag = MRIStepSetCoupling(mristep_mem, C);
     if (check_flag(&flag, "MRIStepSetCoupling", 1)) { return 1; }
 
-    // -----------------
-    // Output statistics
-    // -----------------
+    // ---------------
+    // Evolve in time
+    // ---------------
 
     sunrealtype t  = t0;
     sunrealtype tf = nsteps * hs;
@@ -455,6 +460,9 @@ int run_tests(MRISTEP_METHOD_TYPE type, sunrealtype t0, int nsteps,
     if (numfails) { cout << "Failed " << numfails << " tests\n"; }
     else { cout << "All checks passed\n"; }
 
+    cout << endl;
+    SUNContext_PrintAllocStats(sunctx, stdout, SUN_OUTPUTFORMAT_TABLE);
+
     // -------------------
     // Setup for next test
     // -------------------
@@ -498,6 +506,9 @@ int run_tests(MRISTEP_METHOD_TYPE type, sunrealtype t0, int nsteps,
   N_VDestroy(y);
   delete[] methods;
   delete[] stiffly_accurate;
+
+  cout << endl;
+  SUNContext_PrintAllocStats(sunctx, stdout, SUN_OUTPUTFORMAT_TABLE);
 
   return numfails;
 }
