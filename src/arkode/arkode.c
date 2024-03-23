@@ -113,7 +113,6 @@ ARKodeMem arkCreate(SUNContext sunctx)
   ark_mem->liw = 41; /* fcn/data ptr, int, long int, sunindextype, sunbooleantype */
 
   /* No mallocs have been done yet */
-  ark_mem->VRabstolMallocDone = SUNFALSE;
   ark_mem->MallocDone         = SUNFALSE;
 
   /* No user-supplied step postprocessing function yet */
@@ -606,15 +605,11 @@ int arkResVtolerance(ARKodeMem ark_mem, N_Vector rabstol)
   }
 
   /* Copy tolerances into memory */
-  if (!(ark_mem->VRabstolMallocDone))
+  if (sunVec_Clone(ark_mem->rwt, &(ark_mem->VRabstol)))
   {
-    if (sunVec_Clone(ark_mem->rwt, &(ark_mem->VRabstol)))
-    {
-      arkProcessError(ark_mem, ARK_MEM_FAIL, __LINE__, __func__, __FILE__,
-                      MSG_ARK_ARKMEM_FAIL);
-      return (ARK_ILL_INPUT);
-    }
-    ark_mem->VRabstolMallocDone = SUNTRUE;
+    arkProcessError(ark_mem, ARK_MEM_FAIL, __LINE__, __func__, __FILE__,
+                    MSG_ARK_ARKMEM_FAIL);
+    return (ARK_ILL_INPUT);
   }
   N_VScale(ONE, rabstol, ark_mem->VRabstol);
   ark_mem->ritol = ARK_SV;

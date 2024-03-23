@@ -381,7 +381,6 @@ struct ARKodeMemRec
   sunrealtype terr;  /* error in tn for compensated sums            */
   sunrealtype hold;  /* last successful h value used                */
   sunrealtype tolsf; /* tolerance scale factor (suggestion to user) */
-  sunbooleantype VRabstolMallocDone;
   sunbooleantype MallocDone;
   sunbooleantype initsetup;    /* denotes a call to InitialSetup is needed   */
   int init_type;               /* initialization type (see constants above)  */
