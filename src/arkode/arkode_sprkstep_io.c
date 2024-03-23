@@ -214,7 +214,7 @@ int SPRKStepSetUseCompensatedSums(void* arkode_mem, sunbooleantype onoff)
     ark_mem->step = sprkStep_TakeStep_Compensated;
     if (!step_mem->yerr)
     {
-      if (sunVec_Clone(ark_mem->sunctx, ark_mem->yn, &(step_mem->yerr)))
+      if (sunVec_Clone(ark_mem->yn, &(step_mem->yerr)))
       {
         return ARK_MEM_FAIL;
       }

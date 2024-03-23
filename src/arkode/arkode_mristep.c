@@ -697,30 +697,30 @@ void MRIStepFree(void** arkode_mem)
     /* free the sdata, zpred and zcor vectors */
     if (step_mem->sdata != NULL)
     {
-      (void)sunVec_Destroy(ark_mem->sunctx, &step_mem->sdata);
+      (void)sunVec_Destroy(&step_mem->sdata);
       step_mem->sdata = NULL;
     }
     if (step_mem->zpred != NULL)
     {
-      (void)sunVec_Destroy(ark_mem->sunctx, &step_mem->zpred);
+      (void)sunVec_Destroy(&step_mem->zpred);
       step_mem->zpred = NULL;
     }
     if (step_mem->zcor != NULL)
     {
-      (void)sunVec_Destroy(ark_mem->sunctx, &step_mem->zcor);
+      (void)sunVec_Destroy(&step_mem->zcor);
       step_mem->zcor = NULL;
     }
 
     /* free the RHS vectors */
     if (step_mem->Fse)
     {
-      (void)sunVecArray_Destroy(ark_mem->sunctx, step_mem->nstages_allocated,
+      (void)sunVecArray_Destroy(step_mem->nstages_allocated,
                                 &(step_mem->Fse));
     }
 
     if (step_mem->Fsi)
     {
-      (void)sunVecArray_Destroy(ark_mem->sunctx, step_mem->nstages_allocated,
+      (void)sunVecArray_Destroy(step_mem->nstages_allocated,
                                 &(step_mem->Fsi));
     }
 
@@ -1126,18 +1126,18 @@ int mriStep_Init(void* arkode_mem, int init_type)
       {
         if (step_mem->explicit_rhs)
         {
-          (void)sunVecArray_Destroy(ark_mem->sunctx, step_mem->nstages_allocated,
+          (void)sunVecArray_Destroy(step_mem->nstages_allocated,
                                     &(step_mem->Fse));
         }
         if (step_mem->implicit_rhs)
         {
-          (void)sunVecArray_Destroy(ark_mem->sunctx, step_mem->nstages_allocated,
+          (void)sunVecArray_Destroy(step_mem->nstages_allocated,
                                     &(step_mem->Fsi));
         }
       }
       if (step_mem->explicit_rhs)
       {
-        if (sunVecArray_Clone(ark_mem->sunctx, step_mem->nstages_active,
+        if (sunVecArray_Clone(step_mem->nstages_active,
                               ark_mem->ewt, &(step_mem->Fse)))
         {
           return (ARK_MEM_FAIL);
@@ -1145,7 +1145,7 @@ int mriStep_Init(void* arkode_mem, int init_type)
       }
       if (step_mem->implicit_rhs)
       {
-        if (sunVecArray_Clone(ark_mem->sunctx, step_mem->nstages_active,
+        if (sunVecArray_Clone(step_mem->nstages_active,
                               ark_mem->ewt, &(step_mem->Fsi)))
         {
           return (ARK_MEM_FAIL);
@@ -1160,15 +1160,15 @@ int mriStep_Init(void* arkode_mem, int init_type)
        SUNTRUE if an implicit table has been user-provided. */
     if (step_mem->implicit_rhs)
     {
-      if (sunVec_Clone(ark_mem->sunctx, ark_mem->ewt, &(step_mem->sdata)))
+      if (sunVec_Clone(ark_mem->ewt, &(step_mem->sdata)))
       {
         return (ARK_MEM_FAIL);
       }
-      if (sunVec_Clone(ark_mem->sunctx, ark_mem->ewt, &(step_mem->zpred)))
+      if (sunVec_Clone(ark_mem->ewt, &(step_mem->zpred)))
       {
         return (ARK_MEM_FAIL);
       }
-      if (sunVec_Clone(ark_mem->sunctx, ark_mem->ewt, &(step_mem->zcor)))
+      if (sunVec_Clone(ark_mem->ewt, &(step_mem->zcor)))
       {
         return (ARK_MEM_FAIL);
       }
@@ -2979,10 +2979,10 @@ int mriStepInnerStepper_AllocVecs(MRIStepInnerStepper stepper, int count,
   {
     if (stepper->nforcing_allocated)
     {
-      (void)sunVecArray_Destroy(stepper->sunctx, stepper->nforcing_allocated,
+      (void)sunVecArray_Destroy(stepper->nforcing_allocated,
                                 &(stepper->forcing));
     }
-    if (sunVecArray_Clone(stepper->sunctx, stepper->nforcing, tmpl,
+    if (sunVecArray_Clone(stepper->nforcing, tmpl,
                           &(stepper->forcing)))
     {
       mriStepInnerStepper_FreeVecs(stepper);
@@ -3037,7 +3037,7 @@ int mriStepInnerStepper_FreeVecs(MRIStepInnerStepper stepper)
 {
   if (stepper == NULL) { return ARK_ILL_INPUT; }
 
-  (void)sunVecArray_Destroy(stepper->sunctx, stepper->nforcing_allocated,
+  (void)sunVecArray_Destroy(stepper->nforcing_allocated,
                             &(stepper->forcing));
 
   if (stepper->vecs != NULL)
