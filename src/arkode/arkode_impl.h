@@ -881,11 +881,11 @@ sunbooleantype arkResizeVecArray(ARKVecResizeFn resize, void* resize_data,
 void arkPrintMem(ARKodeMem ark_mem, FILE* outfile);
 sunbooleantype arkCheckTimestepper(ARKodeMem ark_mem);
 sunbooleantype arkCheckNvector(N_Vector tmpl);
-sunbooleantype arkAllocVectors(ARKodeMem ark_mem, N_Vector tmpl);
+SUNErrCode arkAllocVectors(ARKodeMem ark_mem, N_Vector tmpl);
 sunbooleantype arkResizeVectors(ARKodeMem ark_mem, ARKVecResizeFn resize,
                                 void* resize_data, sunindextype lrw_diff,
                                 sunindextype liw_diff, N_Vector tmpl);
-void arkFreeVectors(ARKodeMem ark_mem);
+SUNErrCode arkFreeVectors(ARKodeMem ark_mem);
 
 int arkInitialSetup(ARKodeMem ark_mem, sunrealtype tout);
 int arkStopTests(ARKodeMem ark_mem, sunrealtype tout, N_Vector yout,
