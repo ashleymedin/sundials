@@ -714,14 +714,12 @@ void MRIStepFree(void** arkode_mem)
     /* free the RHS vectors */
     if (step_mem->Fse)
     {
-      (void)sunVecArray_Destroy(step_mem->nstages_allocated,
-                                &(step_mem->Fse));
+      (void)sunVecArray_Destroy(step_mem->nstages_allocated, &(step_mem->Fse));
     }
 
     if (step_mem->Fsi)
     {
-      (void)sunVecArray_Destroy(step_mem->nstages_allocated,
-                                &(step_mem->Fsi));
+      (void)sunVecArray_Destroy(step_mem->nstages_allocated, &(step_mem->Fsi));
     }
 
     /* free the reusable arrays for fused vector interface */
@@ -1137,16 +1135,16 @@ int mriStep_Init(void* arkode_mem, int init_type)
       }
       if (step_mem->explicit_rhs)
       {
-        if (sunVecArray_Clone(step_mem->nstages_active,
-                              ark_mem->ewt, &(step_mem->Fse)))
+        if (sunVecArray_Clone(step_mem->nstages_active, ark_mem->ewt,
+                              &(step_mem->Fse)))
         {
           return (ARK_MEM_FAIL);
         }
       }
       if (step_mem->implicit_rhs)
       {
-        if (sunVecArray_Clone(step_mem->nstages_active,
-                              ark_mem->ewt, &(step_mem->Fsi)))
+        if (sunVecArray_Clone(step_mem->nstages_active, ark_mem->ewt,
+                              &(step_mem->Fsi)))
         {
           return (ARK_MEM_FAIL);
         }
@@ -2979,11 +2977,9 @@ int mriStepInnerStepper_AllocVecs(MRIStepInnerStepper stepper, int count,
   {
     if (stepper->nforcing_allocated)
     {
-      (void)sunVecArray_Destroy(stepper->nforcing_allocated,
-                                &(stepper->forcing));
+      (void)sunVecArray_Destroy(stepper->nforcing_allocated, &(stepper->forcing));
     }
-    if (sunVecArray_Clone(stepper->nforcing, tmpl,
-                          &(stepper->forcing)))
+    if (sunVecArray_Clone(stepper->nforcing, tmpl, &(stepper->forcing)))
     {
       mriStepInnerStepper_FreeVecs(stepper);
       return (ARK_MEM_FAIL);
@@ -3037,8 +3033,7 @@ int mriStepInnerStepper_FreeVecs(MRIStepInnerStepper stepper)
 {
   if (stepper == NULL) { return ARK_ILL_INPUT; }
 
-  (void)sunVecArray_Destroy(stepper->nforcing_allocated,
-                            &(stepper->forcing));
+  (void)sunVecArray_Destroy(stepper->nforcing_allocated, &(stepper->forcing));
 
   if (stepper->vecs != NULL)
   {

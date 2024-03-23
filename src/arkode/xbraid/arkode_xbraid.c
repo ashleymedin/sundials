@@ -357,10 +357,7 @@ int ARKBraid_Init(braid_App app, sunrealtype t, braid_Vector* u_ptr)
 
   /* Create new NVector */
   y = NULL;
-  if (sunVec_Clone(content->ark_mem->yn, &y))
-  {
-    return SUNBRAID_ALLOCFAIL;
-  }
+  if (sunVec_Clone(content->ark_mem->yn, &y)) { return SUNBRAID_ALLOCFAIL; }
 
   /* Create new XBraid vector */
   flag = SUNBraidVector_New(y, u_ptr);
@@ -415,8 +412,7 @@ int ARKBraid_Access(braid_App app, braid_Vector u, braid_AccessStatus astatus)
       /* Allocate yout if necessary */
       if (content->yout == NULL)
       {
-        if (sunVec_Clone(content->ark_mem->yn,
-                        &(content->yout)))
+        if (sunVec_Clone(content->ark_mem->yn, &(content->yout)))
         {
           return SUNBRAID_ALLOCFAIL;
         }
