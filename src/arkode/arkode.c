@@ -1698,6 +1698,7 @@ sunbooleantype arkResizeVecArray(ARKVecResizeFn resize, void* resize_data,
   ---------------------------------------------------------------*/
 SUNErrCode arkAllocVectors(ARKodeMem ark_mem, N_Vector tmpl)
 {
+  SUNFunctionBegin(ark_mem->sunctx);
   SUNCheckCall(sunVec_Clone(tmpl, &ark_mem->ewt));
   SUNCheckCall(sunVec_Clone(tmpl, &ark_mem->yn));
   SUNCheckCall(sunVec_Clone(tmpl, &ark_mem->tempv1));
@@ -1818,6 +1819,7 @@ sunbooleantype arkResizeVectors(ARKodeMem ark_mem, ARKVecResizeFn resize,
   ---------------------------------------------------------------*/
 SUNErrCode arkFreeVectors(ARKodeMem ark_mem)
 {
+  SUNFunctionBegin(ark_mem->sunctx);
   SUNCheckCall(sunVec_Destroy(&ark_mem->ewt));
   SUNCheckCall(sunVec_Destroy(&ark_mem->tempv1));
   SUNCheckCall(sunVec_Destroy(&ark_mem->tempv2));
