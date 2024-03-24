@@ -23,7 +23,23 @@
 #include <string.h>
 #include <sundials/sundials_core.h>
 
+#include "sundials/priv/sundials_errors_impl.h"
+#include "sundials/sundials_allocator.h"
 #include "sundials/sundials_errors.h"
+
+/* ----------------------------------------- *
+ * Allocator malloc and free utilities       *
+ * ----------------------------------------- */
+
+static inline void* sunMalloc(SUNContext sunctx, size_t mem_size)
+{
+  return SUNAllocator_Allocate(sunctx->allocator, mem_size, SUNMEMTYPE_HOST);
+}
+
+static inline void sunFree(SUNContext sunctx, void* mem_ptr, size_t mem_size)
+{
+  SUNAllocator_Deallocate(sunctx->allocator, mem_ptr, mem_size, SUNMEMTYPE_HOST);
+}
 
 /* ----------------------------------------- *
  * Vector creation and destruction utilities *

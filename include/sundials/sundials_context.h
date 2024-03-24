@@ -58,6 +58,9 @@ SUNDIALS_EXPORT
 SUNErrCode SUNContext_SetLogger(SUNContext sunctx, SUNLogger logger);
 
 SUNDIALS_EXPORT
+SUNErrCode SUNContext_GetAllocator(SUNContext sunctx, SUNAllocator* allocator);
+
+SUNDIALS_EXPORT
 SUNErrCode SUNContext_PrintAllocStats(SUNContext sunctx, FILE* outfile,
                                       SUNOutputFormat fmt);
 

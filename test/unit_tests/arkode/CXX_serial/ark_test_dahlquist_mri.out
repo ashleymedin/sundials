@@ -39,6 +39,10 @@ Comparing Solver Statistics:
 All checks passed
 
 Vectors allocated = 30
+Number of allocations   = 8
+Number of deallocations = 0
+Current bytes allocated = 2224
+Max bytes allocated     = 2224
 
 Testing method 1
   nmat = 2
@@ -73,6 +77,10 @@ Comparing Solver Statistics:
 All checks passed
 
 Vectors allocated = 31
+Number of allocations   = 10
+Number of deallocations = 2
+Current bytes allocated = 2240
+Max bytes allocated     = 2240
 
 Testing method 2
   nmat = 2
@@ -111,8 +119,16 @@ Comparing Solver Statistics:
 All checks passed
 
 Vectors allocated = 33
+Number of allocations   = 10
+Number of deallocations = 2
+Current bytes allocated = 2240
+Max bytes allocated     = 2240
 
 Vectors allocated = 0
+Number of allocations   = 10
+Number of deallocations = 9
+Current bytes allocated = 64
+Max bytes allocated     = 2240
 
 =========================
 Test implicit MRI methods
@@ -149,6 +165,10 @@ Comparing Solver Statistics:
 All checks passed
 
 Vectors allocated = 34
+Number of allocations   = 17
+Number of deallocations = 9
+Current bytes allocated = 2224
+Max bytes allocated     = 2240
 
 Testing method 1
   nmat = 1
@@ -185,6 +205,10 @@ Comparing Solver Statistics:
 All checks passed
 
 Vectors allocated = 36
+Number of allocations   = 17
+Number of deallocations = 9
+Current bytes allocated = 2224
+Max bytes allocated     = 2240
 
 Testing method 2
   nmat = 2
@@ -238,8 +262,16 @@ Comparing Solver Statistics:
 All checks passed
 
 Vectors allocated = 39
+Number of allocations   = 19
+Number of deallocations = 11
+Current bytes allocated = 2240
+Max bytes allocated     = 2240
 
 Vectors allocated = 0
+Number of allocations   = 19
+Number of deallocations = 18
+Current bytes allocated = 64
+Max bytes allocated     = 2240
 
 =====================
 Test IMEX MRI methods
@@ -291,6 +323,10 @@ Comparing Solver Statistics:
 All checks passed
 
 Vectors allocated = 40
+Number of allocations   = 26
+Number of deallocations = 18
+Current bytes allocated = 2224
+Max bytes allocated     = 2240
 
 Testing method 1
   nmat = 1
@@ -338,6 +374,10 @@ Comparing Solver Statistics:
 All checks passed
 
 Vectors allocated = 40
+Number of allocations   = 26
+Number of deallocations = 18
+Current bytes allocated = 2224
+Max bytes allocated     = 2240
 
 Testing method 2
   nmat = 2
@@ -421,10 +461,22 @@ Comparing Solver Statistics:
 All checks passed
 
 Vectors allocated = 45
+Number of allocations   = 28
+Number of deallocations = 20
+Current bytes allocated = 2240
+Max bytes allocated     = 2240
 
 Vectors allocated = 0
+Number of allocations   = 28
+Number of deallocations = 27
+Current bytes allocated = 64
+Max bytes allocated     = 2240
 
 
 All tests passed!
 
 Vectors allocated = 0
+Number of allocations   = 28
+Number of deallocations = 27
+Current bytes allocated = 64
+Max bytes allocated     = 2240

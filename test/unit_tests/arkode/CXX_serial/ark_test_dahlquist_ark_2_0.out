@@ -49,8 +49,16 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 14
+Number of allocations   = 5
+Number of deallocations = 0
+Current bytes allocated = 1312
+Max bytes allocated     = 1312
 
 Vectors allocated = 0
+Number of allocations   = 5
+Number of deallocations = 4
+Current bytes allocated = 64
+Max bytes allocated     = 1312
 
 ========================
 ERK Table ID 0
@@ -88,8 +96,16 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 15
+Number of allocations   = 9
+Number of deallocations = 4
+Current bytes allocated = 1344
+Max bytes allocated     = 1344
 
 Vectors allocated = 0
+Number of allocations   = 9
+Number of deallocations = 8
+Current bytes allocated = 64
+Max bytes allocated     = 1344
 
 ========================
 ERK Table ID 1
@@ -127,8 +143,16 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 17
+Number of allocations   = 13
+Number of deallocations = 8
+Current bytes allocated = 1408
+Max bytes allocated     = 1408
 
 Vectors allocated = 0
+Number of allocations   = 13
+Number of deallocations = 12
+Current bytes allocated = 64
+Max bytes allocated     = 1408
 
 ========================
 ERK Table ID 2
@@ -166,8 +190,16 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 17
+Number of allocations   = 17
+Number of deallocations = 12
+Current bytes allocated = 1408
+Max bytes allocated     = 1408
 
 Vectors allocated = 0
+Number of allocations   = 17
+Number of deallocations = 16
+Current bytes allocated = 64
+Max bytes allocated     = 1408
 
 ========================
 ERK Table ID 3
@@ -205,8 +237,16 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 18
+Number of allocations   = 21
+Number of deallocations = 16
+Current bytes allocated = 1440
+Max bytes allocated     = 1440
 
 Vectors allocated = 0
+Number of allocations   = 21
+Number of deallocations = 20
+Current bytes allocated = 64
+Max bytes allocated     = 1440
 
 ========================
 ERK Table ID 4
@@ -244,8 +284,16 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 19
+Number of allocations   = 25
+Number of deallocations = 20
+Current bytes allocated = 1472
+Max bytes allocated     = 1472
 
 Vectors allocated = 0
+Number of allocations   = 25
+Number of deallocations = 24
+Current bytes allocated = 64
+Max bytes allocated     = 1472
 
 ========================
 ERK Table ID 5
@@ -283,8 +331,16 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 19
+Number of allocations   = 29
+Number of deallocations = 24
+Current bytes allocated = 1472
+Max bytes allocated     = 1472
 
 Vectors allocated = 0
+Number of allocations   = 29
+Number of deallocations = 28
+Current bytes allocated = 64
+Max bytes allocated     = 1472
 
 ========================
 ERK Table ID 6
@@ -322,8 +378,16 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 20
+Number of allocations   = 33
+Number of deallocations = 28
+Current bytes allocated = 1472
+Max bytes allocated     = 1472
 
 Vectors allocated = 0
+Number of allocations   = 33
+Number of deallocations = 32
+Current bytes allocated = 64
+Max bytes allocated     = 1472
 
 ========================
 ERK Table ID 7
@@ -361,8 +425,16 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 20
+Number of allocations   = 37
+Number of deallocations = 32
+Current bytes allocated = 1472
+Max bytes allocated     = 1472
 
 Vectors allocated = 0
+Number of allocations   = 37
+Number of deallocations = 36
+Current bytes allocated = 64
+Max bytes allocated     = 1472
 
 ========================
 ERK Table ID 8
@@ -400,8 +472,16 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 21
+Number of allocations   = 41
+Number of deallocations = 36
+Current bytes allocated = 1504
+Max bytes allocated     = 1504
 
 Vectors allocated = 0
+Number of allocations   = 41
+Number of deallocations = 40
+Current bytes allocated = 64
+Max bytes allocated     = 1504
 
 ========================
 ERK Table ID 9
@@ -439,8 +519,16 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 22
+Number of allocations   = 45
+Number of deallocations = 40
+Current bytes allocated = 1536
+Max bytes allocated     = 1536
 
 Vectors allocated = 0
+Number of allocations   = 45
+Number of deallocations = 44
+Current bytes allocated = 64
+Max bytes allocated     = 1536
 
 ========================
 ERK Table ID 10
@@ -478,8 +566,16 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 23
+Number of allocations   = 49
+Number of deallocations = 44
+Current bytes allocated = 1536
+Max bytes allocated     = 1536
 
 Vectors allocated = 0
+Number of allocations   = 49
+Number of deallocations = 48
+Current bytes allocated = 64
+Max bytes allocated     = 1536
 
 ========================
 ERK Table ID 11
@@ -517,8 +613,16 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 28
+Number of allocations   = 53
+Number of deallocations = 48
+Current bytes allocated = 1696
+Max bytes allocated     = 1696
 
 Vectors allocated = 0
+Number of allocations   = 53
+Number of deallocations = 52
+Current bytes allocated = 64
+Max bytes allocated     = 1696
 
 ========================
 ERK Table ID 12
@@ -556,8 +660,16 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 16
+Number of allocations   = 57
+Number of deallocations = 52
+Current bytes allocated = 1376
+Max bytes allocated     = 1696
 
 Vectors allocated = 0
+Number of allocations   = 57
+Number of deallocations = 56
+Current bytes allocated = 64
+Max bytes allocated     = 1696
 
 ========================
 ERK Table ID 13
@@ -595,8 +707,16 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 20
+Number of allocations   = 61
+Number of deallocations = 56
+Current bytes allocated = 1504
+Max bytes allocated     = 1696
 
 Vectors allocated = 0
+Number of allocations   = 61
+Number of deallocations = 60
+Current bytes allocated = 64
+Max bytes allocated     = 1696
 
 ========================
 ERK Table ID 14
@@ -634,8 +754,16 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 22
+Number of allocations   = 65
+Number of deallocations = 60
+Current bytes allocated = 1536
+Max bytes allocated     = 1696
 
 Vectors allocated = 0
+Number of allocations   = 65
+Number of deallocations = 64
+Current bytes allocated = 64
+Max bytes allocated     = 1696
 
 ========================
 ERK Table ID 15
@@ -673,8 +801,16 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 16
+Number of allocations   = 69
+Number of deallocations = 64
+Current bytes allocated = 1376
+Max bytes allocated     = 1696
 
 Vectors allocated = 0
+Number of allocations   = 69
+Number of deallocations = 68
+Current bytes allocated = 64
+Max bytes allocated     = 1696
 
 ========================
 ERK Table ID 16
@@ -712,8 +848,16 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 18
+Number of allocations   = 73
+Number of deallocations = 68
+Current bytes allocated = 1440
+Max bytes allocated     = 1696
 
 Vectors allocated = 0
+Number of allocations   = 73
+Number of deallocations = 72
+Current bytes allocated = 64
+Max bytes allocated     = 1696
 
 ========================
 ERK Table ID 17
@@ -751,8 +895,16 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 16
+Number of allocations   = 77
+Number of deallocations = 72
+Current bytes allocated = 1376
+Max bytes allocated     = 1696
 
 Vectors allocated = 0
+Number of allocations   = 77
+Number of deallocations = 76
+Current bytes allocated = 64
+Max bytes allocated     = 1696
 
 ========================
 ERK Table ID 18
@@ -790,8 +942,16 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 24
+Number of allocations   = 81
+Number of deallocations = 76
+Current bytes allocated = 1568
+Max bytes allocated     = 1696
 
 Vectors allocated = 0
+Number of allocations   = 81
+Number of deallocations = 80
+Current bytes allocated = 64
+Max bytes allocated     = 1696
 
 ========================
 ERK Table ID 19
@@ -829,8 +989,16 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 25
+Number of allocations   = 85
+Number of deallocations = 80
+Current bytes allocated = 1600
+Max bytes allocated     = 1696
 
 Vectors allocated = 0
+Number of allocations   = 85
+Number of deallocations = 84
+Current bytes allocated = 64
+Max bytes allocated     = 1696
 
 ========================
 ERK Table ID 20
@@ -868,8 +1036,16 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 28
+Number of allocations   = 89
+Number of deallocations = 84
+Current bytes allocated = 1696
+Max bytes allocated     = 1696
 
 Vectors allocated = 0
+Number of allocations   = 89
+Number of deallocations = 88
+Current bytes allocated = 64
+Max bytes allocated     = 1696
 
 ========================
 ERK Table ID 21
@@ -907,8 +1083,16 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 31
+Number of allocations   = 93
+Number of deallocations = 88
+Current bytes allocated = 1792
+Max bytes allocated     = 1792
 
 Vectors allocated = 0
+Number of allocations   = 93
+Number of deallocations = 92
+Current bytes allocated = 64
+Max bytes allocated     = 1792
 
 ========================
 Test implicit RK methods
@@ -954,8 +1138,16 @@ Fi RHS evals:
 --------------------
 
 Vectors allocated = 16
+Number of allocations   = 97
+Number of deallocations = 92
+Current bytes allocated = 1312
+Max bytes allocated     = 1792
 
 Vectors allocated = 0
+Number of allocations   = 97
+Number of deallocations = 96
+Current bytes allocated = 64
+Max bytes allocated     = 1792
 
 ========================
 DIRK Table ID 100
@@ -997,8 +1189,16 @@ Fi RHS evals:
 --------------------
 
 Vectors allocated = 17
+Number of allocations   = 101
+Number of deallocations = 96
+Current bytes allocated = 1344
+Max bytes allocated     = 1792
 
 Vectors allocated = 0
+Number of allocations   = 101
+Number of deallocations = 100
+Current bytes allocated = 64
+Max bytes allocated     = 1792
 
 ========================
 DIRK Table ID 101
@@ -1040,8 +1240,16 @@ Fi RHS evals:
 --------------------
 
 Vectors allocated = 18
+Number of allocations   = 105
+Number of deallocations = 100
+Current bytes allocated = 1376
+Max bytes allocated     = 1792
 
 Vectors allocated = 0
+Number of allocations   = 105
+Number of deallocations = 104
+Current bytes allocated = 64
+Max bytes allocated     = 1792
 
 ========================
 DIRK Table ID 102
@@ -1083,8 +1291,16 @@ Fi RHS evals:
 --------------------
 
 Vectors allocated = 18
+Number of allocations   = 109
+Number of deallocations = 104
+Current bytes allocated = 1376
+Max bytes allocated     = 1792
 
 Vectors allocated = 0
+Number of allocations   = 109
+Number of deallocations = 108
+Current bytes allocated = 64
+Max bytes allocated     = 1792
 
 ========================
 DIRK Table ID 103
@@ -1126,8 +1342,16 @@ Fi RHS evals:
 --------------------
 
 Vectors allocated = 19
+Number of allocations   = 113
+Number of deallocations = 108
+Current bytes allocated = 1408
+Max bytes allocated     = 1792
 
 Vectors allocated = 0
+Number of allocations   = 113
+Number of deallocations = 112
+Current bytes allocated = 64
+Max bytes allocated     = 1792
 
 ========================
 DIRK Table ID 104
@@ -1169,8 +1393,16 @@ Fi RHS evals:
 --------------------
 
 Vectors allocated = 19
+Number of allocations   = 117
+Number of deallocations = 112
+Current bytes allocated = 1408
+Max bytes allocated     = 1792
 
 Vectors allocated = 0
+Number of allocations   = 117
+Number of deallocations = 116
+Current bytes allocated = 64
+Max bytes allocated     = 1792
 
 ========================
 DIRK Table ID 105
@@ -1212,8 +1444,16 @@ Fi RHS evals:
 --------------------
 
 Vectors allocated = 20
+Number of allocations   = 121
+Number of deallocations = 116
+Current bytes allocated = 1440
+Max bytes allocated     = 1792
 
 Vectors allocated = 0
+Number of allocations   = 121
+Number of deallocations = 120
+Current bytes allocated = 64
+Max bytes allocated     = 1792
 
 ========================
 DIRK Table ID 106
@@ -1255,8 +1495,16 @@ Fi RHS evals:
 --------------------
 
 Vectors allocated = 20
+Number of allocations   = 125
+Number of deallocations = 120
+Current bytes allocated = 1440
+Max bytes allocated     = 1792
 
 Vectors allocated = 0
+Number of allocations   = 125
+Number of deallocations = 124
+Current bytes allocated = 64
+Max bytes allocated     = 1792
 
 ========================
 DIRK Table ID 107
@@ -1298,8 +1546,16 @@ Fi RHS evals:
 --------------------
 
 Vectors allocated = 20
+Number of allocations   = 129
+Number of deallocations = 124
+Current bytes allocated = 1440
+Max bytes allocated     = 1792
 
 Vectors allocated = 0
+Number of allocations   = 129
+Number of deallocations = 128
+Current bytes allocated = 64
+Max bytes allocated     = 1792
 
 ========================
 DIRK Table ID 108
@@ -1341,8 +1597,16 @@ Fi RHS evals:
 --------------------
 
 Vectors allocated = 20
+Number of allocations   = 133
+Number of deallocations = 128
+Current bytes allocated = 1440
+Max bytes allocated     = 1792
 
 Vectors allocated = 0
+Number of allocations   = 133
+Number of deallocations = 132
+Current bytes allocated = 64
+Max bytes allocated     = 1792
 
 ========================
 DIRK Table ID 109
@@ -1384,8 +1648,16 @@ Fi RHS evals:
 --------------------
 
 Vectors allocated = 21
+Number of allocations   = 137
+Number of deallocations = 132
+Current bytes allocated = 1472
+Max bytes allocated     = 1792
 
 Vectors allocated = 0
+Number of allocations   = 137
+Number of deallocations = 136
+Current bytes allocated = 64
+Max bytes allocated     = 1792
 
 ========================
 DIRK Table ID 110
@@ -1427,8 +1699,16 @@ Fi RHS evals:
 --------------------
 
 Vectors allocated = 23
+Number of allocations   = 141
+Number of deallocations = 136
+Current bytes allocated = 1504
+Max bytes allocated     = 1792
 
 Vectors allocated = 0
+Number of allocations   = 141
+Number of deallocations = 140
+Current bytes allocated = 64
+Max bytes allocated     = 1792
 
 ========================
 DIRK Table ID 111
@@ -1470,8 +1750,16 @@ Fi RHS evals:
 --------------------
 
 Vectors allocated = 24
+Number of allocations   = 145
+Number of deallocations = 140
+Current bytes allocated = 1536
+Max bytes allocated     = 1792
 
 Vectors allocated = 0
+Number of allocations   = 145
+Number of deallocations = 144
+Current bytes allocated = 64
+Max bytes allocated     = 1792
 
 ========================
 DIRK Table ID 112
@@ -1513,8 +1801,16 @@ Fi RHS evals:
 --------------------
 
 Vectors allocated = 22
+Number of allocations   = 149
+Number of deallocations = 144
+Current bytes allocated = 1504
+Max bytes allocated     = 1792
 
 Vectors allocated = 0
+Number of allocations   = 149
+Number of deallocations = 148
+Current bytes allocated = 64
+Max bytes allocated     = 1792
 
 ========================
 DIRK Table ID 113
@@ -1556,8 +1852,16 @@ Fi RHS evals:
 --------------------
 
 Vectors allocated = 24
+Number of allocations   = 153
+Number of deallocations = 148
+Current bytes allocated = 1536
+Max bytes allocated     = 1792
 
 Vectors allocated = 0
+Number of allocations   = 153
+Number of deallocations = 152
+Current bytes allocated = 64
+Max bytes allocated     = 1792
 
 ========================
 DIRK Table ID 114
@@ -1599,8 +1903,16 @@ Fi RHS evals:
 --------------------
 
 Vectors allocated = 19
+Number of allocations   = 157
+Number of deallocations = 152
+Current bytes allocated = 1408
+Max bytes allocated     = 1792
 
 Vectors allocated = 0
+Number of allocations   = 157
+Number of deallocations = 156
+Current bytes allocated = 64
+Max bytes allocated     = 1792
 
 ========================
 DIRK Table ID 115
@@ -1642,8 +1954,16 @@ Fi RHS evals:
 --------------------
 
 Vectors allocated = 20
+Number of allocations   = 161
+Number of deallocations = 156
+Current bytes allocated = 1440
+Max bytes allocated     = 1792
 
 Vectors allocated = 0
+Number of allocations   = 161
+Number of deallocations = 160
+Current bytes allocated = 64
+Max bytes allocated     = 1792
 
 ========================
 DIRK Table ID 116
@@ -1685,8 +2005,16 @@ Fi RHS evals:
 --------------------
 
 Vectors allocated = 20
+Number of allocations   = 165
+Number of deallocations = 160
+Current bytes allocated = 1440
+Max bytes allocated     = 1792
 
 Vectors allocated = 0
+Number of allocations   = 165
+Number of deallocations = 164
+Current bytes allocated = 64
+Max bytes allocated     = 1792
 
 ========================
 DIRK Table ID 117
@@ -1728,8 +2056,16 @@ Fi RHS evals:
 --------------------
 
 Vectors allocated = 21
+Number of allocations   = 169
+Number of deallocations = 164
+Current bytes allocated = 1472
+Max bytes allocated     = 1792
 
 Vectors allocated = 0
+Number of allocations   = 169
+Number of deallocations = 168
+Current bytes allocated = 64
+Max bytes allocated     = 1792
 
 ========================
 DIRK Table ID 118
@@ -1771,8 +2107,16 @@ Fi RHS evals:
 --------------------
 
 Vectors allocated = 21
+Number of allocations   = 173
+Number of deallocations = 168
+Current bytes allocated = 1472
+Max bytes allocated     = 1792
 
 Vectors allocated = 0
+Number of allocations   = 173
+Number of deallocations = 172
+Current bytes allocated = 64
+Max bytes allocated     = 1792
 
 ========================
 DIRK Table ID 119
@@ -1814,8 +2158,16 @@ Fi RHS evals:
 --------------------
 
 Vectors allocated = 21
+Number of allocations   = 177
+Number of deallocations = 172
+Current bytes allocated = 1472
+Max bytes allocated     = 1792
 
 Vectors allocated = 0
+Number of allocations   = 177
+Number of deallocations = 176
+Current bytes allocated = 64
+Max bytes allocated     = 1792
 
 ========================
 DIRK Table ID 120
@@ -1857,8 +2209,16 @@ Fi RHS evals:
 --------------------
 
 Vectors allocated = 22
+Number of allocations   = 181
+Number of deallocations = 176
+Current bytes allocated = 1504
+Max bytes allocated     = 1792
 
 Vectors allocated = 0
+Number of allocations   = 181
+Number of deallocations = 180
+Current bytes allocated = 64
+Max bytes allocated     = 1792
 
 ========================
 DIRK Table ID 121
@@ -1900,8 +2260,16 @@ Fi RHS evals:
 --------------------
 
 Vectors allocated = 23
+Number of allocations   = 185
+Number of deallocations = 180
+Current bytes allocated = 1504
+Max bytes allocated     = 1792
 
 Vectors allocated = 0
+Number of allocations   = 185
+Number of deallocations = 184
+Current bytes allocated = 64
+Max bytes allocated     = 1792
 
 ========================
 DIRK Table ID 122
@@ -1943,8 +2311,16 @@ Fi RHS evals:
 --------------------
 
 Vectors allocated = 23
+Number of allocations   = 189
+Number of deallocations = 184
+Current bytes allocated = 1504
+Max bytes allocated     = 1792
 
 Vectors allocated = 0
+Number of allocations   = 189
+Number of deallocations = 188
+Current bytes allocated = 64
+Max bytes allocated     = 1792
 
 ========================
 DIRK Table ID 123
@@ -1986,8 +2362,16 @@ Fi RHS evals:
 --------------------
 
 Vectors allocated = 18
+Number of allocations   = 193
+Number of deallocations = 188
+Current bytes allocated = 1376
+Max bytes allocated     = 1792
 
 Vectors allocated = 0
+Number of allocations   = 193
+Number of deallocations = 192
+Current bytes allocated = 64
+Max bytes allocated     = 1792
 
 =====================
 Test IMEX ARK methods
@@ -2048,8 +2432,16 @@ Fi RHS evals:
 --------------------
 
 Vectors allocated = 19
+Number of allocations   = 197
+Number of deallocations = 192
+Current bytes allocated = 1344
+Max bytes allocated     = 1792
 
 Vectors allocated = 0
+Number of allocations   = 197
+Number of deallocations = 196
+Current bytes allocated = 64
+Max bytes allocated     = 1792
 
 ========================
 IMEX Table ID 0
@@ -2106,8 +2498,16 @@ Fi RHS evals:
 --------------------
 
 Vectors allocated = 21
+Number of allocations   = 201
+Number of deallocations = 196
+Current bytes allocated = 1376
+Max bytes allocated     = 1792
 
 Vectors allocated = 0
+Number of allocations   = 201
+Number of deallocations = 200
+Current bytes allocated = 64
+Max bytes allocated     = 1792
 
 ========================
 IMEX Table ID 1
@@ -2164,8 +2564,16 @@ Fi RHS evals:
 --------------------
 
 Vectors allocated = 23
+Number of allocations   = 205
+Number of deallocations = 200
+Current bytes allocated = 1408
+Max bytes allocated     = 1792
 
 Vectors allocated = 0
+Number of allocations   = 205
+Number of deallocations = 204
+Current bytes allocated = 64
+Max bytes allocated     = 1792
 
 ========================
 IMEX Table ID 2
@@ -2222,8 +2630,16 @@ Fi RHS evals:
 --------------------
 
 Vectors allocated = 27
+Number of allocations   = 209
+Number of deallocations = 204
+Current bytes allocated = 1472
+Max bytes allocated     = 1792
 
 Vectors allocated = 0
+Number of allocations   = 209
+Number of deallocations = 208
+Current bytes allocated = 64
+Max bytes allocated     = 1792
 
 ========================
 IMEX Table ID 3
@@ -2280,8 +2696,16 @@ Fi RHS evals:
 --------------------
 
 Vectors allocated = 29
+Number of allocations   = 213
+Number of deallocations = 208
+Current bytes allocated = 1504
+Max bytes allocated     = 1792
 
 Vectors allocated = 0
+Number of allocations   = 213
+Number of deallocations = 212
+Current bytes allocated = 64
+Max bytes allocated     = 1792
 
 ========================
 IMEX Table ID 4
@@ -2338,8 +2762,16 @@ Fi RHS evals:
 --------------------
 
 Vectors allocated = 32
+Number of allocations   = 217
+Number of deallocations = 212
+Current bytes allocated = 1536
+Max bytes allocated     = 1792
 
 Vectors allocated = 0
+Number of allocations   = 217
+Number of deallocations = 216
+Current bytes allocated = 64
+Max bytes allocated     = 1792
 
 ========================
 IMEX Table ID 5
@@ -2396,10 +2828,22 @@ Fi RHS evals:
 --------------------
 
 Vectors allocated = 32
+Number of allocations   = 221
+Number of deallocations = 216
+Current bytes allocated = 1536
+Max bytes allocated     = 1792
 
 Vectors allocated = 0
+Number of allocations   = 221
+Number of deallocations = 220
+Current bytes allocated = 64
+Max bytes allocated     = 1792
 
 
 All tests passed!
 
 Vectors allocated = 0
+Number of allocations   = 221
+Number of deallocations = 220
+Current bytes allocated = 64
+Max bytes allocated     = 1792

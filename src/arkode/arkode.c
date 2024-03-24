@@ -64,8 +64,7 @@ ARKodeMem arkCreate(SUNContext sunctx)
     return (NULL);
   }
 
-  ark_mem = NULL;
-  ark_mem = (ARKodeMem)malloc(sizeof(struct ARKodeMemRec));
+  ark_mem = (ARKodeMem)sunMalloc(sunctx, sizeof(struct ARKodeMemRec));
   if (ark_mem == NULL)
   {
     arkProcessError(NULL, ARK_MEM_FAIL, __LINE__, __func__, __FILE__,
@@ -1239,7 +1238,7 @@ void arkFree(void** arkode_mem)
     ark_mem->relax_mem = NULL;
   }
 
-  free(*arkode_mem);
+  sunFree(ark_mem->sunctx, ark_mem, sizeof(struct ARKodeMemRec));
   *arkode_mem = NULL;
 }
 

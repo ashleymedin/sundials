@@ -46,6 +46,10 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 10
+Number of allocations   = 2
+Number of deallocations = 0
+Current bytes allocated = 752
+Max bytes allocated     = 752
 
 ========================
 ERK Table ID 0
@@ -83,6 +87,10 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 11
+Number of allocations   = 3
+Number of deallocations = 1
+Current bytes allocated = 752
+Max bytes allocated     = 752
 
 ========================
 ERK Table ID 1
@@ -120,6 +128,10 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 14
+Number of allocations   = 4
+Number of deallocations = 2
+Current bytes allocated = 752
+Max bytes allocated     = 752
 
 ========================
 ERK Table ID 2
@@ -157,6 +169,10 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 14
+Number of allocations   = 5
+Number of deallocations = 3
+Current bytes allocated = 752
+Max bytes allocated     = 752
 
 ========================
 ERK Table ID 3
@@ -194,6 +210,10 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 16
+Number of allocations   = 6
+Number of deallocations = 4
+Current bytes allocated = 752
+Max bytes allocated     = 752
 
 ========================
 ERK Table ID 4
@@ -231,6 +251,10 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 17
+Number of allocations   = 7
+Number of deallocations = 5
+Current bytes allocated = 752
+Max bytes allocated     = 752
 
 ========================
 ERK Table ID 5
@@ -268,6 +292,10 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 17
+Number of allocations   = 8
+Number of deallocations = 6
+Current bytes allocated = 752
+Max bytes allocated     = 752
 
 ========================
 ERK Table ID 6
@@ -305,6 +333,10 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 18
+Number of allocations   = 9
+Number of deallocations = 7
+Current bytes allocated = 752
+Max bytes allocated     = 752
 
 ========================
 ERK Table ID 7
@@ -342,6 +374,10 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 18
+Number of allocations   = 10
+Number of deallocations = 8
+Current bytes allocated = 752
+Max bytes allocated     = 752
 
 ========================
 ERK Table ID 8
@@ -379,6 +415,10 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 19
+Number of allocations   = 11
+Number of deallocations = 9
+Current bytes allocated = 752
+Max bytes allocated     = 752
 
 ========================
 ERK Table ID 9
@@ -416,6 +456,10 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 20
+Number of allocations   = 12
+Number of deallocations = 10
+Current bytes allocated = 752
+Max bytes allocated     = 752
 
 ========================
 ERK Table ID 10
@@ -453,6 +497,10 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 21
+Number of allocations   = 13
+Number of deallocations = 11
+Current bytes allocated = 752
+Max bytes allocated     = 752
 
 ========================
 ERK Table ID 11
@@ -490,6 +538,10 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 26
+Number of allocations   = 14
+Number of deallocations = 12
+Current bytes allocated = 752
+Max bytes allocated     = 752
 
 ========================
 ERK Table ID 12
@@ -527,6 +579,10 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 13
+Number of allocations   = 15
+Number of deallocations = 13
+Current bytes allocated = 752
+Max bytes allocated     = 752
 
 ========================
 ERK Table ID 13
@@ -564,6 +620,10 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 18
+Number of allocations   = 16
+Number of deallocations = 14
+Current bytes allocated = 752
+Max bytes allocated     = 752
 
 ========================
 ERK Table ID 14
@@ -601,6 +661,10 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 20
+Number of allocations   = 17
+Number of deallocations = 15
+Current bytes allocated = 752
+Max bytes allocated     = 752
 
 ========================
 ERK Table ID 15
@@ -638,6 +702,10 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 12
+Number of allocations   = 18
+Number of deallocations = 16
+Current bytes allocated = 752
+Max bytes allocated     = 752
 
 ========================
 ERK Table ID 16
@@ -675,6 +743,10 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 16
+Number of allocations   = 19
+Number of deallocations = 17
+Current bytes allocated = 752
+Max bytes allocated     = 752
 
 ========================
 ERK Table ID 17
@@ -712,6 +784,10 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 13
+Number of allocations   = 20
+Number of deallocations = 18
+Current bytes allocated = 752
+Max bytes allocated     = 752
 
 ========================
 ERK Table ID 18
@@ -749,6 +825,10 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 22
+Number of allocations   = 21
+Number of deallocations = 19
+Current bytes allocated = 752
+Max bytes allocated     = 752
 
 ========================
 ERK Table ID 19
@@ -786,6 +866,10 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 23
+Number of allocations   = 22
+Number of deallocations = 20
+Current bytes allocated = 752
+Max bytes allocated     = 752
 
 ========================
 ERK Table ID 20
@@ -823,6 +907,10 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 26
+Number of allocations   = 23
+Number of deallocations = 21
+Current bytes allocated = 752
+Max bytes allocated     = 752
 
 ========================
 ERK Table ID 21
@@ -860,8 +948,16 @@ Fe RHS evals:
 --------------------
 
 Vectors allocated = 29
+Number of allocations   = 24
+Number of deallocations = 22
+Current bytes allocated = 752
+Max bytes allocated     = 752
 
 
 All tests passed!
 
 Vectors allocated = 0
+Number of allocations   = 24
+Number of deallocations = 23
+Current bytes allocated = 64
+Max bytes allocated     = 752
