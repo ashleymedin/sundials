@@ -650,15 +650,11 @@ static void PrintOutput(void* arkode_mem, sunrealtype t)
 
 static void PrintFinalStats(void* arkode_mem)
 {
-  long int lenrw, leniw;
-  long int lenrwLS, leniwLS;
   long int nst, nfe, nfi, nsetups, nni, ncfn, netf;
   long int nli, npe, nps, ncfl, nfeLS;
   int flag;
   sunrealtype avdim;
 
-  flag = ARKStepGetWorkSpace(arkode_mem, &lenrw, &leniw);
-  check_flag(&flag, "ARKStepGetWorkSpace", 1);
   flag = ARKStepGetNumSteps(arkode_mem, &nst);
   check_flag(&flag, "ARKStepGetNumSteps", 1);
   flag = ARKStepGetNumRhsEvals(arkode_mem, &nfe, &nfi);
@@ -672,8 +668,6 @@ static void PrintFinalStats(void* arkode_mem)
   flag = ARKStepGetNumNonlinSolvConvFails(arkode_mem, &ncfn);
   check_flag(&flag, "ARKStepGetNumNonlinSolvConvFails", 1);
 
-  flag = ARKStepGetLinWorkSpace(arkode_mem, &lenrwLS, &leniwLS);
-  check_flag(&flag, "ARKStepGetLinWorkSpace", 1);
   flag = ARKStepGetNumLinIters(arkode_mem, &nli);
   check_flag(&flag, "ARKStepGetNumLinIters", 1);
   flag = ARKStepGetNumPrecEvals(arkode_mem, &npe);
@@ -686,10 +680,6 @@ static void PrintFinalStats(void* arkode_mem)
   check_flag(&flag, "ARKStepGetNumLinRhsEvals", 1);
 
   printf("\n\n Final statistics for this run:\n\n");
-  printf(" ARKStep real workspace length         = %4ld \n", lenrw);
-  printf(" ARKStep integer workspace length      = %4ld \n", leniw);
-  printf(" ARKLS real workspace length           = %4ld \n", lenrwLS);
-  printf(" ARKLS integer workspace length        = %4ld \n", leniwLS);
   printf(" Number of steps                       = %4ld \n", nst);
   printf(" Number of f-s (explicit)              = %4ld \n", nfe);
   printf(" Number of f-s (implicit)              = %4ld \n", nfi);
