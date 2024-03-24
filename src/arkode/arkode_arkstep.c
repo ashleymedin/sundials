@@ -25,6 +25,7 @@
 #include "arkode_arkstep_impl.h"
 #include "arkode_impl.h"
 #include "arkode_interp_impl.h"
+#include "sundials_utils.h"
 
 #define FIXED_LIN_TOL
 
@@ -647,7 +648,6 @@ int ARKStepComputeState(void* arkode_mem, N_Vector zcor, N_Vector z)
   ---------------------------------------------------------------*/
 void ARKStepFree(void** arkode_mem)
 {
-  int j;
   sunindextype Bliw, Blrw;
   ARKodeMem ark_mem;
   ARKodeARKStepMem step_mem;
@@ -702,55 +702,14 @@ void ARKStepFree(void** arkode_mem)
     }
 
     /* free the sdata, zpred and zcor vectors */
-    if (step_mem->sdata != NULL)
-    {
-      (void)sunVec_Destroy(&step_mem->sdata);
-      step_mem->sdata = NULL;
-    }
-    if (step_mem->zpred != NULL)
-    {
-      (void)sunVec_Destroy(&step_mem->zpred);
-      step_mem->zpred = NULL;
-    }
-    if (step_mem->zcor != NULL)
-    {
-      (void)sunVec_Destroy(&step_mem->zcor);
-      step_mem->zcor = NULL;
-    }
+    (void)sunVec_Destroy(&step_mem->sdata);
+    (void)sunVec_Destroy(&step_mem->zpred);
+    (void)sunVec_Destroy(&step_mem->zcor);
 
-    /* free the RHS vectors */
-    if (step_mem->Fe != NULL)
-    {
-      for (j = 0; j < step_mem->stages; j++)
-      {
-        (void)sunVec_Destroy(&step_mem->Fe[j]);
-      }
-      free(step_mem->Fe);
-      step_mem->Fe = NULL;
-      ark_mem->liw -= step_mem->stages;
-    }
-    if (step_mem->Fi != NULL)
-    {
-      for (j = 0; j < step_mem->stages; j++)
-      {
-        (void)sunVec_Destroy(&step_mem->Fi[j]);
-      }
-      free(step_mem->Fi);
-      step_mem->Fi = NULL;
-      ark_mem->liw -= step_mem->stages;
-    }
-
-    /* free stage vectors */
-    if (step_mem->z != NULL)
-    {
-      for (j = 0; j < step_mem->stages; j++)
-      {
-        (void)sunVec_Destroy(&step_mem->z[j]);
-      }
-      free(step_mem->z);
-      step_mem->z = NULL;
-      ark_mem->liw -= step_mem->stages;
-    }
+    /* free the RHS and stage vectors */
+    (void)sunVecArray_Destroy(step_mem->stages, &(step_mem->Fe));
+    (void)sunVecArray_Destroy(step_mem->stages, &(step_mem->Fi));
+    (void)sunVecArray_Destroy(step_mem->stages, &(step_mem->z));
 
     /* free the reusable arrays for fused vector interface */
     if (step_mem->cvals != NULL)
@@ -1134,7 +1093,7 @@ int arkStep_Init(void* arkode_mem, int init_type)
 {
   ARKodeMem ark_mem;
   ARKodeARKStepMem step_mem;
-  int j, retval;
+  int retval;
   sunbooleantype reset_efun;
 
   /* access ARKodeARKStepMem structure */
@@ -1221,35 +1180,19 @@ int arkStep_Init(void* arkode_mem, int init_type)
     /*   Allocate Fe[0] ... Fe[stages-1] if needed */
     if (step_mem->explicit)
     {
-      if (step_mem->Fe == NULL)
+      if (sunVecArray_Clone(step_mem->stages, ark_mem->ewt, &(step_mem->Fe)))
       {
-        step_mem->Fe = (N_Vector*)calloc(step_mem->stages, sizeof(N_Vector));
+        return ARK_MEM_FAIL;
       }
-      for (j = 0; j < step_mem->stages; j++)
-      {
-        if (sunVec_Clone(ark_mem->ewt, &(step_mem->Fe[j])))
-        {
-          return (ARK_MEM_FAIL);
-        }
-      }
-      ark_mem->liw += step_mem->stages; /* pointers */
     }
 
     /*   Allocate Fi[0] ... Fi[stages-1] if needed */
     if (step_mem->implicit)
     {
-      if (step_mem->Fi == NULL)
+      if (sunVecArray_Clone(step_mem->stages, ark_mem->ewt, &(step_mem->Fi)))
       {
-        step_mem->Fi = (N_Vector*)calloc(step_mem->stages, sizeof(N_Vector));
+        return ARK_MEM_FAIL;
       }
-      for (j = 0; j < step_mem->stages; j++)
-      {
-        if (sunVec_Clone(ark_mem->ewt, &(step_mem->Fi[j])))
-        {
-          return (ARK_MEM_FAIL);
-        }
-      }
-      ark_mem->liw += step_mem->stages; /* pointers */
     }
 
     /* Allocate stage storage for relaxation with implicit/IMEX methods or if a
@@ -1257,18 +1200,10 @@ int arkStep_Init(void* arkode_mem, int init_type)
     if (ark_mem->relax_enabled &&
         (step_mem->implicit || step_mem->mass_type == MASS_FIXED))
     {
-      if (step_mem->z == NULL)
+      if (sunVecArray_Clone(step_mem->stages, ark_mem->ewt, &(step_mem->z)))
       {
-        step_mem->z = (N_Vector*)calloc(step_mem->stages, sizeof(N_Vector));
+        return ARK_MEM_FAIL;
       }
-      for (j = 0; j < step_mem->stages; j++)
-      {
-        if (sunVec_Clone(ark_mem->ewt, &(step_mem->z[j])))
-        {
-          return (ARK_MEM_FAIL);
-        }
-      }
-      ark_mem->liw += step_mem->stages; /* pointers */
     }
 
     /* Allocate reusable arrays for fused vector operations */

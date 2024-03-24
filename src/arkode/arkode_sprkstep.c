@@ -330,17 +330,8 @@ void SPRKStepFree(void** arkode_mem)
   {
     step_mem = (ARKodeSPRKStepMem)ark_mem->step_mem;
 
-    if (step_mem->sdata != NULL)
-    {
-      (void)sunVec_Destroy(&step_mem->sdata);
-      step_mem->sdata = NULL;
-    }
-
-    if (step_mem->yerr != NULL)
-    {
-      (void)sunVec_Destroy(&step_mem->yerr);
-      step_mem->yerr = NULL;
-    }
+    (void)sunVec_Destroy(&step_mem->sdata);
+    (void)sunVec_Destroy(&step_mem->yerr);
 
     ARKodeSPRKTable_Free(step_mem->method);
 
