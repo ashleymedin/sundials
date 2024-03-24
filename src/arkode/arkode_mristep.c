@@ -257,9 +257,9 @@ int MRIStepResize(void* arkode_mem, N_Vector y0, sunrealtype t0,
   /* Resize Fse */
   if (step_mem->Fse)
   {
-    if (!arkResizeVecArray(resize, resize_data, step_mem->nstages_allocated, y0,
-                           &(step_mem->Fse), lrw_diff, &(ark_mem->lrw),
-                           liw_diff, &(ark_mem->liw)))
+    if (arkResizeVecArray(resize, resize_data, step_mem->nstages_allocated, y0,
+                          &(step_mem->Fse), lrw_diff, &(ark_mem->lrw), liw_diff,
+                          &(ark_mem->liw)))
     {
       arkProcessError(ark_mem, ARK_MEM_FAIL, __LINE__, __func__, __FILE__,
                       "Unable to resize vector");
@@ -270,9 +270,9 @@ int MRIStepResize(void* arkode_mem, N_Vector y0, sunrealtype t0,
   /* Resize Fsi */
   if (step_mem->Fsi)
   {
-    if (!arkResizeVecArray(resize, resize_data, step_mem->nstages_allocated, y0,
-                           &(step_mem->Fsi), lrw_diff, &(ark_mem->lrw),
-                           liw_diff, &(ark_mem->liw)))
+    if (arkResizeVecArray(resize, resize_data, step_mem->nstages_allocated, y0,
+                          &(step_mem->Fsi), lrw_diff, &(ark_mem->lrw), liw_diff,
+                          &(ark_mem->liw)))
     {
       arkProcessError(ark_mem, ARK_MEM_FAIL, __LINE__, __func__, __FILE__,
                       "Unable to resize vector");
@@ -283,8 +283,8 @@ int MRIStepResize(void* arkode_mem, N_Vector y0, sunrealtype t0,
   /* Resize the nonlinear solver interface vectors (if applicable) */
   if (step_mem->sdata != NULL)
   {
-    if (!arkResizeVec(ark_mem, resize, resize_data, lrw_diff, liw_diff, y0,
-                      &step_mem->sdata))
+    if (arkResizeVec(ark_mem, resize, resize_data, lrw_diff, liw_diff, y0,
+                     &step_mem->sdata))
     {
       arkProcessError(ark_mem, ARK_MEM_FAIL, __LINE__, __func__, __FILE__,
                       "Unable to resize vector");
@@ -293,8 +293,8 @@ int MRIStepResize(void* arkode_mem, N_Vector y0, sunrealtype t0,
   }
   if (step_mem->zpred != NULL)
   {
-    if (!arkResizeVec(ark_mem, resize, resize_data, lrw_diff, liw_diff, y0,
-                      &step_mem->zpred))
+    if (arkResizeVec(ark_mem, resize, resize_data, lrw_diff, liw_diff, y0,
+                     &step_mem->zpred))
     {
       arkProcessError(ark_mem, ARK_MEM_FAIL, __LINE__, __func__, __FILE__,
                       "Unable to resize vector");
@@ -303,8 +303,8 @@ int MRIStepResize(void* arkode_mem, N_Vector y0, sunrealtype t0,
   }
   if (step_mem->zcor != NULL)
   {
-    if (!arkResizeVec(ark_mem, resize, resize_data, lrw_diff, liw_diff, y0,
-                      &step_mem->zcor))
+    if (arkResizeVec(ark_mem, resize, resize_data, lrw_diff, liw_diff, y0,
+                     &step_mem->zcor))
     {
       arkProcessError(ark_mem, ARK_MEM_FAIL, __LINE__, __func__, __FILE__,
                       "Unable to resize vector");

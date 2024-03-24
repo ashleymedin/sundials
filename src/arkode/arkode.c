@@ -225,7 +225,6 @@ ARKodeMem arkCreate(SUNContext sunctx)
 int arkResize(ARKodeMem ark_mem, N_Vector y0, sunrealtype hscale,
               sunrealtype t0, ARKVecResizeFn resize, void* resize_data)
 {
-  sunbooleantype resizeOK;
   sunindextype lrw1, liw1, lrw_diff, liw_diff;
   int retval;
 
@@ -288,9 +287,7 @@ int arkResize(ARKodeMem ark_mem, N_Vector y0, sunrealtype hscale,
   ark_mem->liw1 = liw1;
 
   /* Resize the solver vectors (using y0 as a template) */
-  resizeOK = arkResizeVectors(ark_mem, resize, resize_data, lrw_diff, liw_diff,
-                              y0);
-  if (!resizeOK)
+  if (arkResizeVectors(ark_mem, resize, resize_data, lrw_diff, liw_diff, y0))
   {
     arkProcessError(ark_mem, ARK_MEM_FAIL, __LINE__, __func__, __FILE__,
                     "Unable to resize vector");
@@ -1621,22 +1618,20 @@ sunbooleantype arkCheckNvector(N_Vector tmpl) /* to be updated?? */
   SUNTRUE is returned if the resize is successful otherwise
   SUNFALSE is retured.
   ---------------------------------------------------------------*/
-sunbooleantype arkResizeVec(ARKodeMem ark_mem, ARKVecResizeFn resize,
-                            void* resize_data, sunindextype lrw_diff,
-                            sunindextype liw_diff, N_Vector tmpl, N_Vector* v)
+SUNErrCode arkResizeVec(ARKodeMem ark_mem, ARKVecResizeFn resize,
+                        void* resize_data, sunindextype lrw_diff,
+                        sunindextype liw_diff, N_Vector tmpl, N_Vector* v)
 {
   if (*v != NULL)
   {
     if (resize == NULL)
     {
-      N_VDestroy(*v);
-      *v = NULL;
-      *v = N_VClone(tmpl);
-      if (*v == NULL)
+      (void)sunVec_Destroy(v);
+      if (sunVec_Clone(tmpl, v))
       {
         arkProcessError(ark_mem, ARK_MEM_FAIL, __LINE__, __func__, __FILE__,
                         "Unable to clone vector");
-        return (SUNFALSE);
+        return SUN_ERR_MEM_FAIL;
       }
     }
     else
@@ -1645,19 +1640,18 @@ sunbooleantype arkResizeVec(ARKodeMem ark_mem, ARKVecResizeFn resize,
       {
         arkProcessError(ark_mem, ARK_MEM_FAIL, __LINE__, __func__, __FILE__,
                         MSG_ARK_RESIZE_FAIL);
-        return (SUNFALSE);
+        return SUN_ERR_MEM_FAIL;
       }
     }
     ark_mem->lrw += lrw_diff;
     ark_mem->liw += liw_diff;
   }
-  return (SUNTRUE);
+  return SUN_SUCCESS;
 }
 
-sunbooleantype arkResizeVecArray(ARKVecResizeFn resize, void* resize_data,
-                                 int count, N_Vector tmpl, N_Vector** v,
-                                 sunindextype lrw_diff, long int* lrw,
-                                 sunindextype liw_diff, long int* liw)
+SUNErrCode arkResizeVecArray(ARKVecResizeFn resize, void* resize_data, int count,
+                             N_Vector tmpl, N_Vector** v, sunindextype lrw_diff,
+                             long int* lrw, sunindextype liw_diff, long int* liw)
 {
   int i;
 
@@ -1665,22 +1659,20 @@ sunbooleantype arkResizeVecArray(ARKVecResizeFn resize, void* resize_data,
   {
     if (resize == NULL)
     {
-      N_VDestroyVectorArray(*v, count);
-      *v = NULL;
-      *v = N_VCloneVectorArray(count, tmpl);
-      if (*v == NULL) { return (SUNFALSE); }
+      (void)sunVecArray_Destroy(count, v);
+      if (sunVecArray_Clone(count, tmpl, v)) { return SUN_ERR_MEM_FAIL; }
     }
     else
     {
       for (i = 0; i < count; i++)
       {
-        if (resize((*v)[i], tmpl, resize_data)) { return (SUNFALSE); }
+        if (resize((*v)[i], tmpl, resize_data)) { return SUN_ERR_MEM_FAIL; }
       }
     }
     *lrw += count * lrw_diff;
     *liw += count * liw_diff;
   }
-  return (SUNTRUE);
+  return SUN_SUCCESS;
 }
 
 /*---------------------------------------------------------------
@@ -1723,92 +1715,94 @@ SUNErrCode arkAllocVectors(ARKodeMem ark_mem, N_Vector tmpl)
   If all memory allocations are successful, arkResizeVectors
   returns SUNTRUE, otherwise it returns SUNFALSE.
   ---------------------------------------------------------------*/
-sunbooleantype arkResizeVectors(ARKodeMem ark_mem, ARKVecResizeFn resize,
-                                void* resize_data, sunindextype lrw_diff,
-                                sunindextype liw_diff, N_Vector tmpl)
+SUNErrCode arkResizeVectors(ARKodeMem ark_mem, ARKVecResizeFn resize,
+                            void* resize_data, sunindextype lrw_diff,
+                            sunindextype liw_diff, N_Vector tmpl)
 {
   /* Vabstol */
-  if (!arkResizeVec(ark_mem, resize, resize_data, lrw_diff, liw_diff, tmpl,
-                    &ark_mem->Vabstol))
+  if (arkResizeVec(ark_mem, resize, resize_data, lrw_diff, liw_diff, tmpl,
+                   &ark_mem->Vabstol))
   {
-    return (SUNFALSE);
+    return SUN_ERR_MEM_FAIL;
   }
 
   /* VRabstol */
-  if (!arkResizeVec(ark_mem, resize, resize_data, lrw_diff, liw_diff, tmpl,
-                    &ark_mem->VRabstol))
+  if (arkResizeVec(ark_mem, resize, resize_data, lrw_diff, liw_diff, tmpl,
+                   &ark_mem->VRabstol))
   {
-    return (SUNFALSE);
+    return SUN_ERR_MEM_FAIL;
   }
 
   /* ewt */
-  if (!arkResizeVec(ark_mem, resize, resize_data, lrw_diff, liw_diff, tmpl,
-                    &ark_mem->ewt))
+  if (arkResizeVec(ark_mem, resize, resize_data, lrw_diff, liw_diff, tmpl,
+                   &ark_mem->ewt))
   {
-    return (SUNFALSE);
+    return SUN_ERR_MEM_FAIL;
   }
 
   /* rwt  */
   if (ark_mem->rwt_is_ewt)
-  { /* update pointer to ewt */
+  {
+    /* update pointer to ewt */
     ark_mem->rwt = ark_mem->ewt;
   }
   else
-  { /* resize if distinct from ewt */
-    if (!arkResizeVec(ark_mem, resize, resize_data, lrw_diff, liw_diff, tmpl,
-                      &ark_mem->rwt))
+  {
+    /* resize if distinct from ewt */
+    if (arkResizeVec(ark_mem, resize, resize_data, lrw_diff, liw_diff, tmpl,
+                     &ark_mem->rwt))
     {
-      return (SUNFALSE);
+      return SUN_ERR_MEM_FAIL;
     }
   }
 
   /* yn */
-  if (!arkResizeVec(ark_mem, resize, resize_data, lrw_diff, liw_diff, tmpl,
-                    &ark_mem->yn))
+  if (arkResizeVec(ark_mem, resize, resize_data, lrw_diff, liw_diff, tmpl,
+                   &ark_mem->yn))
   {
-    return (SUNFALSE);
+    return SUN_ERR_MEM_FAIL;
   }
 
   /* fn */
-  if (!arkResizeVec(ark_mem, resize, resize_data, lrw_diff, liw_diff, tmpl,
-                    &ark_mem->fn))
+  if (arkResizeVec(ark_mem, resize, resize_data, lrw_diff, liw_diff, tmpl,
+                   &ark_mem->fn))
   {
-    return (SUNFALSE);
+    return SUN_ERR_MEM_FAIL;
   }
 
   /* tempv* */
-  if (!arkResizeVec(ark_mem, resize, resize_data, lrw_diff, liw_diff, tmpl,
-                    &ark_mem->tempv1))
+  if (arkResizeVec(ark_mem, resize, resize_data, lrw_diff, liw_diff, tmpl,
+                   &ark_mem->tempv1))
   {
-    return (SUNFALSE);
+    return SUN_ERR_MEM_FAIL;
   }
 
-  if (!arkResizeVec(ark_mem, resize, resize_data, lrw_diff, liw_diff, tmpl,
-                    &ark_mem->tempv2))
+  if (arkResizeVec(ark_mem, resize, resize_data, lrw_diff, liw_diff, tmpl,
+                   &ark_mem->tempv2))
   {
-    return (SUNFALSE);
+    return SUN_ERR_MEM_FAIL;
   }
 
-  if (!arkResizeVec(ark_mem, resize, resize_data, lrw_diff, liw_diff, tmpl,
-                    &ark_mem->tempv3))
+  if (arkResizeVec(ark_mem, resize, resize_data, lrw_diff, liw_diff, tmpl,
+                   &ark_mem->tempv3))
   {
-    return (SUNFALSE);
+    return SUN_ERR_MEM_FAIL;
   }
 
-  if (!arkResizeVec(ark_mem, resize, resize_data, lrw_diff, liw_diff, tmpl,
-                    &ark_mem->tempv4))
+  if (arkResizeVec(ark_mem, resize, resize_data, lrw_diff, liw_diff, tmpl,
+                   &ark_mem->tempv4))
   {
-    return (SUNFALSE);
+    return SUN_ERR_MEM_FAIL;
   }
 
   /* constraints */
-  if (!arkResizeVec(ark_mem, resize, resize_data, lrw_diff, liw_diff, tmpl,
-                    &ark_mem->constraints))
+  if (arkResizeVec(ark_mem, resize, resize_data, lrw_diff, liw_diff, tmpl,
+                   &ark_mem->constraints))
   {
-    return (SUNFALSE);
+    return SUN_ERR_MEM_FAIL;
   }
 
-  return (SUNTRUE);
+  return SUN_SUCCESS;
 }
 
 /*---------------------------------------------------------------

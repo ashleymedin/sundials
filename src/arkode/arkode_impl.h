@@ -871,20 +871,19 @@ void arkProcessError(ARKodeMem ark_mem, int error_code, int line,
 #endif
 
 int arkInit(ARKodeMem ark_mem, sunrealtype t0, N_Vector y0, int init_type);
-sunbooleantype arkResizeVec(ARKodeMem ark_mem, ARKVecResizeFn resize,
-                            void* resize_data, sunindextype lrw_diff,
-                            sunindextype liw_diff, N_Vector tmpl, N_Vector* v);
-sunbooleantype arkResizeVecArray(ARKVecResizeFn resize, void* resize_data,
-                                 int count, N_Vector tmpl, N_Vector** v,
-                                 sunindextype lrw_diff, long int* lrw,
-                                 sunindextype liw_diff, long int* liw);
+SUNErrCode arkResizeVec(ARKodeMem ark_mem, ARKVecResizeFn resize,
+                        void* resize_data, sunindextype lrw_diff,
+                        sunindextype liw_diff, N_Vector tmpl, N_Vector* v);
+SUNErrCode arkResizeVecArray(ARKVecResizeFn resize, void* resize_data, int count,
+                             N_Vector tmpl, N_Vector** v, sunindextype lrw_diff,
+                             long int* lrw, sunindextype liw_diff, long int* liw);
 void arkPrintMem(ARKodeMem ark_mem, FILE* outfile);
 sunbooleantype arkCheckTimestepper(ARKodeMem ark_mem);
 sunbooleantype arkCheckNvector(N_Vector tmpl);
 SUNErrCode arkAllocVectors(ARKodeMem ark_mem, N_Vector tmpl);
-sunbooleantype arkResizeVectors(ARKodeMem ark_mem, ARKVecResizeFn resize,
-                                void* resize_data, sunindextype lrw_diff,
-                                sunindextype liw_diff, N_Vector tmpl);
+SUNErrCode arkResizeVectors(ARKodeMem ark_mem, ARKVecResizeFn resize,
+                            void* resize_data, sunindextype lrw_diff,
+                            sunindextype liw_diff, N_Vector tmpl);
 SUNErrCode arkFreeVectors(ARKodeMem ark_mem);
 
 int arkInitialSetup(ARKodeMem ark_mem, sunrealtype tout);
