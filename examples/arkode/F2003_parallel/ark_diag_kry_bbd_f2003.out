@@ -38,9 +38,6 @@ Max. absolute error is   7.52E-11
    Total Convergence Failures - Nonlinear =      0
                               - Linear    =      0
    Total number of error test failures =      0
-   Main solver real/int workspace sizes =    862   267
-   Linear solver real/int workspace sizes =    535   126
-   BBD preconditioner real/int workspace sizes =    160    72
    Total number of g evals =     12
     
     
@@ -73,9 +70,6 @@ Max. absolute error is   7.52E-11
    Total Convergence Failures - Nonlinear =      0
                               - Linear    =      0
    Total number of error test failures =      0
-   Main solver real/int workspace sizes =    862   272
-   Linear solver real/int workspace sizes =    535   126
-   BBD preconditioner real/int workspace sizes =    160    72
    Total number of g evals =     12
     
     

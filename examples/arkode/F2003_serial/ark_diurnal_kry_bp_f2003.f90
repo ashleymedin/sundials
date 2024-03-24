@@ -418,14 +418,8 @@ subroutine ARKStepStats(arkode_mem)
   integer(c_long) :: nliters(1)    ! linear solver iterations
   integer(c_long) :: ncf(1)        ! num convergence failures nonlinear
   integer(c_long) :: ncfl(1)       ! num convergence failures linear
-  integer(c_long) :: lenrw(1)      ! main solver real/int workspace size
-  integer(c_long) :: leniw(1)
-  integer(c_long) :: lenrwls(1)    ! linear solver real/int workspace size
-  integer(c_long) :: leniwls(1)
   integer(c_long) :: nfebp(1)      ! num f evaluations
   real(c_double)  :: avdim(1)      ! avg Krylov subspace dim (NLI/NNI)
-  integer(c_long) :: lenrwbp(1)    ! band preconditioner real/int workspace size
-  integer(c_long) :: leniwbp(1)
 
   !======= Internals ============
 
@@ -491,24 +485,6 @@ subroutine ARKStepStats(arkode_mem)
      stop 1
   end if
 
-  ierr = FARKStepGetWorkSpace(arkode_mem, lenrw, leniw)
-  if (ierr /= 0) then
-     print *, 'Error in FARKStepGetWorkSpace, ierr = ', ierr, '; halting'
-     stop 1
-  end if
-
-  ierr = FARKStepGetLinWorkSpace(arkode_mem, lenrwls, leniwls)
-  if (ierr /= 0) then
-     print *, 'Error in FARKStepGetLinWorkSpace, ierr = ', ierr, '; halting'
-     stop 1
-  end if
-
-  ierr = FARKBandPrecGetWorkSpace(arkode_mem, lenrwbp, leniwbp)
-  if (ierr /= 0) then
-     print *, 'Error in FARKBandPrecGetWorkSpace, ierr = ', ierr, '; halting'
-     stop 1
-  end if
-
   ierr = FARKBandPrecGetNumRhsEvals(arkode_mem, nfebp)
   if (ierr /= 0) then
      print *, 'Error in FARKBandPrecGetNumRhsEvals, ierr = ', ierr, '; halting'
@@ -529,9 +505,6 @@ subroutine ARKStepStats(arkode_mem)
   print '(4x,A,es14.6)'   ,'Avg Krylov subspace dim         =',avdim
   print '(4x,A,i9)'       ,'Num nonlinear solver fails      =',ncf
   print '(4x,A,i9)'       ,'Num linear solver fails         =',ncfl
-  print '(4x,A,2(i9,3x))' ,'main solver real/int workspace sizes   =',lenrw,leniw
-  print '(4x,A,2(i9,3x))' ,'linear solver real/int workspace sizes =',lenrwls,leniwls
-  print '(4x,A,2(i9,3x))' ,'ARKBandPre real/int workspace sizes    =',lenrwbp,leniwbp
   print '(4x,A,i9)'       ,'ARKBandPre number of f evaluations     =',nfebp
   print *, ' '
 
