@@ -48,6 +48,10 @@ Fe RHS evals:
   expected: 4
 --------------------
 
+Vectors allocated = 14
+
+Vectors allocated = 0
+
 ========================
 ERK Table ID 0
   stages:             2
@@ -82,6 +86,10 @@ Fe RHS evals:
   actual:   8
   expected: 8
 --------------------
+
+Vectors allocated = 15
+
+Vectors allocated = 0
 
 ========================
 ERK Table ID 1
@@ -118,6 +126,10 @@ Fe RHS evals:
   expected: 13
 --------------------
 
+Vectors allocated = 18
+
+Vectors allocated = 0
+
 ========================
 ERK Table ID 2
   stages:             4
@@ -152,6 +164,10 @@ Fe RHS evals:
   actual:   16
   expected: 16
 --------------------
+
+Vectors allocated = 18
+
+Vectors allocated = 0
 
 ========================
 ERK Table ID 3
@@ -188,6 +204,10 @@ Fe RHS evals:
   expected: 20
 --------------------
 
+Vectors allocated = 20
+
+Vectors allocated = 0
+
 ========================
 ERK Table ID 4
   stages:             6
@@ -222,6 +242,10 @@ Fe RHS evals:
   actual:   24
   expected: 24
 --------------------
+
+Vectors allocated = 21
+
+Vectors allocated = 0
 
 ========================
 ERK Table ID 5
@@ -258,6 +282,10 @@ Fe RHS evals:
   expected: 24
 --------------------
 
+Vectors allocated = 21
+
+Vectors allocated = 0
+
 ========================
 ERK Table ID 6
   stages:             6
@@ -292,6 +320,10 @@ Fe RHS evals:
   actual:   24
   expected: 24
 --------------------
+
+Vectors allocated = 22
+
+Vectors allocated = 0
 
 ========================
 ERK Table ID 7
@@ -328,6 +360,10 @@ Fe RHS evals:
   expected: 24
 --------------------
 
+Vectors allocated = 22
+
+Vectors allocated = 0
+
 ========================
 ERK Table ID 8
   stages:             7
@@ -362,6 +398,10 @@ Fe RHS evals:
   actual:   25
   expected: 25
 --------------------
+
+Vectors allocated = 23
+
+Vectors allocated = 0
 
 ========================
 ERK Table ID 9
@@ -398,6 +438,10 @@ Fe RHS evals:
   expected: 32
 --------------------
 
+Vectors allocated = 24
+
+Vectors allocated = 0
+
 ========================
 ERK Table ID 10
   stages:             8
@@ -432,6 +476,10 @@ Fe RHS evals:
   actual:   32
   expected: 32
 --------------------
+
+Vectors allocated = 25
+
+Vectors allocated = 0
 
 ========================
 ERK Table ID 11
@@ -468,6 +516,10 @@ Fe RHS evals:
   expected: 52
 --------------------
 
+Vectors allocated = 30
+
+Vectors allocated = 0
+
 ========================
 ERK Table ID 12
   stages:             3
@@ -502,6 +554,10 @@ Fe RHS evals:
   actual:   12
   expected: 12
 --------------------
+
+Vectors allocated = 17
+
+Vectors allocated = 0
 
 ========================
 ERK Table ID 13
@@ -538,6 +594,10 @@ Fe RHS evals:
   expected: 28
 --------------------
 
+Vectors allocated = 22
+
+Vectors allocated = 0
+
 ========================
 ERK Table ID 14
   stages:             8
@@ -572,6 +632,10 @@ Fe RHS evals:
   actual:   32
   expected: 32
 --------------------
+
+Vectors allocated = 24
+
+Vectors allocated = 0
 
 ========================
 ERK Table ID 15
@@ -608,6 +672,10 @@ Fe RHS evals:
   expected: 12
 --------------------
 
+Vectors allocated = 16
+
+Vectors allocated = 0
+
 ========================
 ERK Table ID 16
   stages:             5
@@ -642,6 +710,10 @@ Fe RHS evals:
   actual:   17
   expected: 17
 --------------------
+
+Vectors allocated = 20
+
+Vectors allocated = 0
 
 ========================
 ERK Table ID 17
@@ -678,6 +750,10 @@ Fe RHS evals:
   expected: 12
 --------------------
 
+Vectors allocated = 17
+
+Vectors allocated = 0
+
 ========================
 ERK Table ID 18
   stages:             9
@@ -712,6 +788,10 @@ Fe RHS evals:
   actual:   33
   expected: 33
 --------------------
+
+Vectors allocated = 26
+
+Vectors allocated = 0
 
 ========================
 ERK Table ID 19
@@ -748,6 +828,10 @@ Fe RHS evals:
   expected: 40
 --------------------
 
+Vectors allocated = 27
+
+Vectors allocated = 0
+
 ========================
 ERK Table ID 20
   stages:             13
@@ -783,6 +867,10 @@ Fe RHS evals:
   expected: 52
 --------------------
 
+Vectors allocated = 30
+
+Vectors allocated = 0
+
 ========================
 ERK Table ID 21
   stages:             16
@@ -817,6 +905,10 @@ Fe RHS evals:
   actual:   64
   expected: 64
 --------------------
+
+Vectors allocated = 33
+
+Vectors allocated = 0
 
 ========================
 Test implicit RK methods
@@ -861,6 +953,10 @@ Fi RHS evals:
   expected: 8
 --------------------
 
+Vectors allocated = 16
+
+Vectors allocated = 0
+
 ========================
 DIRK Table ID 100
   stages:             2
@@ -899,6 +995,10 @@ Fi RHS evals:
   actual:   16
   expected: 16
 --------------------
+
+Vectors allocated = 17
+
+Vectors allocated = 0
 
 ========================
 DIRK Table ID 101
@@ -939,6 +1039,10 @@ Fi RHS evals:
   expected: 24
 --------------------
 
+Vectors allocated = 18
+
+Vectors allocated = 0
+
 ========================
 DIRK Table ID 102
   stages:             3
@@ -977,6 +1081,10 @@ Fi RHS evals:
   actual:   17
   expected: 17
 --------------------
+
+Vectors allocated = 18
+
+Vectors allocated = 0
 
 ========================
 DIRK Table ID 103
@@ -1017,6 +1125,10 @@ Fi RHS evals:
   expected: 25
 --------------------
 
+Vectors allocated = 20
+
+Vectors allocated = 0
+
 ========================
 DIRK Table ID 104
   stages:             4
@@ -1055,6 +1167,10 @@ Fi RHS evals:
   actual:   25
   expected: 25
 --------------------
+
+Vectors allocated = 20
+
+Vectors allocated = 0
 
 ========================
 DIRK Table ID 105
@@ -1095,6 +1211,10 @@ Fi RHS evals:
   expected: 40
 --------------------
 
+Vectors allocated = 22
+
+Vectors allocated = 0
+
 ========================
 DIRK Table ID 106
   stages:             5
@@ -1133,6 +1253,10 @@ Fi RHS evals:
   actual:   40
   expected: 40
 --------------------
+
+Vectors allocated = 22
+
+Vectors allocated = 0
 
 ========================
 DIRK Table ID 107
@@ -1173,6 +1297,10 @@ Fi RHS evals:
   expected: 40
 --------------------
 
+Vectors allocated = 22
+
+Vectors allocated = 0
+
 ========================
 DIRK Table ID 108
   stages:             5
@@ -1211,6 +1339,10 @@ Fi RHS evals:
   actual:   33
   expected: 33
 --------------------
+
+Vectors allocated = 22
+
+Vectors allocated = 0
 
 ========================
 DIRK Table ID 109
@@ -1251,6 +1383,10 @@ Fi RHS evals:
   expected: 41
 --------------------
 
+Vectors allocated = 23
+
+Vectors allocated = 0
+
 ========================
 DIRK Table ID 110
   stages:             7
@@ -1289,6 +1425,10 @@ Fi RHS evals:
   actual:   49
   expected: 49
 --------------------
+
+Vectors allocated = 25
+
+Vectors allocated = 0
 
 ========================
 DIRK Table ID 111
@@ -1329,6 +1469,10 @@ Fi RHS evals:
   expected: 57
 --------------------
 
+Vectors allocated = 26
+
+Vectors allocated = 0
+
 ========================
 DIRK Table ID 112
   stages:             7
@@ -1367,6 +1511,10 @@ Fi RHS evals:
   actual:   49
   expected: 49
 --------------------
+
+Vectors allocated = 24
+
+Vectors allocated = 0
 
 ========================
 DIRK Table ID 113
@@ -1407,6 +1555,10 @@ Fi RHS evals:
   expected: 57
 --------------------
 
+Vectors allocated = 26
+
+Vectors allocated = 0
+
 ========================
 DIRK Table ID 114
   stages:             4
@@ -1445,6 +1597,10 @@ Fi RHS evals:
   actual:   25
   expected: 25
 --------------------
+
+Vectors allocated = 20
+
+Vectors allocated = 0
 
 ========================
 DIRK Table ID 115
@@ -1485,6 +1641,10 @@ Fi RHS evals:
   expected: 33
 --------------------
 
+Vectors allocated = 21
+
+Vectors allocated = 0
+
 ========================
 DIRK Table ID 116
   stages:             5
@@ -1523,6 +1683,10 @@ Fi RHS evals:
   actual:   33
   expected: 33
 --------------------
+
+Vectors allocated = 21
+
+Vectors allocated = 0
 
 ========================
 DIRK Table ID 117
@@ -1563,6 +1727,10 @@ Fi RHS evals:
   expected: 41
 --------------------
 
+Vectors allocated = 23
+
+Vectors allocated = 0
+
 ========================
 DIRK Table ID 118
   stages:             6
@@ -1601,6 +1769,10 @@ Fi RHS evals:
   actual:   41
   expected: 41
 --------------------
+
+Vectors allocated = 23
+
+Vectors allocated = 0
 
 ========================
 DIRK Table ID 119
@@ -1641,6 +1813,10 @@ Fi RHS evals:
   expected: 41
 --------------------
 
+Vectors allocated = 23
+
+Vectors allocated = 0
+
 ========================
 DIRK Table ID 120
   stages:             7
@@ -1679,6 +1855,10 @@ Fi RHS evals:
   actual:   49
   expected: 49
 --------------------
+
+Vectors allocated = 24
+
+Vectors allocated = 0
 
 ========================
 DIRK Table ID 121
@@ -1719,6 +1899,10 @@ Fi RHS evals:
   expected: 49
 --------------------
 
+Vectors allocated = 25
+
+Vectors allocated = 0
+
 ========================
 DIRK Table ID 122
   stages:             7
@@ -1758,6 +1942,10 @@ Fi RHS evals:
   expected: 49
 --------------------
 
+Vectors allocated = 25
+
+Vectors allocated = 0
+
 ========================
 DIRK Table ID 123
   stages:             3
@@ -1796,6 +1984,10 @@ Fi RHS evals:
   actual:   17
   expected: 17
 --------------------
+
+Vectors allocated = 18
+
+Vectors allocated = 0
 
 =====================
 Test IMEX ARK methods
@@ -1855,6 +2047,10 @@ Fi RHS evals:
   expected: 9
 --------------------
 
+Vectors allocated = 19
+
+Vectors allocated = 0
+
 ========================
 IMEX Table ID 0
   stages:             3
@@ -1908,6 +2104,10 @@ Fi RHS evals:
   actual:   20
   expected: 20
 --------------------
+
+Vectors allocated = 21
+
+Vectors allocated = 0
 
 ========================
 IMEX Table ID 1
@@ -1963,6 +2163,10 @@ Fi RHS evals:
   expected: 28
 --------------------
 
+Vectors allocated = 24
+
+Vectors allocated = 0
+
 ========================
 IMEX Table ID 2
   stages:             6
@@ -2016,6 +2220,10 @@ Fi RHS evals:
   actual:   44
   expected: 44
 --------------------
+
+Vectors allocated = 29
+
+Vectors allocated = 0
 
 ========================
 IMEX Table ID 3
@@ -2071,6 +2279,10 @@ Fi RHS evals:
   expected: 52
 --------------------
 
+Vectors allocated = 31
+
+Vectors allocated = 0
+
 ========================
 IMEX Table ID 4
   stages:             8
@@ -2124,6 +2336,10 @@ Fi RHS evals:
   actual:   60
   expected: 60
 --------------------
+
+Vectors allocated = 34
+
+Vectors allocated = 0
 
 ========================
 IMEX Table ID 5
@@ -2179,5 +2395,11 @@ Fi RHS evals:
   expected: 60
 --------------------
 
+Vectors allocated = 34
+
+Vectors allocated = 0
+
 
 All tests passed!
+
+Vectors allocated = 0

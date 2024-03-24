@@ -38,6 +38,8 @@ MRIStep Statistics:
 Comparing Solver Statistics:
 All checks passed
 
+Vectors allocated = 30
+
 Testing method 1
   nmat = 2
   stages = 4
@@ -69,6 +71,8 @@ MRIStep Statistics:
 
 Comparing Solver Statistics:
 All checks passed
+
+Vectors allocated = 31
 
 Testing method 2
   nmat = 2
@@ -106,6 +110,10 @@ MRIStep Statistics:
 Comparing Solver Statistics:
 All checks passed
 
+Vectors allocated = 33
+
+Vectors allocated = 0
+
 =========================
 Test implicit MRI methods
 =========================
@@ -140,6 +148,8 @@ MRIStep Statistics:
 Comparing Solver Statistics:
 All checks passed
 
+Vectors allocated = 34
+
 Testing method 1
   nmat = 1
   stages = 7
@@ -173,6 +183,8 @@ MRIStep Statistics:
 
 Comparing Solver Statistics:
 All checks passed
+
+Vectors allocated = 36
 
 Testing method 2
   nmat = 2
@@ -225,6 +237,10 @@ MRIStep Statistics:
 Comparing Solver Statistics:
 All checks passed
 
+Vectors allocated = 39
+
+Vectors allocated = 0
+
 =====================
 Test IMEX MRI methods
 =====================
@@ -274,6 +290,8 @@ MRIStep Statistics:
 Comparing Solver Statistics:
 All checks passed
 
+Vectors allocated = 40
+
 Testing method 1
   nmat = 1
   stages = 8
@@ -318,6 +336,8 @@ MRIStep Statistics:
 
 Comparing Solver Statistics:
 All checks passed
+
+Vectors allocated = 40
 
 Testing method 2
   nmat = 2
@@ -400,5 +420,11 @@ MRIStep Statistics:
 Comparing Solver Statistics:
 All checks passed
 
+Vectors allocated = 45
+
+Vectors allocated = 0
+
 
 All tests passed!
+
+Vectors allocated = 0
