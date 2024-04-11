@@ -21,6 +21,7 @@
 set(CVODE_examples
   "cv_heat2D.cpp\;\;\;\;exclude-single"
   "cv_kpr.cpp\;\;\;\;develop"
+  "cv_brusselator.cpp\;\;\;\;develop"
   )
 
 # Add the build and install targets for each example
