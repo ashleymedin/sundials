@@ -67,6 +67,7 @@ SUNNonlinearSolver SUNNonlinSolNewEmpty(SUNContext sunctx)
   ops->getnumiters     = NULL;
   ops->getcuriter      = NULL;
   ops->getnumconvfails = NULL;
+  ops->getresnrm       = NULL;
 
   /* attach context and ops, initialize content to NULL */
   NLS->sunctx  = sunctx;
@@ -242,5 +243,17 @@ SUNErrCode SUNNonlinSolGetNumConvFails(SUNNonlinearSolver NLS,
   {
     *nconvfails = 0;
     return (SUN_SUCCESS);
+  }
+}
+
+SUNErrCode SUNNonlinSolGetResNrm(SUNNonlinearSolver NLS, sunrealtype* resnrm)
+{
+  if (NLS->ops->getnumiters)
+  {
+    return((int) NLS->ops->getresnrm(NLS, resnrm));
+  } else
+  {
+    *resnrm = SUN_BIG_REAL;
+    return(SUN_SUCCESS);
   }
 }

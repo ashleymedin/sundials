@@ -123,8 +123,8 @@ int main(int argc, char *argv[])
   sundials::Context sunctx;
 
   /* Set defaults */
-  int reactor_type = 2;
   int solver_type = 0;
+  int reactor_type = 2;
 
   /* Parse command line arguments and setup UserData */
   int argi = 0;

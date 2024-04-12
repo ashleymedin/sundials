@@ -270,6 +270,7 @@ typedef struct CVodeMemRec
   int cv_qwait;  /* number of internal steps to wait before
                                   considering a change in q                   */
   int cv_L;      /* L = q + 1                                   */
+  int cv_nslow;  /* number of nonlinear iterations (in current step) with slow convergence */
 
   sunrealtype cv_hin;      /* initial step size                           */
   sunrealtype cv_h;        /* current step size                           */
@@ -291,6 +292,8 @@ typedef struct CVodeMemRec
   sunrealtype cv_gammap; /* gamma at the last setup call                */
   sunrealtype cv_gamrat; /* gamma / gammap                              */
 
+  sunrealtype cv_stiff;       /* stiffness estimate for nonlinear solver switching */
+  sunrealtype cv_stifr;
   sunrealtype cv_crate;       /* estimated corrector convergence rate        */
   sunrealtype cv_delp;        /* norm of previous nonlinear solver update    */
   sunrealtype cv_acnrm;       /* | acor |                                    */
@@ -333,8 +336,10 @@ typedef struct CVodeMemRec
   long int cv_ncfn;    /* number of corrector convergence failures        */
   long int cv_nni;     /* number of nonlinear iterations performed        */
   long int cv_nnf;     /* number of nonlinear convergence failures        */
+  long int cv_nns;     /* number of iterations for which the nonlinear convergence was determined to be 'slow' */
   long int cv_netf;    /* number of error test failures                   */
   long int cv_nsetups; /* number of setup calls                           */
+  long int cv_nswitch; /* number of times nonlinear solver switched       */
   int cv_nhnil;        /* number of messages issued to the user that
                               t + h == t for the next iternal step            */
 
@@ -360,6 +365,8 @@ typedef struct CVodeMemRec
     ---------------------*/
 
   SUNNonlinearSolver NLS; /* nonlinear solver object                   */
+  SUNNonlinearSolver NLS_newton;
+  SUNNonlinearSolver NLS_fixedpoint;
   sunbooleantype ownNLS;  /* flag indicating NLS ownership             */
   CVRhsFn nls_f;          /* f(t,y(t)) used in the nonlinear solver    */
   int convfail;           /* flag to indicate when a Jacobian update may
@@ -618,6 +625,10 @@ void cvProcessError(CVodeMem cv_mem, int error_code, int line, const char* func,
 /* Nonlinear solver initialization */
 
 int cvNlsInit(CVodeMem cv_mem);
+
+/* Nonlinear solver switching */
+
+int cvNlsSwitch(CVodeMem cv_mem, SUNNonlinearSolver NLS);
 
 /* Projection functions */
 

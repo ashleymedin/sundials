@@ -1656,6 +1656,8 @@ int CVodePrintAllStats(void* cvode_mem, FILE* outfile, SUNOutputFormat fmt)
       fprintf(outfile, "NLS iters per step           = %" RSYM "\n",
               (sunrealtype)cv_mem->cv_nni / (sunrealtype)cv_mem->cv_nst);
     }
+    fprintf(outfile, "NLS slow                     = %ld\n", cv_mem->cv_nns);
+    fprintf(outfile, "NLS switch                   = %ld\n", cv_mem->cv_nswitch);
 
     /* linear solver stats */
     fprintf(outfile, "LS setups                    = %ld\n", cv_mem->cv_nsetups);
