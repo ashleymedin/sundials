@@ -64,14 +64,11 @@
  *       2 - Reactor 2
  * --------------------------------------------------------------------------*/
 
-#include <memory>
-#include <vector>
-#include <cstdio>
-
+#include <stdio.h>
 #include <cvode/cvode.h>
 #include <nvector/nvector_serial.h>
 #include <sunlinsol/sunlinsol_spgmr.h>
-#include <sundials/sundials_core.hpp>
+#include <sundials/sundials_core.h>
 
 
 /* Functions Called by the Solver */
@@ -89,11 +86,11 @@ static void PrintFinalStats(void *cvode_mem, SUNLinearSolver LS);
 /* Private function to check function return values */
 static int check_retval(void *returnvalue, const char *funcname, int opt);
 
-struct UserData {
+typedef struct {
   sunrealtype u0, v0, w0; /* initial conditions */
   sunrealtype a, b;       /* chemical concentrations that are constant */
   sunrealtype ep;         /* stiffness ratio */
-};
+} UserData;
 
 /*
  *-------------------------------
@@ -106,8 +103,8 @@ int main(int argc, char *argv[])
   const sunrealtype T0 = SUN_RCONST(0.0);     /* initial time                   */
   const sunrealtype Tf = SUN_RCONST(10.0);    /* final time                    */
   const sunrealtype dTout = SUN_RCONST(1.0);  /* time between outputs          */
-  const int Nt = (int) ceil(Tf/dTout);    /* number of output times        */
-  const sunrealtype reltol = 1.0e-4;      /* relative integrator tolerance */
+  const int Nt = (int) ceil(Tf/dTout);        /* number of output times        */
+  const sunrealtype reltol = 1.0e-4;          /* relative integrator tolerance */
   int retval;
   N_Vector y, abstol;
   SUNMatrix A;
@@ -120,7 +117,8 @@ int main(int argc, char *argv[])
   cvode_mem = NULL;
 
   /* Create the SUNDIALS context */
-  sundials::Context sunctx;
+  SUNContext sunctx;
+  SUNContext_Create(SUN_COMM_NULL, &sunctx);
 
   /* Set defaults */
   int solver_type = 0;
@@ -238,6 +236,8 @@ int main(int argc, char *argv[])
 
   /* Free the matrix memory */
   if (A) { SUNMatDestroy(A); }
+
+  SUNContext_Free(&sunctx);
 
   return(0);
 }
