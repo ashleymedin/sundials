@@ -274,8 +274,9 @@ typedef struct CVodeMemRec
 
   sunrealtype cv_hin;      /* initial step size                           */
   sunrealtype cv_h;        /* current step size                           */
-  sunrealtype cv_hprime;   /* step size to be used on the next step       */
+  sunrealtype cv_hprime;   /* after a successful step, this is the step size to be used on the next step  */
   sunrealtype cv_next_h;   /* step size to be used on the next step       */
+  sunrealtype cv_halpha;   /* step size dictated by nonlinear solver convergence control */
   sunrealtype cv_eta;      /* eta = hprime / h                            */
   sunrealtype cv_hscale;   /* value of h used in zn                       */
   sunrealtype cv_tn;       /* current internal value of t                 */
