@@ -383,6 +383,12 @@ void* CVodeCreate(int lmm, SUNContext sunctx)
   /* Initialize fused operations variable */
   cv_mem->cv_usefused = SUNFALSE;
 
+  /* Initialize nonlinear solver switching variables */
+  cv_mem->cv_alpharef = SUN_RCONST(0.3);
+  cv_mem->cv_lsodkr_strategy = 0;
+  cv_mem->cv_gustafsoder_strategy = 1;
+  cv_mem->cv_stifr = SUN_RCONST(1023.0);
+
   /* Return pointer to CVODE memory block */
 
   return ((void*)cv_mem);
@@ -2429,7 +2435,14 @@ static int cvStep(CVodeMem cv_mem)
     nflag = cvNls(cv_mem, nflag);
     kflag = cvHandleNFlag(cv_mem, &nflag, saved_t, &ncf);
 
-    cvChooseNls(cv_mem);
+    if (cv_mem->cv_gustafsoder_strategy == 1)
+    {
+      cvChooseNlsStrategy1(cv_mem);
+    }
+    else if (cv_mem->cv_gustafsoder_strategy == 2)
+    {
+      cvChooseNlsStrategy2(cv_mem);
+    }
 
     /* Go back in loop if we need to predict again (nflag=PREV_CONV_FAIL) */
     if (kflag == PREDICT_AGAIN) { continue; }
@@ -2493,22 +2506,37 @@ void cvChooseNlsStrategy1(CVodeMem cv_mem)
 {
   if (SUNNonlinSolGetType(cv_mem->NLS) == SUNNONLINEARSOLVER_FIXEDPOINT)
   {
-    /* TODO(CJB): determine what zi should be */
-    const sunrealtype zi = 3.0;
+    /* TODO(CJB): should we choose zi based on the method? Soderlind and Gustafsson
+       suggest that 2 is fine, but a better value could be found based on the method. */
+    const sunrealtype zi = 2.0;
     sunbooleantype switch_to_newton = (cv_mem->cv_hprime / cv_mem->cv_halpha) > zi;
 
     if (switch_to_newton) {
-  #if SUNDIALS_LOGGING_LEVEL >= SUNDIALS_LOGGING_DEBUG
-    SUNLogger_QueueMsg(CV_LOGGER, SUN_LOGLEVEL_DEBUG,
-      __func__, "switch-to-newt",
-      "switch to Newton, nflag = %d, halpha = %g, hprime = %g", nflag, halpha, hprime);
-  #endif
+        /* Wee set stifr to 1023 here. The value of 1023 is ensures that
+          switching back to fixed-point is not considered for at least 10 steps.
+          This can be changed such that we only consider switching after n
+          steps by setting this to 2^n - 1. */
+      cv_mem->cv_stifr = SUN_RCONST(1023.0);
+      // cv_mem->cv_stifr = SUN_RCONST(1048575.0);
+      SUNLogDebug(CV_LOGGER, __func__, "switch-to-newt",
+                  "switch to Newton, halpha = %g, hprime = %g",
+                  cv_mem->cv_halpha, cv_mem->cv_hprime);
       cvNlsSwitch(cv_mem, cv_mem->NLS_newton);
     }
   }
   else if (SUNNonlinSolGetType(cv_mem->NLS) == SUNNONLINEARSOLVER_ROOTFIND)
   {
+    if (SUNNonlinSolGetType(cv_mem->NLS) == SUNNONLINEARSOLVER_ROOTFIND) {
+      SUNLogDebug(CV_LOGGER, __func__, "switch-to-fp", "stifr = %.16g", cv_mem->cv_stifr);
+      if (cv_mem->cv_stifr < SUN_RCONST(1.5)) {
+        SUNLogDebug(CV_LOGGER, __func__, "switch-to-fp", "switch to fixed point",
+                    cv_mem->cv_stifr);
+        cvNlsSwitch(cv_mem, cv_mem->NLS_fixedpoint);
+        // Gustafsson and Soderlind suggest reducing step size by alpahref
+        // if switching to fixed point.
 
+      }
+    }
   }
 }
 
@@ -2743,7 +2771,7 @@ static void cvDecreaseBDF(CVodeMem cv_mem)
  * h is rescaled by eta, and hscale is reset to h.
  */
 
-static void cvRescale(CVodeMem cv_mem)
+void cvRescale(CVodeMem cv_mem)
 {
   int j;
 
@@ -3289,9 +3317,11 @@ static int cvHandleNFlag(CVodeMem cv_mem, int* nflagPtr, sunrealtype saved_t,
   nflag = *nflagPtr;
 
   if (nflag == CV_SUCCESS) {
-    if (SUNNonlinSolGetType(cv_mem->NLS) == SUNNONLINEARSOLVER_ROOTFIND) {
-      cv_mem->cv_stifr = SUN_RCONST(0.5)*(cv_mem->cv_stifr + cv_mem->cv_stiff);
-    }
+    // if (cv_mem->cv_lsodkr_strategy) {
+      if (SUNNonlinSolGetType(cv_mem->NLS) == SUNNONLINEARSOLVER_ROOTFIND) {
+        cv_mem->cv_stifr = SUN_RCONST(0.5)*(cv_mem->cv_stifr + cv_mem->cv_stiff);
+      }
+    // }
     return(DO_ERROR_TEST);
   }
 
@@ -3324,7 +3354,7 @@ static int cvHandleNFlag(CVodeMem cv_mem, int* nflagPtr, sunrealtype saved_t,
   }
 
   if (cv_mem->cv_lsodkr_strategy) {
-   cvNlsFailChooseNls(cv_mem, nflag);
+    cvNlsFailChooseNls(cv_mem, nflag);
   }
   cvNlsFailSetEta(cv_mem, nflag, nflagPtr);
 
@@ -3371,19 +3401,21 @@ void cvNlsFailSetEta(CVodeMem cv_mem, const int nflag, int* nflagPtr)
 #if SUNDIALS_LOGGING_LEVEL >= SUNDIALS_LOGGING_DEBUG
     SUNLogger_QueueMsg(CV_LOGGER, SUN_LOGLEVEL_DEBUG,
       __func__, "nls-diverging",
-      "switch to Newton, nflag = %d, halpha = %g, hprime = %g", nflag, halpha, hprime);
+      "switch to Newton, nflag = %d, halpha = %g, hprime = %g", nflag,
+        cv_mem->cv_halpha, cv_mem->cv_hprime);
 #endif
   }
   else if (cv_mem->cv_jcur)
   {
-    if (cv_mem->cv_alpha > cv_mem->cv_alpharef)
+    if (cv_mem->cv_crate > cv_mem->cv_alpharef)
     {
       cv_mem->cv_hprime = cv_mem->cv_halpha;
       cv_mem->cv_eta = cv_mem->cv_hprime / cv_mem->cv_h;
 #if SUNDIALS_LOGGING_LEVEL >= SUNDIALS_LOGGING_DEBUG
     SUNLogger_QueueMsg(CV_LOGGER, SUN_LOGLEVEL_DEBUG,
       __func__, "nls-failed",
-      "switch to Newton, nflag = %d, halpha = %g, hprime = %g", nflag, halpha, hprime);
+      "switch to Newton, nflag = %d, halpha = %g, hprime = %g", nflag,
+        cv_mem->cv_halpha, cv_mem->cv_hprime);
 #endif
     }
     else
@@ -3488,6 +3520,10 @@ static int cvDoErrorTest(CVodeMem cv_mem, int* nflagPtr, sunrealtype saved_t,
 int cvEtfSetEta(CVodeMem cv_mem, const int nef, const sunrealtype dsm)
 {
   int retval = 0;
+
+  // TODO(CJB): should we be potentially using halpha for step size
+  // when there was an error test failure? Or only if the error test
+  // succeeded?
 
   /* Set etamax = 1 to prevent step size increase at end of this step */
   cv_mem->cv_etamax = ONE;
@@ -3647,7 +3683,7 @@ static void cvOkPrepareNextStep(CVodeMem cv_mem, sunrealtype dsm)
     cv_mem->cv_qwait  = SUNMAX(cv_mem->cv_qwait, 2);
     cv_mem->cv_qprime = cv_mem->cv_q;
     cv_mem->cv_hprime = cv_mem->cv_h;
-    cv_mem->cv_halpha = (cv_mem->cv_alpharef / cv_mem->cv_alpha) * cv_mem->cv_h;
+    cv_mem->cv_halpha = (cv_mem->cv_alpharef / cv_mem->cv_crate) * cv_mem->cv_h;
     cv_mem->cv_eta    = ONE;
   }
   else
@@ -3674,23 +3710,6 @@ static void cvOkPrepareNextStep(CVodeMem cv_mem, sunrealtype dsm)
       cvOkSetEta(cv_mem);
     }
   }
-
-  /* See if we should switch to fixed-point from Newton */
-//   if (SUNNonlinSolGetType(cv_mem->NLS) == SUNNONLINEARSOLVER_ROOTFIND) {
-// #if SUNDIALS_LOGGING_LEVEL >= SUNDIALS_LOGGING_DEBUG
-//   SUNLogger_QueueMsg(CV_LOGGER, SUN_LOGLEVEL_DEBUG,
-//     "CVODE::cvOkPrepareNextStep", "switch-to-fp",
-//     "stifr = %.16g", cv_mem->cv_stifr);
-// #endif
-//     if (cv_mem->cv_stifr < SUN_RCONST(1.5)) {
-// #if SUNDIALS_LOGGING_LEVEL >= SUNDIALS_LOGGING_DEBUG
-//   SUNLogger_QueueMsg(CV_LOGGER, SUN_LOGLEVEL_DEBUG,
-//     "CVODE::cvOkPrepareNextStep", "switch-to-fp",
-//     "switch to fixed point", cv_mem->cv_stifr);
-// #endif
-//       cvNlsSwitch(cv_mem, cv_mem->NLS_fixedpoint);
-//     }
-//   }
 
 #if SUNDIALS_LOGGING_LEVEL >= SUNDIALS_LOGGING_DEBUG
   SUNLogger_QueueMsg(CV_LOGGER, SUN_LOGLEVEL_DEBUG, "CVODE::cvOkPrepareNextStep",
@@ -3742,7 +3761,12 @@ static void cvOkSetEta(CVodeMem cv_mem)
     }
     /* Set hprime */
     cv_mem->cv_hprime = cv_mem->cv_h * cv_mem->cv_eta;
-    cv_mem->cv_halpha = (cv_mem->cv_alpharef / cv_mem->cv_alpha) * cv_mem->cv_h;
+    cv_mem->cv_halpha = (cv_mem->cv_alpharef / cv_mem->cv_crate) * cv_mem->cv_h;
+    if (cv_mem->cv_gustafsoder_strategy && cv_mem->cv_jcur &&
+        (cv_mem->cv_crate > cv_mem->cv_alpharef)) {
+      cv_mem->cv_hprime = SUNMIN(cv_mem->cv_hprime, cv_mem->cv_halpha);
+      cv_mem->cv_eta = cv_mem->cv_hprime / cv_mem->cv_h;
+    }
     if (cv_mem->cv_qprime < cv_mem->cv_q) { cv_mem->cv_nscon = 0; }
   }
 }

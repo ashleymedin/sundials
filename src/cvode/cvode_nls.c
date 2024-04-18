@@ -389,17 +389,20 @@ static int cvNlsConvTest(SUNNonlinearSolver NLS, N_Vector ycor, N_Vector delta,
   }
 
   /* check if the iterations seems to be converging slowly */
-  if ((m >= 1) && (delnrm > RSLOW*cv_mem->cv_delp)) {
-    cv_mem->cv_nslow++; /* TODO(CJB): this should definitely move into the solver */
-    if (cv_mem->cv_nslow > 1) {
-      return(SUN_NLS_CONV_SLOW);
+  if (cv_mem->cv_lsodkr_strategy)
+  {
+    if ((m >= 1) && (delnrm > RSLOW*cv_mem->cv_delp)) {
+      cv_mem->cv_nslow++; /* TODO(CJB): this should definitely move into the solver */
+      if (cv_mem->cv_nslow > 1) {
+        return(SUN_NLS_CONV_SLOW);
+      }
     }
   }
 
   /* check if the iteration seems to be diverging */
   if ((m >= 1) && (delnrm > RDIV * cv_mem->cv_delp))
   {
-    return (SUN_NLS_CONV_RECVR);
+    return (SUN_NLS_DIVERGING);
   }
 
   /* Save norm of correction and loop again */

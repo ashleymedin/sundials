@@ -32,6 +32,34 @@
 #define SUNDIALS_LOGGING_EXTRA_DEBUG
 #endif
 
+#if SUNDIALS_LOGGING_LEVEL >= SUNDIALS_LOGGING_ERROR
+#define SUNLogError(logger, scope, label, msg_txt, ...) \
+  SUNLogger_QueueMsg(logger, SUN_LOGLEVEL_ERROR, scope, label, msg_txt, __VA_ARGS__)
+#else
+#define SUNLogError(logger, scope, label, msg_txt, ...)
+#endif
+
+#if SUNDIALS_LOGGING_LEVEL >= SUNDIALS_LOGGING_WARNING
+#define SUNLogWarning(logger, scope, label, msg_txt, ...) \
+  SUNLogger_QueueMsg(logger, SUN_LOGLEVEL_WARNING, scope, label, msg_txt, __VA_ARGS__)
+#else
+#define SUNLogWarning(logger, scope, label, msg_txt, ...)
+#endif
+
+#if SUNDIALS_LOGGING_LEVEL >= SUNDIALS_LOGGING_INFO
+#define SUNLogInfo(logger, scope, label, msg_txt, ...) \
+  SUNLogger_QueueMsg(logger, SUN_LOGLEVEL_INFO, scope, label, msg_txt, __VA_ARGS__)
+#else
+#define SUNLogInfo(logger, scope, label, msg_txt, ...)
+#endif
+
+#if SUNDIALS_LOGGING_LEVEL >= SUNDIALS_LOGGING_DEBUG
+#define SUNLogDebug(logger, scope, label, msg_txt, ...) \
+  SUNLogger_QueueMsg(logger, SUN_LOGLEVEL_DEBUG, scope, label, msg_txt, __VA_ARGS__)
+#else
+#define SUNLogDebug(logger, scope, label, msg_txt, ...)
+#endif
+
 struct SUNLogger_
 {
   /* MPI information */

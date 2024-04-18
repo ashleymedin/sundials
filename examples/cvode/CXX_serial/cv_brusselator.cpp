@@ -128,9 +128,9 @@ int main(int argc, char *argv[])
 
   /* Parse command line arguments and setup UserData */
   int argi = 0;
-  if (argc > 1) {
-    solver_type = atoi(argv[++argi]);
-  }
+  // if (argc > 1) {
+    // solver_type = atoi(argv[++argi]);
+  // }
   if (argc > 2) {
     reactor_type = atoi(argv[++argi]);
   }

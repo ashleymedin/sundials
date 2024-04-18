@@ -276,7 +276,6 @@ typedef struct CVodeMemRec
   sunrealtype cv_h;        /* current step size                           */
   sunrealtype cv_hprime;   /* after a successful step, this is the step size to be used on the next step  */
   sunrealtype cv_next_h;   /* step size to be used on the next step       */
-  sunrealtype cv_halpha;   /* step size dictated by nonlinear solver convergence control */
   sunrealtype cv_eta;      /* eta = hprime / h                            */
   sunrealtype cv_hscale;   /* value of h used in zn                       */
   sunrealtype cv_tn;       /* current internal value of t                 */
@@ -293,8 +292,6 @@ typedef struct CVodeMemRec
   sunrealtype cv_gammap; /* gamma at the last setup call                */
   sunrealtype cv_gamrat; /* gamma / gammap                              */
 
-  sunrealtype cv_stiff;       /* stiffness estimate for nonlinear solver switching */
-  sunrealtype cv_stifr;
   sunrealtype cv_crate;       /* estimated corrector convergence rate        */
   sunrealtype cv_delp;        /* norm of previous nonlinear solver update    */
   sunrealtype cv_acnrm;       /* | acor |                                    */
@@ -473,6 +470,17 @@ typedef struct CVodeMemRec
   N_Vector cv_Xvecs[L_MAX];    /* array of vectors */
 
   sunbooleantype cv_usefused; /* flag indicating if CVODE specific fused kernels should be used */
+
+  /* -----------------------
+    Nonlinear solver switching
+    ------------------------ */
+  sunrealtype cv_halpha;   /* step size dictated by nonlinear solver convergence control */
+  int cv_lsodkr_strategy;
+  int cv_gustafsoder_strategy;
+  sunrealtype cv_stiff;    /* stiffness estimate for nonlinear solver switching
+                              this is ||res||/||del|| (beta_k in Gustafsson & Soderlind paper )*/
+  sunrealtype cv_stifr;
+  sunrealtype cv_alpharef;
 
 }* CVodeMem;
 
