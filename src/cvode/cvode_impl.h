@@ -365,6 +365,7 @@ typedef struct CVodeMemRec
   SUNNonlinearSolver NLS; /* nonlinear solver object                   */
   SUNNonlinearSolver NLS_newton;
   SUNNonlinearSolver NLS_fixedpoint;
+  int NLS_algorithm;
   sunbooleantype ownNLS;  /* flag indicating NLS ownership             */
   CVRhsFn nls_f;          /* f(t,y(t)) used in the nonlinear solver    */
   int convfail;           /* flag to indicate when a Jacobian update may
@@ -477,6 +478,7 @@ typedef struct CVodeMemRec
   sunrealtype cv_halpha;   /* step size dictated by nonlinear solver convergence control */
   int cv_lsodkr_strategy;
   int cv_gustafsoder_strategy;
+  int cv_delay_switch_to_fixedpoint;
   sunrealtype cv_stiff;    /* stiffness estimate for nonlinear solver switching
                               this is ||res||/||del|| (beta_k in Gustafsson & Soderlind paper )*/
   sunrealtype cv_stifr;

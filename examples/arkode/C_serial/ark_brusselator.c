@@ -112,7 +112,7 @@ int main(void)
   if (check_flag(&flag, "SUNContext_Create", 1)) { return 1; }
 
   /* set up the test problem according to the desired test */
-  if (test == 1)
+  if (test == 0)
   {
     u0 = SUN_RCONST(3.9);
     v0 = SUN_RCONST(1.1);
@@ -121,7 +121,7 @@ int main(void)
     b  = SUN_RCONST(2.5);
     ep = SUN_RCONST(1.0e-5);
   }
-  else if (test == 3)
+  else if (test == 1)
   {
     u0 = SUN_RCONST(3.0);
     v0 = SUN_RCONST(3.0);

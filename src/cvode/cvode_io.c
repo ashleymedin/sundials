@@ -920,6 +920,23 @@ int CVodeSetNoInactiveRootWarn(void* cvode_mem)
   return (CV_SUCCESS);
 }
 
+int CVodeSetNonlinearSolverAlgorithm(void* cvode_mem, int algorithm)
+{
+  CVodeMem cv_mem;
+
+  if (cvode_mem == NULL)
+  {
+    cvProcessError(NULL, CV_MEM_NULL, __LINE__, __func__, __FILE__, MSGCV_NO_MEM);
+    return (CV_MEM_NULL);
+  }
+
+  cv_mem = (CVodeMem)cvode_mem;
+
+  cv_mem->NLS_algorithm = algorithm;
+
+  return CV_SUCCESS;
+}
+
 /*
  * CVodeSetConstraints
  *

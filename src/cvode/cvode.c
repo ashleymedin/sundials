@@ -184,10 +184,13 @@ static void cvSetTqBDF(CVodeMem cv_mem, sunrealtype hsum, sunrealtype alpha0,
 static int cvNls(CVodeMem cv_mem, int nflag);
 
 static inline
-void cvChooseNlsStrategy1(CVodeMem cv_mem);
+void cvChooseNlsGustafSoder1(CVodeMem cv_mem);
 
 static inline
-void cvChooseNlsStrategy2(CVodeMem cv_mem);
+void cvChooseNlsGustafSoder2(CVodeMem cv_mem);
+
+static inline
+void cvMaybeSwitchToFixedPoint(CVodeMem cv_mem);
 
 static int cvCheckConstraints(CVodeMem cv_mem);
 #ifdef SUNDIALS_BUILD_PACKAGE_FUSED_KERNELS
@@ -200,7 +203,7 @@ static int cvHandleNFlag(CVodeMem cv_mem, int* nflagPtr, sunrealtype saved_t,
                          int* ncfPtr);
 
 static inline
-void cvNlsFailChooseNls(CVodeMem cv_mem, const int nflag);
+void cvMaybeSwitchToNewton(CVodeMem cv_mem, const int nflag);
 
 static inline
 void cvNlsFailSetEta(CVodeMem cv_mem, const int nflag, int* nflagPtr);
@@ -386,8 +389,9 @@ void* CVodeCreate(int lmm, SUNContext sunctx)
   /* Initialize nonlinear solver switching variables */
   cv_mem->cv_alpharef = SUN_RCONST(0.3);
   cv_mem->cv_lsodkr_strategy = 0;
-  cv_mem->cv_gustafsoder_strategy = 1;
+  cv_mem->cv_gustafsoder_strategy = 0;
   cv_mem->cv_stifr = SUN_RCONST(1023.0);
+  cv_mem->cv_delay_switch_to_fixedpoint = 0;
 
   /* Return pointer to CVODE memory block */
 
@@ -507,8 +511,17 @@ int CVodeInit(void* cvode_mem, CVRhsFn f, sunrealtype t0, N_Vector y0)
     return(CV_MEM_FAIL);
   }
 
-  // NLS = cv_mem->NLS_fixedpoint;
-  NLS = cv_mem->NLS_newton;
+  if (cv_mem->NLS_algorithm == 0 || cv_mem->NLS_algorithm == 2 || cv_mem->NLS_algorithm == 12 || cv_mem->NLS_algorithm == 22) {
+    NLS = cv_mem->NLS_newton;
+    if (cv_mem->NLS_algorithm == 2) { cv_mem->cv_gustafsoder_strategy = 1; }
+    if (cv_mem->NLS_algorithm == 12) { cv_mem->cv_gustafsoder_strategy = 2; }
+    if (cv_mem->NLS_algorithm == 22) { cv_mem->cv_lsodkr_strategy = 1; }
+  } else if (cv_mem->NLS_algorithm == 1 || cv_mem->NLS_algorithm == 3 || cv_mem->NLS_algorithm == 13 || cv_mem->NLS_algorithm == 23) {
+    NLS = cv_mem->NLS_fixedpoint;
+    if (cv_mem->NLS_algorithm == 3) { cv_mem->cv_gustafsoder_strategy = 1; }
+    if (cv_mem->NLS_algorithm == 13) { cv_mem->cv_gustafsoder_strategy = 2; }
+    if (cv_mem->NLS_algorithm == 23) { cv_mem->cv_lsodkr_strategy = 1; }
+  }
 
   /* check that nonlinear solver is non-NULL */
   if (NLS == NULL)
@@ -2437,11 +2450,11 @@ static int cvStep(CVodeMem cv_mem)
 
     if (cv_mem->cv_gustafsoder_strategy == 1)
     {
-      cvChooseNlsStrategy1(cv_mem);
+      cvChooseNlsGustafSoder1(cv_mem);
     }
     else if (cv_mem->cv_gustafsoder_strategy == 2)
     {
-      cvChooseNlsStrategy2(cv_mem);
+      cvChooseNlsGustafSoder2(cv_mem);
     }
 
     /* Go back in loop if we need to predict again (nflag=PREV_CONV_FAIL) */
@@ -2502,7 +2515,9 @@ static int cvStep(CVodeMem cv_mem)
   return (CV_SUCCESS);
 }
 
-void cvChooseNlsStrategy1(CVodeMem cv_mem)
+
+
+void cvChooseNlsGustafSoder1(CVodeMem cv_mem)
 {
   if (SUNNonlinSolGetType(cv_mem->NLS) == SUNNONLINEARSOLVER_FIXEDPOINT)
   {
@@ -2512,13 +2527,13 @@ void cvChooseNlsStrategy1(CVodeMem cv_mem)
     sunbooleantype switch_to_newton = (cv_mem->cv_hprime / cv_mem->cv_halpha) > zi;
 
     if (switch_to_newton) {
-        /* Wee set stifr to 1023 here. The value of 1023 is ensures that
+        /* We set stifr to 1023 here. The value of 1023 is ensures that
           switching back to fixed-point is not considered for at least 10 steps.
           This can be changed such that we only consider switching after n
           steps by setting this to 2^n - 1. */
       cv_mem->cv_stifr = SUN_RCONST(1023.0);
       // cv_mem->cv_stifr = SUN_RCONST(1048575.0);
-      SUNLogDebug(CV_LOGGER, __func__, "switch-to-newt",
+      SUNLogDebug(CV_LOGGER, __func__, "maybe-switch-to-newt",
                   "switch to Newton, halpha = %g, hprime = %g",
                   cv_mem->cv_halpha, cv_mem->cv_hprime);
       cvNlsSwitch(cv_mem, cv_mem->NLS_newton);
@@ -2526,24 +2541,60 @@ void cvChooseNlsStrategy1(CVodeMem cv_mem)
   }
   else if (SUNNonlinSolGetType(cv_mem->NLS) == SUNNONLINEARSOLVER_ROOTFIND)
   {
-    if (SUNNonlinSolGetType(cv_mem->NLS) == SUNNONLINEARSOLVER_ROOTFIND) {
-      SUNLogDebug(CV_LOGGER, __func__, "switch-to-fp", "stifr = %.16g", cv_mem->cv_stifr);
-      if (cv_mem->cv_stifr < SUN_RCONST(1.5)) {
-        SUNLogDebug(CV_LOGGER, __func__, "switch-to-fp", "switch to fixed point",
-                    cv_mem->cv_stifr);
-        cvNlsSwitch(cv_mem, cv_mem->NLS_fixedpoint);
-        // Gustafsson and Soderlind suggest reducing step size by alpahref
-        // if switching to fixed point.
-
-      }
+    SUNLogDebug(CV_LOGGER, __func__, "maybe-switch-to-fp", "stifr = %.16g", cv_mem->cv_stifr);
+    if (cv_mem->cv_stifr < SUN_RCONST(1.5)) {
+      SUNLogDebug(CV_LOGGER, __func__, "maybe-switch-to-fp", "switch to fixed point", "");
+      cvNlsSwitch(cv_mem, cv_mem->NLS_fixedpoint);
+      // // Gustafsson and Soderlind suggest reducing step size by alpahref
+      // // if switching to fixed point.
+      // cv_mem->cv_hprime = cv_mem->cv_h * cv_mem->cv_alpharef;
+      // cv_mem->cv_eta = cv_mem->cv_hprime / cv_mem->cv_h;
     }
   }
 }
 
-void cvChooseNlsStrategy2(CVodeMem cv_mem)
+void cvChooseNlsGustafSoder2(CVodeMem cv_mem)
 {
   // Not implemented yet. this strategy is where we would accumulate h/halpha
   // as briefly mentioned in the paper.
+  if (SUNNonlinSolGetType(cv_mem->NLS) == SUNNONLINEARSOLVER_FIXEDPOINT)
+  {
+    /* TODO(CJB): should we choose zi based on the method? Soderlind and Gustafsson
+       suggest that 2 is fine, but a better value could be found based on the method. */
+    const sunrealtype zi = 2.0;
+    sunbooleantype switch_to_newton = (cv_mem->cv_hprime / cv_mem->cv_halpha) > zi;
+    if (switch_to_newton) {
+      /* We set stifr to 1023 here. The value of 1023 is ensures that
+        switching back to fixed-point is not considered for at least 10 steps.
+        This can be changed such that we only consider switching after n
+        steps by setting this to 2^n - 1. */
+      cv_mem->cv_stifr = SUN_RCONST(1023.0);
+      // cv_mem->cv_stifr = SUN_RCONST(1048575.0);
+      SUNLogDebug(CV_LOGGER, __func__, "maybe-switch-to-newt",
+                  "switch to Newton, halpha = %g, hprime = %g",
+                  cv_mem->cv_halpha, cv_mem->cv_hprime);
+      cvNlsSwitch(cv_mem, cv_mem->NLS_newton);
+    }
+  }
+  else if (SUNNonlinSolGetType(cv_mem->NLS) == SUNNONLINEARSOLVER_ROOTFIND)
+  {
+    SUNLogDebug(CV_LOGGER, __func__, "maybe-switch-to-fp", "stifr = %.16g", cv_mem->cv_stifr);
+    if (cv_mem->cv_stifr < SUN_RCONST(1.5)) {
+      if (cv_mem->cv_delay_switch_to_fixedpoint >= 3)
+      {
+        SUNLogDebug(CV_LOGGER, __func__, "maybe-switch-to-fp", "switch to fixed point", "");
+        cvNlsSwitch(cv_mem, cv_mem->NLS_fixedpoint);
+        cv_mem->cv_stifr = SUN_RCONST(1023.0);
+        // // Gustafsson and Soderlind suggest reducing step size by alpahref
+        // // if switching to fixed point.
+        // cv_mem->cv_hprime = cv_mem->cv_h * cv_mem->cv_alpharef;
+        // cv_mem->cv_eta = cv_mem->cv_hprime / cv_mem->cv_h;
+        cv_mem->cv_delay_switch_to_fixedpoint = 0;
+      }
+      cv_mem->cv_delay_switch_to_fixedpoint++;
+    }
+  }
+
 }
 
 /*
@@ -3317,11 +3368,9 @@ static int cvHandleNFlag(CVodeMem cv_mem, int* nflagPtr, sunrealtype saved_t,
   nflag = *nflagPtr;
 
   if (nflag == CV_SUCCESS) {
-    // if (cv_mem->cv_lsodkr_strategy) {
-      if (SUNNonlinSolGetType(cv_mem->NLS) == SUNNONLINEARSOLVER_ROOTFIND) {
-        cv_mem->cv_stifr = SUN_RCONST(0.5)*(cv_mem->cv_stifr + cv_mem->cv_stiff);
-      }
-    // }
+    if (SUNNonlinSolGetType(cv_mem->NLS) == SUNNONLINEARSOLVER_ROOTFIND) {
+      cv_mem->cv_stifr = SUN_RCONST(0.5)*(cv_mem->cv_stifr + cv_mem->cv_stiff);
+    }
     return(DO_ERROR_TEST);
   }
 
@@ -3354,7 +3403,7 @@ static int cvHandleNFlag(CVodeMem cv_mem, int* nflagPtr, sunrealtype saved_t,
   }
 
   if (cv_mem->cv_lsodkr_strategy) {
-    cvNlsFailChooseNls(cv_mem, nflag);
+    cvMaybeSwitchToNewton(cv_mem, nflag);
   }
   cvNlsFailSetEta(cv_mem, nflag, nflagPtr);
 
@@ -3362,11 +3411,10 @@ static int cvHandleNFlag(CVodeMem cv_mem, int* nflagPtr, sunrealtype saved_t,
 }
 
 /* This function implements the LSODKR strategy for switching to Newton */
-void cvNlsFailChooseNls(CVodeMem cv_mem, const int nflag)
+void cvMaybeSwitchToNewton(CVodeMem cv_mem, const int nflag)
 {
   sunbooleantype switch_to_newton = (SUNNonlinSolGetType(cv_mem->NLS) == SUNNONLINEARSOLVER_FIXEDPOINT) &&
     (nflag == SUN_NLS_CONV_SLOW || nflag == SUN_NLS_DIVERGING);
-
   if (switch_to_newton) {
       /* Since the corrector iteration failed to converge (or was too slow) with
          fixed-point, we switch to Newton. We set stifr to 1023 here. The value
@@ -3374,13 +3422,8 @@ void cvNlsFailChooseNls(CVodeMem cv_mem, const int nflag)
          considered for at least 10 steps through a interesting mathematical
          relation in Alan's notes. */
       cv_mem->cv_stifr = SUN_RCONST(1023.0);
-#if SUNDIALS_LOGGING_LEVEL >= SUNDIALS_LOGGING_DEBUG
-  SUNLogger_QueueMsg(CV_LOGGER, SUN_LOGLEVEL_DEBUG,
-    __func__, "switch-to-newt",
-    "switch to Newton, nflag = %d", nflag);
-#endif
+      SUNLogDebug(CV_LOGGER, __func__, "maybe-switch-to-newt", "switch to Newton, nflag = %d", nflag);
       cvNlsSwitch(cv_mem, cv_mem->NLS_newton);
-
   }
 }
 
@@ -3394,33 +3437,30 @@ void cvNlsFailSetEta(CVodeMem cv_mem, const int nflag, int* nflagPtr)
                             cv_mem->cv_hmin / SUNRabs(cv_mem->cv_h));
     *nflagPtr = PREV_CONV_FAIL;
   }
-  else if (nflag == SUN_NLS_DIVERGING)
+  else if (cv_mem->cv_gustafsoder_strategy && nflag == SUN_NLS_DIVERGING)
   {
+    SUNLogDebug(CV_LOGGER, __func__, "nls-diverging",
+                "set hprime=halpha, nflag = %d, halpha = %g, hprime = %g", nflag,
+                cv_mem->cv_halpha, cv_mem->cv_hprime);
     cv_mem->cv_hprime = cv_mem->cv_halpha;
     cv_mem->cv_eta = cv_mem->cv_hprime / cv_mem->cv_h;
-#if SUNDIALS_LOGGING_LEVEL >= SUNDIALS_LOGGING_DEBUG
-    SUNLogger_QueueMsg(CV_LOGGER, SUN_LOGLEVEL_DEBUG,
-      __func__, "nls-diverging",
-      "switch to Newton, nflag = %d, halpha = %g, hprime = %g", nflag,
-        cv_mem->cv_halpha, cv_mem->cv_hprime);
-#endif
   }
-  else if (cv_mem->cv_jcur)
+  else if (cv_mem->cv_gustafsoder_strategy && cv_mem->cv_jcur)
   {
     if (cv_mem->cv_crate > cv_mem->cv_alpharef)
     {
+      SUNLogDebug(CV_LOGGER, __func__, "nls-failed-jcur",
+                  "set hprime=halpha, nflag = %d, halpha = %g, hprime = %g", nflag,
+                  cv_mem->cv_halpha, cv_mem->cv_hprime);
       cv_mem->cv_hprime = cv_mem->cv_halpha;
       cv_mem->cv_eta = cv_mem->cv_hprime / cv_mem->cv_h;
-#if SUNDIALS_LOGGING_LEVEL >= SUNDIALS_LOGGING_DEBUG
-    SUNLogger_QueueMsg(CV_LOGGER, SUN_LOGLEVEL_DEBUG,
-      __func__, "nls-failed",
-      "switch to Newton, nflag = %d, halpha = %g, hprime = %g", nflag,
-        cv_mem->cv_halpha, cv_mem->cv_hprime);
-#endif
     }
     else
     {
       // TODO(CJB): in this case should we just revert to error based step size instead?
+      SUNLogDebug(CV_LOGGER, __func__, "nls-failed-jcur",
+                  "set hprime=h/2, nflag = %d, halpha = %g, hprime = %g", nflag,
+                  cv_mem->cv_halpha, cv_mem->cv_hprime);
       cv_mem->cv_hprime = cv_mem->cv_h/TWO;
       cv_mem->cv_eta = cv_mem->cv_hprime / cv_mem->cv_h;
     }
@@ -3714,10 +3754,28 @@ static void cvOkPrepareNextStep(CVodeMem cv_mem, sunrealtype dsm)
 #if SUNDIALS_LOGGING_LEVEL >= SUNDIALS_LOGGING_DEBUG
   SUNLogger_QueueMsg(CV_LOGGER, SUN_LOGLEVEL_DEBUG, "CVODE::cvOkPrepareNextStep",
                      "return",
-                     "eta = %.16g, hprime = %.16g, qprime = %d, qwait = %d\n",
-                     cv_mem->cv_eta, cv_mem->cv_hprime, cv_mem->cv_qprime,
+                     "eta = %.16g, hprime = %.16g, halpha = %.16g, qprime = %d, qwait = %d\n",
+                     cv_mem->cv_eta, cv_mem->cv_hprime, cv_mem->cv_halpha, cv_mem->cv_qprime,
                      cv_mem->cv_qwait);
 #endif
+
+  if (cv_mem->cv_lsodkr_strategy)
+  {
+    cvMaybeSwitchToFixedPoint(cv_mem);
+  }
+
+}
+
+void cvMaybeSwitchToFixedPoint(CVodeMem cv_mem)
+{
+  if (SUNNonlinSolGetType(cv_mem->NLS) == SUNNONLINEARSOLVER_ROOTFIND)
+  {
+    SUNLogDebug(CV_LOGGER, __func__, "maybe-switch-to-fp", "stifr = %.16g", cv_mem->cv_stifr);
+    if (cv_mem->cv_stifr < SUN_RCONST(1.5)) {
+      SUNLogDebug(CV_LOGGER, __func__, "maybe-switch-to-fp", "switch to fixed point", "");
+      cvNlsSwitch(cv_mem, cv_mem->NLS_fixedpoint);
+    }
+  }
 }
 
 static void cvTstopAdjustStepsize(CVodeMem cv_mem)
