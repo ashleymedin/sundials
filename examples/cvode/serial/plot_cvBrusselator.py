@@ -27,6 +27,8 @@ parser.add_argument('sfile', type=str,
                     help='solution output file to read')
 parser.add_argument('dfile', type=str,
                     help='debug output file to read')
+parser.add_argument('elefile', type=str,
+                    help='est local error output file to read')
 
 # parse inputs
 args = parser.parse_args()
@@ -72,8 +74,36 @@ for t in fpt:
 for t in newtt:
   plt.axvline(x=t, color='b', linewidth=0.2)
 
-plt.title('blue => switched to newton\n red => switched to fixedpoint')
+plt.title('Plot of Brusselator Solution\n blue => switched to newton\n red => switched to fixedpoint')
 plt.savefig('cvBrusselator.png', dpi=300)
+# plt.show()
+plt.close()
+
+
+# read est local error output file
+data = np.loadtxt(args.elefile, dtype=np.double)
+
+t = data[:, 0]
+ele = data[:, 1:]
+
+# extract the times when halpha was used
+used_halpha = []
+for step in steps:
+  t_n = np.double(step[0]['payload']['t_n'])
+  for entry in step[1:]:
+    if 'consider-halpha' in entry['label']:
+      halpha = np.double(entry['payload']['halpha'])
+      hprime = np.double(entry['payload']['hprime'])
+      if halpha < hprime:
+        used_halpha.append(t_n)
+
+plt.plot(t, ele)
+plt.legend(['u', 'v', 'w'])
+# plot when halpha was used
+for t in used_halpha:
+  plt.axvline(x=t, color='r', linewidth=0.2)
+plt.title("Plot of Est. Local Errors\n red => halpha used for next step")
+plt.savefig('cvBrusselator_ele.png', dpi=300)
 # plt.show()
 plt.close()
 

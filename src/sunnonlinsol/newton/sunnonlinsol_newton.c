@@ -223,16 +223,16 @@ int SUNNonlinSolSolve_Newton(SUNNonlinearSolver NLS, N_Vector y0, N_Vector ycor,
     /* initialize current iteration counter for this solve attempt */
     NEWTON_CONTENT(NLS)->curiter = 0;
 
-#if SUNDIALS_LOGGING_LEVEL >= SUNDIALS_LOGGING_INFO
-    SUNLogger_QueueMsg(NLS->sunctx->logger, SUN_LOGLEVEL_INFO,
-                       "SUNNonlinSolSolve_Newton", "begin-iteration",
-                       "iter = %ld, nni = %ld", (long int)0,
-                       NEWTON_CONTENT(NLS)->niters);
-#endif
-
     /* looping point for Newton iteration. Break out on any error. */
     for (;;)
     {
+#if SUNDIALS_LOGGING_LEVEL >= SUNDIALS_LOGGING_INFO
+      SUNLogger_QueueMsg(NLS->sunctx->logger, SUN_LOGLEVEL_INFO,
+                         "SUNNonlinSolSolve_Newton", "begin-iterate",
+                         "iter = %ld, nni = %ld", NEWTON_CONTENT(NLS)->curiter,
+                         NEWTON_CONTENT(NLS)->niters);
+#endif
+
       /* increment nonlinear solver iteration counter */
       NEWTON_CONTENT(NLS)->niters++;
 
@@ -270,7 +270,7 @@ int SUNNonlinSolSolve_Newton(SUNNonlinearSolver NLS, N_Vector y0, N_Vector ycor,
       /* check if the iteration should continue; otherwise exit Newton loop */
       if (retval != SUN_NLS_CONTINUE) { break; }
 
-      /* not yet converged. Increment curiter and test for max allowed. */
+      /* not yet converged, increment curiter and test for max allowed. */
       NEWTON_CONTENT(NLS)->curiter++;
       if (NEWTON_CONTENT(NLS)->curiter >= NEWTON_CONTENT(NLS)->maxiters)
       {

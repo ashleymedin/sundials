@@ -387,10 +387,10 @@ void* CVodeCreate(int lmm, SUNContext sunctx)
   cv_mem->cv_usefused = SUNFALSE;
 
   /* Initialize nonlinear solver switching variables */
-  cv_mem->cv_alpharef = SUN_RCONST(0.3);
+  cv_mem->cv_alpharef = ALPHAREF;
   cv_mem->cv_lsodkr_strategy = 0;
   cv_mem->cv_gustafsoder_strategy = 0;
-  cv_mem->cv_stifr = SUN_RCONST(1023.0);
+  cv_mem->cv_stifr = INIT_STIFR;
   cv_mem->cv_delay_switch_to_fixedpoint = 0;
 
   /* Return pointer to CVODE memory block */
@@ -2531,10 +2531,10 @@ void cvChooseNlsGustafSoder1(CVodeMem cv_mem)
           switching back to fixed-point is not considered for at least 10 steps.
           This can be changed such that we only consider switching after n
           steps by setting this to 2^n - 1. */
-      cv_mem->cv_stifr = SUN_RCONST(1023.0);
+      cv_mem->cv_stifr = INIT_STIFR;
       // cv_mem->cv_stifr = SUN_RCONST(1048575.0);
       SUNLogDebug(CV_LOGGER, __func__, "maybe-switch-to-newt",
-                  "switch to Newton, halpha = %g, hprime = %g",
+                  "switch to Newton, halpha = %.16g, hprime = %.16g",
                   cv_mem->cv_halpha, cv_mem->cv_hprime);
       cvNlsSwitch(cv_mem, cv_mem->NLS_newton);
     }
@@ -2568,10 +2568,10 @@ void cvChooseNlsGustafSoder2(CVodeMem cv_mem)
         switching back to fixed-point is not considered for at least 10 steps.
         This can be changed such that we only consider switching after n
         steps by setting this to 2^n - 1. */
-      cv_mem->cv_stifr = SUN_RCONST(1023.0);
+      cv_mem->cv_stifr = INIT_STIFR;
       // cv_mem->cv_stifr = SUN_RCONST(1048575.0);
       SUNLogDebug(CV_LOGGER, __func__, "maybe-switch-to-newt",
-                  "switch to Newton, halpha = %g, hprime = %g",
+                  "switch to Newton, halpha = %.16g, hprime = %.16g",
                   cv_mem->cv_halpha, cv_mem->cv_hprime);
       cvNlsSwitch(cv_mem, cv_mem->NLS_newton);
     }
@@ -2584,7 +2584,7 @@ void cvChooseNlsGustafSoder2(CVodeMem cv_mem)
       {
         SUNLogDebug(CV_LOGGER, __func__, "maybe-switch-to-fp", "switch to fixed point", "");
         cvNlsSwitch(cv_mem, cv_mem->NLS_fixedpoint);
-        cv_mem->cv_stifr = SUN_RCONST(1023.0);
+        cv_mem->cv_stifr = INIT_STIFR;
         // // Gustafsson and Soderlind suggest reducing step size by alpahref
         // // if switching to fixed point.
         // cv_mem->cv_hprime = cv_mem->cv_h * cv_mem->cv_alpharef;
@@ -3421,7 +3421,7 @@ void cvMaybeSwitchToNewton(CVodeMem cv_mem, const int nflag)
          of 1023 is ensures that switching back to fixed-point is not
          considered for at least 10 steps through a interesting mathematical
          relation in Alan's notes. */
-      cv_mem->cv_stifr = SUN_RCONST(1023.0);
+      cv_mem->cv_stifr = INIT_STIFR;
       SUNLogDebug(CV_LOGGER, __func__, "maybe-switch-to-newt", "switch to Newton, nflag = %d", nflag);
       cvNlsSwitch(cv_mem, cv_mem->NLS_newton);
   }
@@ -3437,10 +3437,12 @@ void cvNlsFailSetEta(CVodeMem cv_mem, const int nflag, int* nflagPtr)
                             cv_mem->cv_hmin / SUNRabs(cv_mem->cv_h));
     *nflagPtr = PREV_CONV_FAIL;
   }
-  else if (cv_mem->cv_gustafsoder_strategy && nflag == SUN_NLS_DIVERGING)
+
+  cv_mem->cv_halpha = (cv_mem->cv_alpharef / cv_mem->cv_crate) * cv_mem->cv_h;
+  if (cv_mem->cv_gustafsoder_strategy && nflag == SUN_NLS_DIVERGING)
   {
     SUNLogDebug(CV_LOGGER, __func__, "nls-diverging",
-                "set hprime=halpha, nflag = %d, halpha = %g, hprime = %g", nflag,
+                "set hprime=halpha, nflag = %d, halpha = %.16g, hprime = %.16g", nflag,
                 cv_mem->cv_halpha, cv_mem->cv_hprime);
     cv_mem->cv_hprime = cv_mem->cv_halpha;
     cv_mem->cv_eta = cv_mem->cv_hprime / cv_mem->cv_h;
@@ -3450,7 +3452,7 @@ void cvNlsFailSetEta(CVodeMem cv_mem, const int nflag, int* nflagPtr)
     if (cv_mem->cv_crate > cv_mem->cv_alpharef)
     {
       SUNLogDebug(CV_LOGGER, __func__, "nls-failed-jcur",
-                  "set hprime=halpha, nflag = %d, halpha = %g, hprime = %g", nflag,
+                  "set hprime=halpha, nflag = %d, halpha = %.16g, hprime = %.16g", nflag,
                   cv_mem->cv_halpha, cv_mem->cv_hprime);
       cv_mem->cv_hprime = cv_mem->cv_halpha;
       cv_mem->cv_eta = cv_mem->cv_hprime / cv_mem->cv_h;
@@ -3459,12 +3461,13 @@ void cvNlsFailSetEta(CVodeMem cv_mem, const int nflag, int* nflagPtr)
     {
       // TODO(CJB): in this case should we just revert to error based step size instead?
       SUNLogDebug(CV_LOGGER, __func__, "nls-failed-jcur",
-                  "set hprime=h/2, nflag = %d, halpha = %g, hprime = %g", nflag,
+                  "set hprime=h/2, nflag = %d, halpha = %.16g, hprime = %.16g", nflag,
                   cv_mem->cv_halpha, cv_mem->cv_hprime);
       cv_mem->cv_hprime = cv_mem->cv_h/TWO;
       cv_mem->cv_eta = cv_mem->cv_hprime / cv_mem->cv_h;
     }
   }
+
   cvRescale(cv_mem);
 }
 
@@ -3720,6 +3723,8 @@ static void cvOkPrepareNextStep(CVodeMem cv_mem, sunrealtype dsm)
   /* If etamax = 1, defer step size or order changes */
   if (cv_mem->cv_etamax == ONE)
   {
+    // TODO(CJB): Should we consider using halpha here even though
+    // the error control heuristic wants us to defer step size or order changes?
     cv_mem->cv_qwait  = SUNMAX(cv_mem->cv_qwait, 2);
     cv_mem->cv_qprime = cv_mem->cv_q;
     cv_mem->cv_hprime = cv_mem->cv_h;
@@ -3820,8 +3825,12 @@ static void cvOkSetEta(CVodeMem cv_mem)
     /* Set hprime */
     cv_mem->cv_hprime = cv_mem->cv_h * cv_mem->cv_eta;
     cv_mem->cv_halpha = (cv_mem->cv_alpharef / cv_mem->cv_crate) * cv_mem->cv_h;
-    if (cv_mem->cv_gustafsoder_strategy && cv_mem->cv_jcur &&
+    int prev_nls_iters = 0;
+    SUNNonlinSolGetCurIter(cv_mem->NLS, &prev_nls_iters);
+    SUNLogDebug(CV_LOGGER, __func__, "compute-halpha", "halpha = %.16g, alpharef = %.16g, crate = %.16g, h = %.16g, iters = %d", cv_mem->cv_halpha, cv_mem->cv_alpharef, cv_mem->cv_crate, cv_mem->cv_h, prev_nls_iters);
+    if (cv_mem->cv_gustafsoder_strategy && (prev_nls_iters > 0) &&
         (cv_mem->cv_crate > cv_mem->cv_alpharef)) {
+      SUNLogDebug(CV_LOGGER, __func__, "consider-halpha", "hprime = %.16g, halpha = %.16g", cv_mem->cv_hprime, cv_mem->cv_halpha);
       cv_mem->cv_hprime = SUNMIN(cv_mem->cv_hprime, cv_mem->cv_halpha);
       cv_mem->cv_eta = cv_mem->cv_hprime / cv_mem->cv_h;
     }

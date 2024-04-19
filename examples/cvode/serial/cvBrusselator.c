@@ -94,6 +94,7 @@ static int Jac(sunrealtype t, N_Vector y, N_Vector fy, SUNMatrix J,
 
 /* Private function to output results */
 static void PrintOutput(FILE* fp, sunrealtype t, sunrealtype y1, sunrealtype y2, sunrealtype y3);
+static void PrintEstLocalError(FILE* fp, sunrealtype t, sunrealtype y1, sunrealtype y2, sunrealtype y3);
 
 /* Private function to check function return values */
 static int check_retval(void *returnvalue, const char *funcname, int opt);
@@ -123,17 +124,19 @@ int main(int argc, char *argv[])
 
   int retval;
   SUNContext sunctx;
-  N_Vector y;
+  N_Vector y, ele, ewt;
   SUNMatrix A;
   SUNLinearSolver LS;
   void *cvode_mem;
   FILE* outputfp;
+  FILE* elefp;
 
-  y = NULL;
+  y = ele = NULL;
   A = NULL;
   LS = NULL;
   cvode_mem = NULL;
   outputfp = fopen("cvBrusselator_solution.txt", "w+");
+  elefp = fopen("cvBrusselator_ele.txt", "w+");
 
   SUNContext_Create(SUN_COMM_NULL, &sunctx);
 
@@ -181,12 +184,16 @@ int main(int argc, char *argv[])
 
   /* Create for initial conditions the and absolute tolerance vector */
   y = N_VNew_Serial(3, sunctx);
+  ele = N_VClone(y);
+  ewt = N_VClone(y);
 
   /* Initialize y */
   sunrealtype* ydata = N_VGetArrayPointer(y);
   ydata[0] = udata.u0;
   ydata[1] = udata.v0;
   ydata[2] = udata.w0;
+
+  sunrealtype* eledata = N_VGetArrayPointer(ele);
 
   /* Call CVodeCreate to create the solver memory and specify the
    * Backward Differentiation Formula */
@@ -251,9 +258,17 @@ int main(int argc, char *argv[])
   sunrealtype t = T0;
   sunrealtype tout = T0+dTout;
   PrintOutput(outputfp, t, ydata[0], ydata[1], ydata[2]);
+  CVodeGetErrWeights(cvode_mem, ewt);
+  CVodeGetEstLocalErrors(cvode_mem, ele);
+  N_VProd(ele, ewt, ele);
+  PrintEstLocalError(elefp, t, eledata[0], eledata[1], eledata[2]);
   for (int iout=0; iout<Nt; iout++) {
     retval = CVode(cvode_mem, tout, y, &t, CV_NORMAL);
     PrintOutput(outputfp, t, ydata[0], ydata[1], ydata[2]);
+    CVodeGetErrWeights(cvode_mem, ewt);
+    CVodeGetEstLocalErrors(cvode_mem, ele);
+    N_VProd(ele, ewt, ele);
+    PrintEstLocalError(elefp, t, eledata[0], eledata[1], eledata[2]);
     if (check_retval(&retval, "CVode", 1)) break;
     if (retval == CV_SUCCESS) {
       tout += dTout;
@@ -265,19 +280,14 @@ int main(int argc, char *argv[])
   printf("\nFinal Statistics:\n");
   CVodePrintAllStats(cvode_mem, stdout, SUN_OUTPUTFORMAT_TABLE);
 
-  /* Free state vector */
   N_VDestroy(y);
-
-  /* Free integrator memory */
+  N_VDestroy(ele);
   CVodeFree(&cvode_mem);
-
-  /* Free the linear solver memory */
   SUNLinSolFree(LS);
-
-  /* Free the matrix memory */
   if (A) { SUNMatDestroy(A); }
 
   fclose(outputfp);
+  fclose(elefp);
 
   SUNContext_Free(&sunctx);
 
@@ -371,6 +381,16 @@ void PrintOutput(FILE* fp, sunrealtype t, sunrealtype y1, sunrealtype y2, sunrea
 #else
   fprintf(fp, "%0.4e  %14.6e  %14.6e  %14.6e\n", t, y1, y2, y3);
   fprintf(stdout, "At t = %0.4e      y =%14.6e  %14.6e  %14.6e\n", t, y1, y2, y3);
+#endif
+  return;
+}
+
+void PrintEstLocalError(FILE* fp, sunrealtype t, sunrealtype y1, sunrealtype y2, sunrealtype y3)
+{
+#if defined(SUNDIALS_DOUBLE_PRECISION)
+  fprintf(fp, "%0.4e  %14.6e  %14.6e  %14.6e\n", t, y1, y2, y3);
+#else
+  fprintf(fp, "%0.4e  %14.6e  %14.6e  %14.6e\n", t, y1, y2, y3);
 #endif
   return;
 }

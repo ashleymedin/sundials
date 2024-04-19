@@ -186,21 +186,20 @@ int SUNNonlinSolSolve_FixedPoint(SUNNonlinearSolver NLS, N_Vector y0,
   FP_CONTENT(NLS)->niters     = 0;
   FP_CONTENT(NLS)->nconvfails = 0;
 
-#if SUNDIALS_LOGGING_LEVEL >= SUNDIALS_LOGGING_INFO
-  SUNLogger_QueueMsg(NLS->sunctx->logger, SUN_LOGLEVEL_INFO,
-                     "SUNNonlinSolSolve_FixedPoint", "begin-iteration",
-                     "iter = %ld, nni = %ld", (long int)0,
-                     FP_CONTENT(NLS)->niters);
-#endif
-
   /* Looping point for attempts at solution of the nonlinear system:
        Evaluate fixed-point function (store in gy).
        Performs the accelerated fixed-point iteration.
        Performs stopping tests. */
-  for (FP_CONTENT(NLS)->curiter = 0;
-       FP_CONTENT(NLS)->curiter < FP_CONTENT(NLS)->maxiters;
-       FP_CONTENT(NLS)->curiter++)
+  FP_CONTENT(NLS)->curiter = 0;
+  for (;;)
   {
+#if SUNDIALS_LOGGING_LEVEL >= SUNDIALS_LOGGING_INFO
+  SUNLogger_QueueMsg(NLS->sunctx->logger, SUN_LOGLEVEL_INFO,
+                     "SUNNonlinSolSolve_FixedPoint", "begin-iterate",
+                     "iter = %ld, nni = %ld", FP_CONTENT(NLS)->curiter,
+                     FP_CONTENT(NLS)->niters);
+#endif
+
     /* update previous solution guess */
     N_VScale(ONE, ycor, yprev);
     SUNCheckLastErr();
@@ -246,19 +245,29 @@ int SUNNonlinSolSolve_FixedPoint(SUNNonlinearSolver NLS, N_Vector y0,
     /* return if successful */
     if (retval == 0) { return SUN_SUCCESS; }
 
+    /* not yet converged, increment curiter and test for max allowed. */
+    FP_CONTENT(NLS)->curiter++;
+    if (FP_CONTENT(NLS)->curiter >= FP_CONTENT(NLS)->maxiters)
+    {
+      retval = SUN_NLS_CONV_RECVR;
+      break;
+    }
+
     /* check if the iterations should continue; otherwise increment the
        convergence failure count and return error flag */
     if (retval != SUN_NLS_CONTINUE)
     {
       FP_CONTENT(NLS)->nconvfails++;
-      return (retval);
+      break;
     }
   }
 
   /* if we've reached this point, then we exhausted the iteration limit;
      increment the convergence failure count and return */
   FP_CONTENT(NLS)->nconvfails++;
-  return SUN_NLS_CONV_RECVR;
+
+  /* all erro returns exit here */
+  return (retval);
 }
 
 SUNErrCode SUNNonlinSolFree_FixedPoint(SUNNonlinearSolver NLS)

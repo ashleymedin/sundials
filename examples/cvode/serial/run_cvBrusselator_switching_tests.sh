@@ -6,10 +6,13 @@ do
   do
     tname="reactor-${reactor}_nls-${nls}"
     echo $tname
-    export SUNLOGGER_DEBUG_FILENAME=$tname.debug.log
-    ./cvBrusselator $reactor $nls 0 &> $tname.log
-    mv ./cvBrusselator_solution.txt $tname.solution.txt
-    ./plot_cvBrusselator.py $tname.solution.txt $tname.debug.log
-    mv cvBrusselator.png $tname.png
+    export SUNLOGGER_DEBUG_FILENAME=${tname}.debug.log
+    export SUNLOGGER_INFO_FILENAME=${tname}.debug.log
+    ./cvBrusselator ${reactor} ${nls} 0 &> ${tname}.log
+    mv ./cvBrusselator_solution.txt ${tname}.solution.txt
+    mv ./cvBrusselator_ele.txt ${tname}.ele.txt
+    ./plot_cvBrusselator.py ${tname}.solution.txt ${tname}.debug.log ${tname}.ele.txt
+    mv cvBrusselator.png ${tname}.png
+    mv cvBrusselator_ele.png ${tname}_ele.png
   done
 done

@@ -111,6 +111,9 @@ extern "C" {
 #define BIAS2 SUN_RCONST(6.0)
 #define BIAS3 SUN_RCONST(10.0)
 
+#define ALPHAREF SUN_RCONST(0.3)
+#define INIT_STIFR SUN_RCONST(1023.0)
+
 /* Order selection constants
  * -------------------------
  * LONG_WAIT   number of steps to wait before considering an order change when
