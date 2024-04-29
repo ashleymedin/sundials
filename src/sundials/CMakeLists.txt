@@ -48,6 +48,7 @@ set(sundials_HEADERS
   sundials_nvector.hpp
   sundials_profiler.h
   sundials_profiler.hpp
+  sundials_stepper.h
   sundials_types_deprecated.h
   sundials_types.h
   sundials_version.h
@@ -98,6 +99,7 @@ set(sundials_SOURCES
   sundials_nonlinearsolver.c
   sundials_nvector_senswrapper.c
   sundials_nvector.c
+  sundials_stepper.c
   sundials_profiler.c
   sundials_version.c
   )

@@ -33,6 +33,7 @@
 #include "arkode_root_impl.h"
 #include "arkode_types_impl.h"
 #include "sundials_logger_impl.h"
+#include "sundials_stepper_impl.h"
 
 #ifdef __cplusplus /* wrapper to enable C++ usage */
 extern "C" {
@@ -1003,6 +1004,8 @@ int arkGetStepStats(void* arkode_mem, long int* nsteps, sunrealtype* hinused,
 int arkGetUserData(void* arkode_mem, void** user_data);
 int arkPrintAllStats(void* arkode_mem, FILE* outfile, SUNOutputFormat fmt);
 char* arkGetReturnFlagName(long int flag);
+int arkAllocSUNStepperForcing(SUNStepper stepper, int count, N_Vector tmpl);
+int arkFreeSUNStepperForcing(SUNStepper stepper);
 
 ARKODE_DIRKTableID arkButcherTableDIRKNameToID(const char* imethod);
 ARKODE_ERKTableID arkButcherTableERKNameToID(const char* emethod);
