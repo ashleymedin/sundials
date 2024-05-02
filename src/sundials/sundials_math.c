@@ -36,7 +36,7 @@ sunrealtype SUNRpowerI(sunrealtype base, int exponent)
 
 sunrealtype SUNRpowerR(sunrealtype base, sunrealtype exponent)
 {
-  if (base <= SUN_RCONST(0.0)) { return (SUN_RCONST(0.0)); }
+  if (base < SUN_RCONST(0.0)) { return (SUN_RCONST(0.0)); }
 
 #if defined(SUNDIALS_DOUBLE_PRECISION)
   return (pow(base, exponent));
