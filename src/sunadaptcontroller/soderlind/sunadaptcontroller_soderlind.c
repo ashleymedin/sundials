@@ -319,9 +319,9 @@ SUNErrCode SUNAdaptController_EstimateStep_Soderlind(SUNAdaptController C,
   const sunrealtype k3    = -SODERLIND_K3(C) / ord;
   const sunrealtype k4    = SODERLIND_K4(C);
   const sunrealtype k5    = SODERLIND_K5(C);
-  const sunrealtype e1    = SUNMAX(SODERLIND_BIAS(C) * dsm, TINY);
-  const sunrealtype e2    = SUNMAX(SODERLIND_EP(C), TINY);
-  const sunrealtype e3    = SUNMAX(SODERLIND_EPP(C), TINY);
+  const sunrealtype e1    = SODERLIND_BIAS(C) * dsm;
+  const sunrealtype e2    = SODERLIND_EP(C);
+  const sunrealtype e3    = SODERLIND_EPP(C);
   const sunrealtype hrat  = h / SODERLIND_HP(C);
   const sunrealtype hrat2 = SODERLIND_HP(C) / SODERLIND_HPP(C);
 
