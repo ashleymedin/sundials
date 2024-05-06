@@ -306,7 +306,7 @@ SUNDIALS_EXPORT int MRIStepInnerStepper_Create(SUNContext sunctx,
                                                MRIStepInnerStepper* stepper);
 
 SUNDIALS_EXPORT int MRIStepInnerStepper_CreateFromSUNStepper(
-  SUNContext sunctx, SUNStepper sunstepper, MRIStepInnerStepper* stepper);
+  SUNStepper sunstepper, MRIStepInnerStepper* stepper);
 
 SUNDIALS_EXPORT int MRIStepInnerStepper_Free(MRIStepInnerStepper* stepper);
 
