@@ -22,6 +22,7 @@
 #include <arkode/arkode_butcher_dirk.h>
 #include <arkode/arkode_butcher_erk.h>
 #include <arkode/arkode_ls.h>
+#include <sundials/sundials_stepper.h>
 
 #ifdef __cplusplus /* wrapper to enable C++ usage */
 extern "C" {
@@ -303,6 +304,9 @@ SUNDIALS_EXPORT void MRIStepPrintMem(void* arkode_mem, FILE* outfile);
 /* Custom inner stepper functions */
 SUNDIALS_EXPORT int MRIStepInnerStepper_Create(SUNContext sunctx,
                                                MRIStepInnerStepper* stepper);
+
+SUNDIALS_EXPORT int MRIStepInnerStepper_CreateFromSUNStepper(
+  SUNContext sunctx, SUNStepper sunstepper, MRIStepInnerStepper* stepper);
 
 SUNDIALS_EXPORT int MRIStepInnerStepper_Free(MRIStepInnerStepper* stepper);
 
