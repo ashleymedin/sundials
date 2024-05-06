@@ -31,7 +31,6 @@
 #include <arkode/arkode_butcher.h>
 #include <stdio.h>
 #include <sundials/sundials_core.h>
-#include <sundials/sundials_stepper.h>
 
 #ifdef __cplusplus /* wrapper to enable C++ usage */
 extern "C" {
@@ -176,7 +175,7 @@ typedef int (*ARKRelaxJacFn)(N_Vector y, N_Vector J, void* user_data);
  * MRIStep Inner Stepper Type
  * -------------------------- */
 
-typedef _SUNDIALS_STRUCT_ SUNStepper_s* MRIStepInnerStepper;
+typedef _SUNDIALS_STRUCT_ _MRIStepInnerStepper* MRIStepInnerStepper;
 
 /* --------------------------
  * Relaxation Solver Options

@@ -70,9 +70,14 @@ static const int MRISTEP_DEFAULT_IMEX_SD_4 = ARKODE_IMEX_MRI_GARK4;
  * MRIStep Inner Stepper Function Types
  * ------------------------------------ */
 
-typedef SUNStepperEvolveFn MRIStepInnerEvolveFn;
-typedef SUNStepperFullRhsFn MRIStepInnerFullRhsFn;
-typedef SUNStepperResetFn MRIStepInnerResetFn;
+typedef int (*MRIStepInnerEvolveFn)(MRIStepInnerStepper stepper, sunrealtype t0,
+                                    sunrealtype tout, N_Vector y);
+
+typedef int (*MRIStepInnerFullRhsFn)(MRIStepInnerStepper stepper, sunrealtype t,
+                                     N_Vector y, N_Vector f, int mode);
+
+typedef int (*MRIStepInnerResetFn)(MRIStepInnerStepper stepper, sunrealtype tR,
+                                   N_Vector yR);
 
 /*---------------------------------------------------------------
   MRI coupling data structure and associated utility routines
@@ -296,79 +301,32 @@ SUNDIALS_EXPORT void MRIStepFree(void** arkode_mem);
 SUNDIALS_EXPORT void MRIStepPrintMem(void* arkode_mem, FILE* outfile);
 
 /* Custom inner stepper functions */
-SUNDIALS_DEPRECATED_MSG("use SUNStepper_Create instead")
+SUNDIALS_EXPORT int MRIStepInnerStepper_Create(SUNContext sunctx,
+                                               MRIStepInnerStepper* stepper);
 
-static inline int MRIStepInnerStepper_Create(SUNContext sunctx,
-                                             MRIStepInnerStepper* stepper_out)
-{
-  return SUNStepper_Create(sunctx, stepper_out);
-}
+SUNDIALS_EXPORT int MRIStepInnerStepper_Free(MRIStepInnerStepper* stepper);
 
-SUNDIALS_DEPRECATED_MSG("use SUNStepper_Free instead")
+SUNDIALS_EXPORT int MRIStepInnerStepper_SetContent(MRIStepInnerStepper stepper,
+                                                   void* content);
 
-static inline int MRIStepInnerStepper_Free(MRIStepInnerStepper* stepper)
-{
-  return SUNStepper_Free(stepper);
-}
+SUNDIALS_EXPORT int MRIStepInnerStepper_GetContent(MRIStepInnerStepper stepper,
+                                                   void** content);
 
-SUNDIALS_DEPRECATED_MSG("use SUNStepper_SetContent instead")
+SUNDIALS_EXPORT int MRIStepInnerStepper_SetEvolveFn(MRIStepInnerStepper stepper,
+                                                    MRIStepInnerEvolveFn fn);
 
-static inline int MRIStepInnerStepper_SetContent(MRIStepInnerStepper stepper,
-                                                 void* content)
-{
-  return SUNStepper_SetContent(stepper, content);
-}
+SUNDIALS_EXPORT int MRIStepInnerStepper_SetFullRhsFn(MRIStepInnerStepper stepper,
+                                                     MRIStepInnerFullRhsFn fn);
 
-SUNDIALS_DEPRECATED_MSG("use SUNStepper_GetContent instead")
+SUNDIALS_EXPORT int MRIStepInnerStepper_SetResetFn(MRIStepInnerStepper stepper,
+                                                   MRIStepInnerResetFn fn);
 
-static inline int MRIStepInnerStepper_GetContent(MRIStepInnerStepper stepper,
-                                                 void** content)
-{
-  return SUNStepper_GetContent(stepper, content);
-}
+SUNDIALS_EXPORT int MRIStepInnerStepper_AddForcing(MRIStepInnerStepper stepper,
+                                                   sunrealtype t, N_Vector f);
 
-SUNDIALS_DEPRECATED_MSG("use SUNStepper_SetEvolveFn instead")
-
-static inline int MRIStepInnerStepper_SetEvolveFn(MRIStepInnerStepper stepper,
-                                                  MRIStepInnerEvolveFn fn)
-{
-  return SUNStepper_SetEvolveFn(stepper, fn);
-}
-
-SUNDIALS_DEPRECATED_MSG("use SUNStepper_SetFullRhsFn instead")
-
-static inline int MRIStepInnerStepper_SetFullRhsFn(MRIStepInnerStepper stepper,
-                                                   MRIStepInnerFullRhsFn fn)
-{
-  return SUNStepper_SetFullRhsFn(stepper, fn);
-}
-
-SUNDIALS_DEPRECATED_MSG("use SUNStepper instead")
-
-static inline int MRIStepInnerStepper_SetResetFn(MRIStepInnerStepper stepper,
-                                                 MRIStepInnerResetFn fn)
-{
-  return SUNStepper_SetResetFn(stepper, fn);
-}
-
-SUNDIALS_DEPRECATED_MSG("use SUNStepper_AddForcing instead")
-
-static inline int MRIStepInnerStepper_AddForcing(MRIStepInnerStepper stepper,
-                                                 sunrealtype t, N_Vector f)
-{
-  return SUNStepper_AddForcing(stepper, t, f);
-}
-
-SUNDIALS_DEPRECATED_MSG("use SUNStepper_GetForcingData instead")
-
-static inline int MRIStepInnerStepper_GetForcingData(MRIStepInnerStepper stepper,
-                                                     sunrealtype* tshift,
-                                                     sunrealtype* tscale,
-                                                     N_Vector** forcing,
-                                                     int* nforcing)
-{
-  return SUNStepper_GetForcingData(stepper, tshift, tscale, forcing, nforcing);
-}
+SUNDIALS_EXPORT int MRIStepInnerStepper_GetForcingData(
+  MRIStepInnerStepper stepper, sunrealtype* tshift, sunrealtype* tscale,
+  N_Vector** forcing, int* nforcing);
 
 #ifdef __cplusplus
 }
