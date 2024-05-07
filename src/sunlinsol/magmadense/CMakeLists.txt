@@ -44,3 +44,8 @@ sundials_add_library(sundials_sunlinsolmagmadense
 )
 
 message(STATUS "Added SUNLINSOL_MAGMADENSE module")
+
+# Add module if F2003 interface is enabled
+if(BUILD_FORTRAN_MODULE_INTERFACE)
+  add_subdirectory(fmod)
+endif()

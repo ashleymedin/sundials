@@ -46,3 +46,8 @@ sundials_add_library(sundials_sunmatrixmagmadense
 )
 
 message(STATUS "Added SUNMATRIX_MAGMADENSE module with ${SUNDIALS_MAGMA_BACKENDS} backend(s)")
+
+# Add module if F2003 interface is enabled
+if(BUILD_FORTRAN_MODULE_INTERFACE)
+  add_subdirectory(fmod)
+endif()

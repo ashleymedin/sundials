@@ -37,3 +37,8 @@ sundials_add_library(sundials_nveccuda
 )
 
 message(STATUS "Added NVECTOR_CUDA module")
+
+# Add module if F2003 interface is enabled
+if(BUILD_FORTRAN_MODULE_INTERFACE)
+  add_subdirectory(fmod)
+endif()
