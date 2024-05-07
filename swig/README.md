@@ -52,8 +52,9 @@ $ make install # optional
 ## How to regenerate the interfaces
 
 To regenerate the interfaces that have already been created. Simply run
-`make` from the `sunrepo/swig` directory. **This will replace all the
-generated files in `sunrepo/src`.**
+`make` from the `sunrepo/swig` directory, AFTER setting 
+SWIG_EXE = /my/install/location/bin/swig in `sunrepo/swig/Makefile` 
+ **This will replace all the generated files in `sunrepo/src`.**
 
 
 ## Creating a new interface
