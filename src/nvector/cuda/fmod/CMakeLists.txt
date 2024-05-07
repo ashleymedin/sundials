@@ -12,6 +12,7 @@ sundials_add_f2003_library(sundials_fnveccuda_mod
   LINK_LIBRARIES
     PUBLIC sundials_fcore_mod
   OBJECT_LIBRARIES
+    sundials_sunmemcuda_mod_obj
   OUTPUT_NAME
     sundials_fnveccuda_mod
   VERSION

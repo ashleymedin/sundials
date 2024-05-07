@@ -12,7 +12,7 @@ sundials_add_f2003_library(sundials_fsunlinsolmagmadense_mod
     PUBLIC sundials_fcore_mod
   OBJECT_LIBRARIES
   LINK_LIBRARIES
-    PUBLIC sundials_fsunmatrixdense_mod
+    PUBLIC SUNDIALS::MAGMA ${_libs_needed} sundials_fsunmatrixmagmadense_mod
   OUTPUT_NAME
     sundials_fsunlinsolmagmadense_mod
   VERSION
@@ -20,4 +20,5 @@ sundials_add_f2003_library(sundials_fsunlinsolmagmadense_mod
   SOVERSION
     ${sunlinsollib_SOVERSION}
 )
+
 message(STATUS "Added SUNLINSOL_MAGMADENSE F2003 interface")
