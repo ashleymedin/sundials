@@ -21,9 +21,9 @@ IDA=fida_mod
 IDAS=fidas_mod
 KINSOL=fkinsol_mod
 GENERIC=fsundials_core_mod
-NVECTOR=openmp pthreads serial parallel manyvector mpiplusx
-SUNMATRIX=band dense sparse
-SUNLINSOL=band dense lapackdense klu spbcgs spfgmr spgmr sptfqmr pcg
+NVECTOR=openmp pthreads serial parallel manyvector mpiplusx cuda
+SUNMATRIX=band dense sparse magmadense
+SUNLINSOL=band dense lapackdense klu spbcgs spfgmr spgmr sptfqmr pcg magmadense
 SUNNONLINSOL=newton fixedpoint
 SUNADAPTCONTROLLER=imexgus soderlind
 
