@@ -1352,7 +1352,7 @@ int idaLsSetup(IDAMem IDA_mem, N_Vector y, N_Vector yp, N_Vector r,
                N_Vector vt1, N_Vector vt2, N_Vector vt3)
 {
   IDALsMem idals_mem;
-  int retval;
+  int doprint, retval;
 
   /* access IDALsMem structure */
   if (IDA_mem->ida_lmem == NULL)
@@ -1401,6 +1401,14 @@ int idaLsSetup(IDAMem IDA_mem, N_Vector y, N_Vector yp, N_Vector r,
     /* Call Jacobian routine */
     retval = idals_mem->jac(IDA_mem->ida_tn, IDA_mem->ida_cj, y, yp, r,
                             idals_mem->J, idals_mem->J_data, vt1, vt2, vt3);
+
+    /* PRINT JACOBIAN*/
+    doprint = 0;
+    if (doprint == 1) {
+      printf("Initial Jacobian");
+      SUNDenseMatrix_Print(idals_mem->J,stdout);
+    }
+
     if (retval < 0)
     {
       IDAProcessError(IDA_mem, IDALS_JACFUNC_UNRECVR, __LINE__, __func__,
