@@ -47,10 +47,10 @@
 #define MAGMADENSE_CONTENT(S) ((SUNLinearSolverContent_MagmaDense)(S->content))
 #define MHELP(S)              (MAGMADENSE_CONTENT(S)->memhelp)
 #define QUEUE(S)              (MAGMADENSE_CONTENT(S)->q)
-#define PIVOTS(S)             ((sunindextype*)MAGMADENSE_CONTENT(S)->pivots->ptr)
-#define PIVOTSARRAY(S)        ((sunindextype**)MAGMADENSE_CONTENT(S)->pivotsarr->ptr)
+#define PIVOTS(S)             ((int*)MAGMADENSE_CONTENT(S)->pivots->ptr)
+#define PIVOTSARRAY(S)        ((int**)MAGMADENSE_CONTENT(S)->pivotsarr->ptr)
 #define RHSARRAY(S)           ((sunrealtype**)MAGMADENSE_CONTENT(S)->rhsarr->ptr)
-#define INFOARRAY(S)          ((sunindextype*)MAGMADENSE_CONTENT(S)->infoarr->ptr)
+#define INFOARRAY(S)          ((int*)MAGMADENSE_CONTENT(S)->infoarr->ptr)
 #define LASTFLAG(S)           (MAGMADENSE_CONTENT(S)->last_flag)
 #define ASYNCHRONOUS(S)       (MAGMADENSE_CONTENT(S)->async)
 
@@ -165,8 +165,8 @@ SUNLinearSolver SUNLinSol_MagmaDense(N_Vector y, SUNMatrix Amat, SUNContext sunc
     }
 
     /* Set the pivots array on the device */
-    magma_iset_pointer((sunindextype**)content->pivotsarr->ptr, /* 2D output array */
-                       (sunindextype*)content->pivots->ptr, /* 1D input array */
+    magma_iset_pointer((int**)content->pivotsarr->ptr, /* 2D output array */
+                       (int*)content->pivots->ptr, /* 1D input array */
                        1,       /* leading dimension of input */
                        0,       /* row */
                        0,       /* column */
@@ -248,7 +248,7 @@ int SUNLinSolSetup_MagmaDense(SUNLinearSolver S, SUNMatrix A)
     return SUN_ERR_ARG_INCOMPATIBLE;
   }
 
-  sunindextype ier     = 0;
+  int ier              = 0;
   sunindextype M       = SUNMatrix_MagmaDense_BlockRows(A);
   sunindextype nblocks = SUNMatrix_MagmaDense_NumBlocks(A);
 
