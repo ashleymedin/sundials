@@ -6,10 +6,11 @@
 
 if(SUNDIALS_MAGMA_BACKENDS MATCHES "CUDA")
   set_source_files_properties(fsunmatrix_magmadense_mod.cpp PROPERTIES LANGUAGE CUDA)
-  set(_libs_needed sundials_nveccuda)
+  set(_libs_needed sundials_fnveccuda_mod)
 elseif(SUNDIALS_MAGMA_BACKENDS MATCHES "HIP")
+  message(STATUS "F2003 interface won't yet work with SUNDIALS_MAGMA_BACKENDS=HIP ")
   set_source_files_properties(fsunmatrix_magmadense_mod.cpp PROPERTIES LANGUAGE CXX)
-  set(_libs_needed sundials_nvechip hip::device)
+  set(_libs_needed sundials_fnvechip_mod hip::device)
 endif()
 
 sundials_add_f2003_library(sundials_fsunmatrix_magmadense_mod
