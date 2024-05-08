@@ -4,9 +4,17 @@
 # CMakeLists.txt file for the F2003 magmadense SUNMatrix object library
 # ---------------------------------------------------------------
 
+if(SUNDIALS_MAGMA_BACKENDS MATCHES "CUDA")
+  set_source_files_properties(fsunmatrix_magmadense_mod.cpp PROPERTIES LANGUAGE CUDA)
+  set(_libs_needed sundials_nveccuda)
+elseif(SUNDIALS_MAGMA_BACKENDS MATCHES "HIP")
+  set_source_files_properties(fsunmatrix_magmadense_mod.cpp PROPERTIES LANGUAGE CXX)
+  set(_libs_needed sundials_nvechip hip::device)
+endif()
+
 sundials_add_f2003_library(sundials_fsunmatrix_magmadense_mod
   SOURCES
-    fsunmatrix_magmadense_mod.f90 fsunmatrix_magmadense_mod.c
+    fsunmatrix_magmadense_mod.f90 fsunmatrix_magmadense_mod.cpp
   INCLUDE_DIRECTORIES
     PUBLIC ${MAGMA_INCLUDE_DIR}
   LINK_LIBRARIES

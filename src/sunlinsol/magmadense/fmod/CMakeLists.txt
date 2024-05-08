@@ -5,9 +5,17 @@
 # object library
 # ----------------------------------------------------------------------
 
+if(SUNDIALS_MAGMA_BACKENDS MATCHES "CUDA")
+  set_source_files_properties(fsunlinsol_magmadense_mod.cpp PROPERTIES LANGUAGE CUDA)
+  set(_libs_needed sundials_sunmatrixmagmadense sundials_nveccuda)
+elseif(SUNDIALS_MAGMA_BACKENDS MATCHES "HIP")
+  set_source_files_properties(fsunlinsol_magmadense_mod.cpp PROPERTIES LANGUAGE CXX)
+  set(_libs_needed sundials_sunmatrixmagmadense sundials_nvechip hip::device)
+endif()
+
 sundials_add_f2003_library(sundials_fsunlinsolmagmadense_mod
   SOURCES
-    fsunlinsol_magmadense_mod.f90 fsunlinsol_magmadense_mod.c
+    fsunlinsol_magmadense_mod.f90 fsunlinsol_magmadense_mod.cpp
   LINK_LIBRARIES
     PUBLIC sundials_fcore_mod
   OBJECT_LIBRARIES
