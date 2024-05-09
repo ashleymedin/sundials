@@ -1096,15 +1096,3 @@ SWIGEXPORT int _wrap_FN_VEnableWrmsNormMaskVectorArray_Cuda(N_Vector farg1, int 
 
 
 
-SWIGEXPORT double * _wrap_FN_VGetArrayPointer_Cuda(N_Vector farg1) {
-  double * fresult ;
-  N_Vector arg1 = (N_Vector) 0 ;
-  sunrealtype *result = 0 ;
-
-  arg1 = (N_Vector)(farg1);
-  result = (sunrealtype *)N_VGetArrayPointer_Cuda(arg1);
-  fresult = result;
-  return fresult;
-}
-
-

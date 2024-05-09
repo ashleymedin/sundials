@@ -102,9 +102,6 @@ module fnvector_cuda_mod
  public :: FN_VEnableWrmsNormVectorArray_Cuda
  public :: FN_VEnableWrmsNormMaskVectorArray_Cuda
 
- public :: FN_VGetArrayPointer_Cuda
-
-
 ! WRAPPER DECLARATIONS
 interface
 function swigc_FN_VNewEmpty_Cuda(farg1) &
@@ -654,15 +651,6 @@ use, intrinsic :: ISO_C_BINDING
 type(C_PTR), value :: farg1
 integer(C_INT), intent(in) :: farg2
 integer(C_INT) :: fresult
-end function
-
-
-function swigc_FN_VGetArrayPointer_Cuda(farg1) &
-bind(C, name="_wrap_FN_VGetArrayPointer_Cuda") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
-type(C_PTR) :: fresult
 end function
 
 end interface
@@ -1661,20 +1649,6 @@ farg1 = c_loc(v)
 farg2 = tf
 fresult = swigc_FN_VEnableWrmsNormMaskVectorArray_Cuda(farg1, farg2)
 swig_result = fresult
-end function
-
-
-function FN_VGetArrayPointer_Cuda(v) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE), dimension(:), pointer :: swig_result
-type(N_Vector), target, intent(inout) :: v
-type(C_PTR) :: fresult
-type(C_PTR) :: farg1
-
-farg1 = c_loc(v)
-fresult = swigc_FN_VGetArrayPointer_Cuda(farg1)
-call c_f_pointer(fresult, swig_result, [FN_VGetLength_Cuda(v)])
 end function
 
 
