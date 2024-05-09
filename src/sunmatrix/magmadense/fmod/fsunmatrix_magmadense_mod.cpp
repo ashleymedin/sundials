@@ -592,6 +592,7 @@ SWIGEXPORT double * _wrap_FSUNMatrix_MagmaDense_BlockColumn(SUNMatrix farg1, int
   double * fresult ;
   SUNMatrix arg1 = (SUNMatrix) 0 ;
   sunindextype arg2 ;
+  sunindextype arg3 ;
   sunrealtype *result = 0 ;
   
   arg1 = (SUNMatrix)(farg1);
