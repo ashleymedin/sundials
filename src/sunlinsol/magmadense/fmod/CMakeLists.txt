@@ -21,7 +21,7 @@ sundials_add_f2003_library(sundials_fsunlinsolmagmadense_mod
     PUBLIC sundials_fcore_mod
   OBJECT_LIBRARIES
   LINK_LIBRARIES
-    PUBLIC SUNDIALS::MAGMA ${_libs_needed} sundials_fsunmatrixmagmadense_mod
+    PUBLIC SUNDIALS::MAGMA ${_libs_needed}
   OUTPUT_NAME
     sundials_fsunlinsolmagmadense_mod
   VERSION

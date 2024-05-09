@@ -13,7 +13,7 @@ elseif(SUNDIALS_MAGMA_BACKENDS MATCHES "HIP")
   set(_libs_needed sundials_fnvechip_mod hip::device)
 endif()
 
-sundials_add_f2003_library(sundials_fsunmatrix_magmadense_mod
+sundials_add_f2003_library(sundials_fsunmatrixmagmadense_mod
   SOURCES
     fsunmatrix_magmadense_mod.f90 fsunmatrix_magmadense_mod.cpp
   INCLUDE_DIRECTORIES
