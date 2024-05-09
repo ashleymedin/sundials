@@ -21,9 +21,13 @@ IDA=fida_mod
 IDAS=fidas_mod
 KINSOL=fkinsol_mod
 GENERIC=fsundials_core_mod
-NVECTOR=openmp pthreads serial parallel manyvector mpiplusx cuda
-SUNMATRIX=band dense sparse magmadense
-SUNLINSOL=band dense lapackdense klu spbcgs spfgmr spgmr sptfqmr pcg magmadense
+NVECTOR=openmp pthreads serial parallel manyvector mpiplusx
+NVECTOR_CU=cuda
+NVECTOR_CPP=
+SUNMATRIX=band dense sparse
+SUNMATRIX_CPP=magmadense
+SUNLINSOL=band dense lapackdense klu spbcgs spfgmr spgmr sptfqmr pcg
+SUNLINSOL_CPP=magmadense
 SUNNONLINSOL=newton fixedpoint
 SUNADAPTCONTROLLER=imexgus soderlind
 
@@ -35,6 +39,7 @@ INCLUDES=-I../include
 .PHONY: generic arkode cvode cvodes ida idas kinsol nvector sunmatrix sunlinsol sunnonlinsol sunadaptcontroller patch
 
 all: generic arkode cvode cvodes ida idas kinsol nvector sunmatrix sunlinsol sunnonlinsol sunadaptcontroller patch
+gpu: nvector_cu nvector_cpp sunmatrix_cpp sunlinsol_cpp
 
 arkode: $(ARKODE:%:arkode/%.i)
 	@for i in ${ARKODE} ; do \
@@ -77,7 +82,7 @@ generic: $(GENERIC:%:sundials/%.i)
 		echo "swig -fortran -outdir ../src/sundials/fmod -o ../src/sundials/fmod/$${i}.c ${INCLUDES} $${i}" ; \
 		${SWIG_EXE} -fortran -outdir ../src/sundials/fmod -o ../src/sundials/fmod/$${i}.c ${INCLUDES} sundials/$${i}.i ; \
 	done
-
+	
 nvector: $(NVECTOR:%:nvector/fnvector_%_mod.i) mpimanyvector
 	@for i in ${NVECTOR} ; do \
 		echo "swig -fortran -outdir ../src/nvector/$${i}/fmod -o ../src/nvector/$${i}/fmod ${INCLUDES} nvector/fnvector_$${i}_mod.i" ; \
@@ -87,17 +92,41 @@ nvector: $(NVECTOR:%:nvector/fnvector_%_mod.i) mpimanyvector
 mpimanyvector: nvector/fnvector_mpimanyvector_mod.i
 	@echo "swig -fortran -outdir ../src/nvector/manyvector/fmod -o ../src/nvector/manyvector/fmod ${INCLUDES} nvector/fnvector_mpimanyvector_mod.i" ; \
 	${SWIG_EXE} -fortran -outdir ../src/nvector/manyvector/fmod -o ../src/nvector/manyvector/fmod/fnvector_mpimanyvector_mod.c ${INCLUDES} nvector/fnvector_mpimanyvector_mod.i ; \
+	
+nvector_cu: $(NVECTOR:%:nvector/fnvector_%_mod.i)
+	@for i in ${NVECTOR_CU} ; do \
+		echo "swig -fortran -outdir ../src/nvector/$${i}/fmod -o ../src/nvector/$${i}/fmod ${INCLUDES} nvector/fnvector_$${i}_mod.i" ; \
+		${SWIG_EXE} -fortran -outdir ../src/nvector/$${i}/fmod -o ../src/nvector/$${i}/fmod/fnvector_$${i}_mod.cu ${INCLUDES} nvector/fnvector_$${i}_mod.i ; \
+	done
+	
+nvector_cpp: $(NVECTOR:%:nvector/fnvector_%_mod.i)
+	@for i in ${NVECTOR_CPP} ; do \
+		echo "swig -fortran -outdir ../src/nvector/$${i}/fmod -o ../src/nvector/$${i}/fmod ${INCLUDES} nvector/fnvector_$${i}_mod.i" ; \
+		${SWIG_EXE} -fortran -outdir ../src/nvector/$${i}/fmod -o ../src/nvector/$${i}/fmod/fnvector_$${i}_mod.cpp ${INCLUDES} nvector/fnvector_$${i}_mod.i ; \
+	done
 
 sunmatrix: $(SUNMATRIX:%:sunmatrix/fsunmatrix_%_mod.i)
 	@for i in ${SUNMATRIX} ; do \
 		echo "swig -fortran -outdir ../src/sunmatrix/$${i}/fmod -o ../src/sunmatrix/$${i}/fmod ${INCLUDES} sunmatrix/fsunmatrix_$${i}_mod.i" ; \
 		${SWIG_EXE} -fortran -outdir ../src/sunmatrix/$${i}/fmod -o ../src/sunmatrix/$${i}/fmod/fsunmatrix_$${i}_mod.c ${INCLUDES} sunmatrix/fsunmatrix_$${i}_mod.i ; \
 	done
+	
+sunmatrix_cpp: $(SUNMATRIX:%:sunmatrix/fsunmatrix_%_mod.i)
+	@for i in ${SUNMATRIX_CPP} ; do \
+		echo "swig -fortran -outdir ../src/sunmatrix/$${i}/fmod -o ../src/sunmatrix/$${i}/fmod ${INCLUDES} sunmatrix/fsunmatrix_$${i}_mod.i" ; \
+		${SWIG_EXE} -fortran -outdir ../src/sunmatrix/$${i}/fmod -o ../src/sunmatrix/$${i}/fmod/fsunmatrix_$${i}_mod.cpp ${INCLUDES} sunmatrix/fsunmatrix_$${i}_mod.i ; \
+	done
 
 sunlinsol: $(SUNLINSOL:%:sunlinsol/fsunlinsol_%_mod.i)
 	@for i in ${SUNLINSOL} ; do \
 		echo "swig -fortran -outdir ../src/sunlinsol/$${i}/fmod -o ../src/sunlinsol/$${i}/fmod ${INCLUDES} sunlinsol/fsunlinsol_$${i}_mod.i" ; \
 		${SWIG_EXE} -fortran -outdir ../src/sunlinsol/$${i}/fmod -o ../src/sunlinsol/$${i}/fmod/fsunlinsol_$${i}_mod.c ${INCLUDES} sunlinsol/fsunlinsol_$${i}_mod.i ; \
+	done
+	
+sunlinsol_cpp: $(SUNLINSOL:%:sunlinsol/fsunlinsol_%_mod.i)
+	@for i in ${SUNLINSOL_CPP} ; do \
+		echo "swig -fortran -outdir ../src/sunlinsol/$${i}/fmod -o ../src/sunlinsol/$${i}/fmod ${INCLUDES} sunlinsol/fsunlinsol_$${i}_mod.i" ; \
+		${SWIG_EXE} -fortran -outdir ../src/sunlinsol/$${i}/fmod -o ../src/sunlinsol/$${i}/fmod/fsunlinsol_$${i}_mod.cpp ${INCLUDES} sunlinsol/fsunlinsol_$${i}_mod.i ; \
 	done
 
 sunnonlinsol: $(SUNNONLINSOL:%:sunnonlinsol/fsunnonlinsol_%_mod.i)
