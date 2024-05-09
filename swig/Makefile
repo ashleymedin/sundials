@@ -21,9 +21,12 @@ IDA=fida_mod
 IDAS=fidas_mod
 KINSOL=fkinsol_mod
 GENERIC=fsundials_core_mod
-NVECTOR=openmp pthreads serial parallel manyvector mpiplusx cuda
-SUNMATRIX=band dense sparse magmadense
-SUNLINSOL=band dense lapackdense klu spbcgs spfgmr spgmr sptfqmr pcg magmadense
+#NVECTOR=openmp pthreads serial parallel manyvector mpiplusx cuda
+#SUNMATRIX=band dense sparse magmadense
+#SUNLINSOL=band dense lapackdense klu spbcgs spfgmr spgmr sptfqmr pcg magmadense
+NVECTOR=cuda
+SUNMATRIX=magmadense
+SUNLINSOL=magmadense
 SUNNONLINSOL=newton fixedpoint
 SUNADAPTCONTROLLER=imexgus soderlind
 
@@ -34,7 +37,8 @@ INCLUDES=-I../include
 
 .PHONY: generic arkode cvode cvodes ida idas kinsol nvector sunmatrix sunlinsol sunnonlinsol sunadaptcontroller patch
 
-all: generic arkode cvode cvodes ida idas kinsol nvector sunmatrix sunlinsol sunnonlinsol sunadaptcontroller patch
+#all: generic arkode cvode cvodes ida idas kinsol nvector sunmatrix sunlinsol sunnonlinsol sunadaptcontroller patch
+all: nvector sunmatrix sunlinsol
 
 arkode: $(ARKODE:%:arkode/%.i)
 	@for i in ${ARKODE} ; do \
