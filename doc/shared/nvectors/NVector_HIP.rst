@@ -363,7 +363,7 @@ In total, SUNDIALS provides 4 execution policies:
       anything. If a HIP stream is provided, it will be used to execute the
       kernel.
 
-   .. cpp:function:: SUNHipBlockReduceExecPolicy(const size_t blockDim, const hipStream_t stream = 0)
+   .. cpp:function:: SUNHipBlockReduceExecPolicy(const size_t blockDim, const size_t gridDim, const hipStream_t stream = 0)
 
       Is for kernels performing a reduction across indvidual thread blocks. The
       number of threads per block (blockDim) can be set to any valid multiple of

@@ -378,7 +378,7 @@ In total, SUNDIALS provides 3 execution policies:
       set to anything. If a CUDA stream is provided, it will be used to execute
       the kernel.
 
-   .. cpp:function:: SUNCudaBlockReduceExecPolicy(const size_t blockDim, const cudaStream_t stream = 0)
+   .. cpp:function:: SUNCudaBlockReduceExecPolicy(const size_t blockDim, const size_t gridDim, const cudaStream_t stream = 0)
 
       Is for kernels performing a reduction across indvidual thread blocks. The
       number of threads per block (blockDim) can be set to any valid multiple of
