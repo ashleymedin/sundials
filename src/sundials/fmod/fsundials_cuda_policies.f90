@@ -1,8 +1,7 @@
 module fsundials_cuda_policies_mod
   use, intrinsic :: ISO_C_BINDING
-  use fsundials_core_mod
   implicit none
-  
+
   integer, parameter :: WARP_SIZE = 32
   type, bind(c) :: cudaStream_t
     type(c_ptr) :: ptr = c_null_ptr
