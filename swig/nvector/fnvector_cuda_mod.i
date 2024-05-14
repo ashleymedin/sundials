@@ -94,8 +94,8 @@ bind(C, name="_wrap_FN_VSetKernelExecPolicy_Cuda") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 type(C_PTR), value :: farg1
-class(SUNCudaFExecPolicy), pointer :: farg2
-class(SUNCudaFExecPolicy), pointer :: farg3
+class(FExecPolicy), pointer :: farg2
+class(FExecPolicy), pointer :: farg3
 integer(C_INT) :: fresult
 end function
 %}
@@ -132,12 +132,12 @@ result(swig_result)
 use, intrinsic :: ISO_C_BINDING
 integer(C_INT) :: swig_result
 type(N_Vector), target, intent(inout) :: x
-class(SUNCudaFExecPolicy), intent(in) :: stream_exec_policy
-class(SUNCudaFExecPolicy), intent(in) :: reduce_exec_policy
+class(FExecPolicy), intent(in) :: stream_exec_policy
+class(FExecPolicy), intent(in) :: reduce_exec_policy
 integer(C_INT) :: fresult 
 type(C_PTR) :: farg1 
-class(SUNCudaFExecPolicy), pointer :: farg2
-class(SUNCudaFExecPolicy), pointer :: farg3
+class(FExecPolicy), pointer :: farg2
+class(FExecPolicy), pointer :: farg3
 
 farg1 = c_loc(x)
 
