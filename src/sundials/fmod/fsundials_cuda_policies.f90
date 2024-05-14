@@ -32,7 +32,6 @@ module fsundials_cuda_policies_mod
     procedure :: blockSize => gridStrideBlockSize
     procedure :: clone => gridStrideClone
     procedure :: atomic => atomic_false_2
-
   end type GridStrideExecPolicy
 
   type, extends(ExecPolicy) :: BlockReduceAtomicExecPolicy
