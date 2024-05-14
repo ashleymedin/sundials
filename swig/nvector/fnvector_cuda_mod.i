@@ -12,10 +12,6 @@
 // fake interface file so that Swig can generate the correct wrapper code
 %import "sundials/fsundials_cuda_policies_mod.i" 
 
-%insert("finterfaces") %{
-use fsundials_cuda_policies_mod
-%}
-
 // include code common to all nvector implementations
 %include "fnvector.i"
 

@@ -7,7 +7,7 @@ module fsundials_cuda_policies_mod
     type(c_ptr) :: ptr = c_null_ptr
   end type cudaStream_t
 
-  type :: FExecPolicy
+  type, public :: FExecPolicy
       type(cudaStream_t) :: stream
     contains
       procedure :: gridSize
@@ -25,7 +25,7 @@ module fsundials_cuda_policies_mod
     procedure :: atomic => atomic_false_1
   end type ThreadDirectFExecPolicy
 
-  type, extends(FExecPolicy) :: GridStrideFExecPolicy
+  type, public, extends(FExecPolicy) :: GridStrideFExecPolicy
     integer :: gridDim_, blockDim_
   contains
     procedure :: gridSize => gridStrideGridSize
@@ -34,7 +34,7 @@ module fsundials_cuda_policies_mod
     procedure :: atomic => atomic_false_2
   end type GridStrideFExecPolicy
 
-  type, extends(FExecPolicy) :: BlockReduceAtomicFExecPolicy
+  type, public, extends(FExecPolicy) :: BlockReduceAtomicFExecPolicy
     integer :: gridDim_, blockDim_
   contains
     procedure :: gridSize => blockReduceAtomicGridSize
@@ -43,7 +43,7 @@ module fsundials_cuda_policies_mod
     procedure :: atomic => atomic_true
   end type BlockReduceAtomicFExecPolicy
 
-  type, extends(FExecPolicy) :: BlockReduceFExecPolicy
+  type, public, extends(FExecPolicy) :: BlockReduceFExecPolicy
     integer :: gridDim_, blockDim_
   contains
     procedure :: gridSize => blockReduceGridSize

@@ -105,9 +105,6 @@ module fnvector_cuda_mod
 
 ! WRAPPER DECLARATIONS
 interface
-
-use fsundials_cuda_policies_mod
-
 function swigc_FN_VNewEmpty_Cuda(farg1) &
 bind(C, name="_wrap_FN_VNewEmpty_Cuda") &
 result(fresult)
