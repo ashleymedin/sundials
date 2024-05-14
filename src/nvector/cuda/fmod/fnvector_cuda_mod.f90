@@ -1660,16 +1660,25 @@ result(swig_result)
 use, intrinsic :: ISO_C_BINDING
 integer(C_INT) :: swig_result
 type(N_Vector), target, intent(inout) :: x
-class(SUNCudaThreadDirectExecPolicy), intent(in) :: stream_exec_policy
-class(SUNCudaBlockReduceExecPolicy), intent(in) :: reduce_exec_policy
+class(SUNCudaExecPolicy), intent(in) :: stream_exec_policy
+class(SUNCudaExecPolicy), intent(in) :: reduce_exec_policy
 integer(C_INT) :: fresult 
 type(C_PTR) :: farg1 
 class(SUNCudaExecPolicy), pointer :: farg2
 class(SUNCudaExecPolicy), pointer :: farg3
 
 farg1 = c_loc(x)
-farg2 => stream_exec_policy
-farg3 => reduce_exec_policy
+
+select type (stream_exec_policy)
+type is (SUNCudaThreadDirectExecPolicy)
+    farg2 => stream_exec_policy
+end select
+
+select type (reduce_exec_policy)
+type is (SUNCudaBlockReduceExecPolicy)
+    farg3 => reduce_exec_policy
+end select
+
 fresult = swigc_FN_VSetKernelExecPolicy_Cuda(farg1, farg2, farg3)
 swig_result = fresult
 end function
