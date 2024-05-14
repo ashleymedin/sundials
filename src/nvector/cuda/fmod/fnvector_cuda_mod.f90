@@ -20,6 +20,7 @@
 
 module fnvector_cuda_mod
  use, intrinsic :: ISO_C_BINDING
+ use fsundials_cuda_policies_mod
  use fsundials_core_mod
  implicit none
  private

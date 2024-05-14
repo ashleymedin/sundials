@@ -7,6 +7,8 @@
 %module fnvector_cuda_mod
 
 %ignore N_VSetKernelExecPolicy_Cuda;
+//%apply void* { SUNCudaExecPolicy * };
+%import "sundials/fsundials_cuda_policies_mod.i"
 
 // include code common to all nvector implementations
 %include "fnvector.i"
@@ -21,7 +23,6 @@
 %nvector_impl(Cuda)
 
 // Process and wrap functions in the following files
-//%include "sundials/sundials_cuda_policies.hpp"
 %include "nvector/nvector_cuda.h"
 
 %insert("wrapper") %{
