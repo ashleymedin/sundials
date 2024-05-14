@@ -15,7 +15,7 @@
 # ---------------------------------------------------------------
 
 set(sundials_SOURCES
-  fsundials_core_mod.f90 fsundials_core_mod.c fsundials_cuda_policies.f90
+  fsundials_core_mod.f90 fsundials_core_mod.c fsundials_cuda_policies_mod.f90
 )
 
 sundials_add_f2003_library(sundials_fcore_mod
