@@ -221,6 +221,7 @@ enum {
 #include "sundials/sundials_nvector.h"
 
 
+#include "sundials/sundials_cuda_policies.hpp"
 #include "nvector/nvector_cuda.h"
 
 
