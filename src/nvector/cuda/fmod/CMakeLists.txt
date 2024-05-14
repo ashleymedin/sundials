@@ -10,7 +10,7 @@ sundials_add_f2003_library(sundials_fnveccuda_mod
   SOURCES
     fnvector_cuda_mod.f90 fnvector_cuda_mod.cu
   LINK_LIBRARIES
-    PUBLIC sundials_fcore_mod fsundials_cuda_policies_mod
+    PUBLIC sundials_fcore_mod
   OBJECT_LIBRARIES
   OUTPUT_NAME
     sundials_fnveccuda_mod
