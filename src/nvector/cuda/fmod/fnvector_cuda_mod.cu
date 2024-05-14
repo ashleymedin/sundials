@@ -193,15 +193,6 @@ enum {
   }
 
 
-#define SWIG_check_mutable(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
-    if ((SWIG_CLASS_WRAPPER).cmemflags & SWIG_MEM_CONST) { \
-        SWIG_exception_impl(FUNCNAME, SWIG_TypeError, \
-            "Cannot pass const " TYPENAME " (class " FNAME ") " \
-            "as a mutable reference", \
-            RETURNNULL); \
-    }
-
-
 #include <stdio.h>
 #if defined(_MSC_VER) || defined(__BORLANDC__) || defined(_WATCOM)
 # ifndef snprintf
@@ -371,24 +362,6 @@ SWIGEXPORT int _wrap_FN_VIsManagedMemory_Cuda(N_Vector farg1) {
 }
 
 
-SWIGEXPORT int _wrap_FN_VSetKernelExecPolicy_Cuda(N_Vector farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3) {
-  int fresult ;
-  N_Vector arg1 = (N_Vector) 0 ;
-  SUNCudaExecPolicy *arg2 = (SUNCudaExecPolicy *) 0 ;
-  SUNCudaExecPolicy *arg3 = (SUNCudaExecPolicy *) 0 ;
-  SUNErrCode result;
-  
-  arg1 = (N_Vector)(farg1);
-  SWIG_check_mutable(*farg2, "SUNCudaExecPolicy *", "SWIGTYPE_p_SUNCudaExecPolicy", "N_VSetKernelExecPolicy_Cuda(N_Vector,SUNCudaExecPolicy *,SUNCudaExecPolicy *)", return 0);
-  arg2 = (SUNCudaExecPolicy *)(farg2->cptr);
-  SWIG_check_mutable(*farg3, "SUNCudaExecPolicy *", "SWIGTYPE_p_SUNCudaExecPolicy", "N_VSetKernelExecPolicy_Cuda(N_Vector,SUNCudaExecPolicy *,SUNCudaExecPolicy *)", return 0);
-  arg3 = (SUNCudaExecPolicy *)(farg3->cptr);
-  result = (SUNErrCode)N_VSetKernelExecPolicy_Cuda(arg1,arg2,arg3);
-  fresult = (SUNErrCode)(result);
-  return fresult;
-}
-
-
 SWIGEXPORT void _wrap_FN_VCopyToDevice_Cuda(N_Vector farg1) {
   N_Vector arg1 = (N_Vector) 0 ;
   
@@ -413,18 +386,6 @@ SWIGEXPORT int64_t _wrap_FN_VGetLength_Cuda(N_Vector farg1) {
   arg1 = (N_Vector)(farg1);
   result = N_VGetLength_Cuda(arg1);
   fresult = (sunindextype)(result);
-  return fresult;
-}
-
-
-SWIGEXPORT double * _wrap_FN_VGetHostArrayPointer_Cuda(N_Vector farg1) {
-  double * fresult ;
-  N_Vector arg1 = (N_Vector) 0 ;
-  sunrealtype *result = 0 ;
-  
-  arg1 = (N_Vector)(farg1);
-  result = (sunrealtype *)N_VGetHostArrayPointer_Cuda(arg1);
-  fresult = result;
   return fresult;
 }
 
@@ -1094,5 +1055,43 @@ SWIGEXPORT int _wrap_FN_VEnableWrmsNormMaskVectorArray_Cuda(N_Vector farg1, int 
   return fresult;
 }
 
+
+
+SWIGEXPORT double * _wrap_FN_VGetDeviceArrayPointer_Cuda(N_Vector farg1) {
+  double * fresult ;
+  N_Vector arg1 = (N_Vector) 0 ;
+  sunrealtype *result = 0 ;
+
+  arg1 = (N_Vector)(farg1);
+  result = (sunrealtype *)N_VGetDeviceArrayPointer_Cuda(arg1);
+  fresult = result;
+  return fresult;
+}
+
+SWIGEXPORT double * _wrap_FN_VGetHostArrayPointer_Cuda(N_Vector farg1) {
+  double * fresult ;
+  N_Vector arg1 = (N_Vector) 0 ;
+  sunrealtype *result = 0 ;
+
+  arg1 = (N_Vector)(farg1);
+  result = (sunrealtype *)N_VGetHostArrayPointer_Cuda(arg1);
+  fresult = result;
+  return fresult;
+}
+
+SWIGEXPORT int _wrap_FN_VSetKernelExecPolicy_Cuda(N_Vector farg1, SUNCudaExecPolicy *farg2, SUNCudaExecPolicy *farg3) {
+  int fresult ;
+  N_Vector arg1 = (N_Vector) 0 ;
+  SUNCudaExecPolicy *arg2 = (SUNCudaExecPolicy *) 0 ;
+  SUNCudaExecPolicy *arg3 = (SUNCudaExecPolicy *) 0 ;
+  SUNErrCode result;
+  
+  arg1 = (N_Vector)(farg1);
+  arg2 = (SUNCudaExecPolicy *)(farg2->cptr);
+  arg3 = (SUNCudaExecPolicy *)(farg3->cptr);
+  result = (SUNErrCode)N_VSetKernelExecPolicy_Cuda(arg1,arg2,arg3);
+  fresult = (SUNErrCode)(result);
+  return fresult;
+}
 
 

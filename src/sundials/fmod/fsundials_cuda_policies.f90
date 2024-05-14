@@ -55,18 +55,16 @@ module fsundials_cuda_policies_mod
 
 
   abstract interface
-    function gridSize_interface(this, numWorkUnits, blockDim) result(gridSize)
+    integer(c_int) function gridSize_interface(this, numWorkUnits, blockDim) result(gridSize)
       import :: ExecPolicy, c_int
       class(ExecPolicy), intent(in) :: this
       integer(c_int), intent(in), optional :: numWorkUnits, blockDim
-      integer(c_int) :: gridSize
     end function gridSize_interface
 
-    function blockSize_interface(this, numWorkUnits, gridDim) result(blockSize)
+    integer(c_int) function blockSize_interface(this, numWorkUnits, gridDim) result(blockSize)
       import :: ExecPolicy, c_int
       class(ExecPolicy), intent(in) :: this
       integer(c_int), intent(in), optional :: numWorkUnits, gridDim
-      integer(c_int) :: blockSize
     end function blockSize_interface
 
     !function clone_interface(this) result(clone)
@@ -75,20 +73,31 @@ module fsundials_cuda_policies_mod
     !  type(ExecPolicy), pointer :: clone
     !end function clone_interface
 
-    function atomic_interface(this) result(atomic)
+    logical function atomic_interface(this) result(atomic)
       import :: ExecPolicy
       class(ExecPolicy), intent(in) :: this
-      logical :: atomic
     end function atomic_interface
 
   end interface
 
+  ! define type aliases for classes in the sundials::cuda namespace
+  type, public, extends(ThreadDirectExecPolicy) :: SUNCudaThreadDirectExecPolicy
+  end type SUNCudaThreadDirectExecPolicy
+
+  type, public, extends(GridStrideExecPolicy) :: SUNCudaGridStrideExecPolicy
+  end type SUNCudaGridStrideExecPolicy
+
+  type, public, extends(BlockReduceAtomicExecPolicy) :: SUNCudaBlockReduceAtomicExecPolicy
+  end type SUNCudaBlockReduceAtomicExecPolicy
+
+  type, public, extends(BlockReduceExecPolicy) :: SUNCudaBlockReduceExecPolicy
+  end type SUNCudaBlockReduceExecPolicy
+
 contains
 
-  function threadDirectGridSize(this, numWorkUnits, blockDim) result(gridSize)
+  integer(c_int) function threadDirectGridSize(this, numWorkUnits, blockDim) result(gridSize)
     class(ThreadDirectExecPolicy), intent(in) :: this
     integer, intent(in), optional :: numWorkUnits, blockDim
-    integer :: gridSize
     if (present(numWorkUnits)) then
       gridSize = (numWorkUnits + this%blockSize() - 1) / this%blockSize()
     else
@@ -96,10 +105,9 @@ contains
     end if
   end function threadDirectGridSize
 
-  function threadDirectBlockSize(this, numWorkUnits, gridDim) result(blockSize)
+  integer(c_int) function threadDirectBlockSize(this, numWorkUnits, gridDim) result(blockSize)
     class(ThreadDirectExecPolicy), intent(in) :: this
     integer, intent(in), optional :: numWorkUnits, gridDim
-    integer :: blockSize
     blockSize = this%blockDim_
   end function threadDirectBlockSize
 
@@ -112,24 +120,21 @@ contains
     clone%stream = this%stream
   end function threadDirectClone
 
-  function atomic_false_1(this) result(atomic)
+  logical function atomic_false_1(this) result(atomic)
     class(ThreadDirectExecPolicy), intent(in) :: this
-    logical :: atomic
     atomic = .false.
   end function atomic_false_1
 
 
-  function gridStrideGridSize(this, numWorkUnits, blockDim) result(gridSize)
+  integer(c_int) function gridStrideGridSize(this, numWorkUnits, blockDim) result(gridSize)
     class(GridStrideExecPolicy), intent(in) :: this
     integer, intent(in), optional :: numWorkUnits, blockDim
-    integer :: gridSize
     gridSize = this%gridDim_
   end function gridStrideGridSize
 
-  function gridStrideBlockSize(this, numWorkUnits, gridDim) result(blockSize)
+  integer(c_int) function gridStrideBlockSize(this, numWorkUnits, gridDim) result(blockSize)
     class(GridStrideExecPolicy), intent(in) :: this
     integer, intent(in), optional :: numWorkUnits, gridDim
-    integer :: blockSize
     blockSize = this%blockDim_
   end function gridStrideBlockSize
   
@@ -143,17 +148,15 @@ contains
     clone%stream = this%stream
   end function gridStrideClone
 
-  function atomic_false_2(this) result(atomic)
+  logical function atomic_false_2(this) result(atomic)
     class(GridStrideExecPolicy), intent(in) :: this
-    logical :: atomic
     atomic = .false.
   end function atomic_false_2
 
   
-  function blockReduceAtomicGridSize(this, numWorkUnits, blockDim) result(gridSize)
+  integer(c_int) function blockReduceAtomicGridSize(this, numWorkUnits, blockDim) result(gridSize)
     class(BlockReduceAtomicExecPolicy), intent(in) :: this
     integer, intent(in), optional :: numWorkUnits, blockDim
-    integer :: gridSize
     if (blockDim < 1 .or. mod(blockDim, WARP_SIZE) /= 0) then
       print *, "Error: the block size must be a multiple of the CUDA warp size"
       stop 1
@@ -169,10 +172,9 @@ contains
     end if
   end function blockReduceAtomicGridSize
 
-  function blockReduceAtomicBlockSize(this, numWorkUnits, gridDim) result(blockSize)
+  integer(c_int) function blockReduceAtomicBlockSize(this, numWorkUnits, gridDim) result(blockSize)
     class(BlockReduceAtomicExecPolicy), intent(in) :: this
     integer, intent(in), optional :: numWorkUnits, gridDim
-    integer :: blockSize
     blockSize = this%blockDim_
   end function blockReduceAtomicBlockSize
 
@@ -186,17 +188,15 @@ contains
     clone%stream = this%stream
   end function blockReduceAtomicClone
 
-  function atomic_true(this) result(atomic)
+  logical function atomic_true(this) result(atomic)
     class(BlockReduceAtomicExecPolicy), intent(in) :: this
-    logical :: atomic
     atomic = .true.
   end function atomic_true
 
 
-  function blockReduceGridSize(this, numWorkUnits, blockDim) result(gridSize)
+  integer(c_int) function blockReduceGridSize(this, numWorkUnits, blockDim) result(gridSize)
     class(BlockReduceExecPolicy), intent(in) :: this
     integer, intent(in), optional :: numWorkUnits, blockDim
-    integer :: gridSize
     if (blockDim < 1 .or. mod(blockDim, WARP_SIZE) /= 0) then
       print *, "Error: the block size must be a multiple of the CUDA warp size"
       stop 1
@@ -212,10 +212,9 @@ contains
     end if
   end function blockReduceGridSize
 
-  function blockReduceBlockSize(this, numWorkUnits, gridDim) result(blockSize)
+  integer(c_int) function blockReduceBlockSize(this, numWorkUnits, gridDim) result(blockSize)
     class(BlockReduceExecPolicy), intent(in) :: this
     integer, intent(in), optional :: numWorkUnits, gridDim
-    integer :: blockSize
     blockSize = this%blockDim_
   end function blockReduceBlockSize
 
@@ -229,9 +228,8 @@ contains
     clone%stream = this%stream
   end function blockReduceClone
 
-  function atomic_false(this) result(atomic)
+  logical function atomic_false(this) result(atomic)
     class(BlockReduceExecPolicy), intent(in) :: this
-    logical :: atomic
     atomic = .false.
   end function atomic_false
 

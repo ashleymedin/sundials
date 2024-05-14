@@ -45,14 +45,9 @@ module fnvector_cuda_mod
  public :: FN_VSetHostArrayPointer_Cuda
  public :: FN_VSetDeviceArrayPointer_Cuda
  public :: FN_VIsManagedMemory_Cuda
- type, public :: SWIGTYPE_p_SUNCudaExecPolicy
-  type(SwigClassWrapper), public :: swigdata
- end type
- public :: FN_VSetKernelExecPolicy_Cuda
  public :: FN_VCopyToDevice_Cuda
  public :: FN_VCopyFromDevice_Cuda
  public :: FN_VGetLength_Cuda
- public :: FN_VGetHostArrayPointer_Cuda
  public :: FN_VGetVectorID_Cuda
  public :: FN_VCloneEmpty_Cuda
  public :: FN_VClone_Cuda
@@ -101,6 +96,11 @@ module fnvector_cuda_mod
  public :: FN_VEnableConstVectorArray_Cuda
  public :: FN_VEnableWrmsNormVectorArray_Cuda
  public :: FN_VEnableWrmsNormMaskVectorArray_Cuda
+
+ public :: FN_VGetDeviceArrayPointer_Cuda
+ public :: FN_VGetHostArrayPointer_Cuda 
+ public :: FN_VSetKernelExecPolicy_Cuda
+
 
 ! WRAPPER DECLARATIONS
 interface
@@ -185,17 +185,6 @@ type(C_PTR), value :: farg1
 integer(C_INT) :: fresult
 end function
 
-function swigc_FN_VSetKernelExecPolicy_Cuda(farg1, farg2, farg3) &
-bind(C, name="_wrap_FN_VSetKernelExecPolicy_Cuda") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-import :: swigclasswrapper
-type(C_PTR), value :: farg1
-type(SwigClassWrapper) :: farg2
-type(SwigClassWrapper) :: farg3
-integer(C_INT) :: fresult
-end function
-
 subroutine swigc_FN_VCopyToDevice_Cuda(farg1) &
 bind(C, name="_wrap_FN_VCopyToDevice_Cuda")
 use, intrinsic :: ISO_C_BINDING
@@ -214,14 +203,6 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 type(C_PTR), value :: farg1
 integer(C_INT64_T) :: fresult
-end function
-
-function swigc_FN_VGetHostArrayPointer_Cuda(farg1) &
-bind(C, name="_wrap_FN_VGetHostArrayPointer_Cuda") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
-type(C_PTR) :: fresult
 end function
 
 function swigc_FN_VGetVectorID_Cuda(farg1) &
@@ -653,6 +634,33 @@ integer(C_INT), intent(in) :: farg2
 integer(C_INT) :: fresult
 end function
 
+
+function swigc_FN_VGetDeviceArrayPointer_Cuda(farg1) &
+bind(C, name="_wrap_FN_VGetDeviceArrayPointer_Cuda") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
+end function
+
+function swigc_FN_VGetHostArrayPointer_Cuda(farg1) &
+bind(C, name="_wrap_FN_VGetHostArrayPointer_Cuda") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
+end function
+
+function swigc_FN_VSetKernelExecPolicy_Cuda(farg1, farg2, farg3) &
+bind(C, name="_wrap_FN_VSetKernelExecPolicy_Cuda") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(SUNCudaExecPolicy) :: farg2
+type(SUNCudaExecPolicy) :: farg3
+integer(C_INT) :: fresult
+end function
+
 end interface
 
 
@@ -803,25 +811,6 @@ fresult = swigc_FN_VIsManagedMemory_Cuda(farg1)
 swig_result = fresult
 end function
 
-function FN_VSetKernelExecPolicy_Cuda(x, stream_exec_policy, reduce_exec_policy) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-integer(C_INT) :: swig_result
-type(N_Vector), target, intent(inout) :: x
-class(SWIGTYPE_p_SUNCudaExecPolicy), intent(in) :: stream_exec_policy
-class(SWIGTYPE_p_SUNCudaExecPolicy), intent(in) :: reduce_exec_policy
-integer(C_INT) :: fresult 
-type(C_PTR) :: farg1 
-type(SwigClassWrapper) :: farg2 
-type(SwigClassWrapper) :: farg3 
-
-farg1 = c_loc(x)
-farg2 = stream_exec_policy%swigdata
-farg3 = reduce_exec_policy%swigdata
-fresult = swigc_FN_VSetKernelExecPolicy_Cuda(farg1, farg2, farg3)
-swig_result = fresult
-end function
-
 subroutine FN_VCopyToDevice_Cuda(v)
 use, intrinsic :: ISO_C_BINDING
 type(N_Vector), target, intent(inout) :: v
@@ -851,19 +840,6 @@ type(C_PTR) :: farg1
 farg1 = c_loc(x)
 fresult = swigc_FN_VGetLength_Cuda(farg1)
 swig_result = fresult
-end function
-
-function FN_VGetHostArrayPointer_Cuda(x) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE), dimension(:), pointer :: swig_result
-type(N_Vector), target, intent(inout) :: x
-type(C_PTR) :: fresult 
-type(C_PTR) :: farg1 
-
-farg1 = c_loc(x)
-fresult = swigc_FN_VGetHostArrayPointer_Cuda(farg1)
-call c_f_pointer(fresult, swig_result, [1])
 end function
 
 function FN_VGetVectorID_Cuda(arg0) &
@@ -1648,6 +1624,52 @@ integer(C_INT) :: farg2
 farg1 = c_loc(v)
 farg2 = tf
 fresult = swigc_FN_VEnableWrmsNormMaskVectorArray_Cuda(farg1, farg2)
+swig_result = fresult
+end function
+
+
+function FN_VGetDeviceArrayPointer_Cuda(v) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+real(C_DOUBLE), dimension(:), pointer :: swig_result
+type(N_Vector), target, intent(inout) :: v
+type(C_PTR) :: fresult
+type(C_PTR) :: farg1
+
+farg1 = c_loc(v)
+fresult = swigc_FN_VGetDeviceArrayPointer_Cuda(farg1)
+call c_f_pointer(fresult, swig_result, [FN_VGetLength_Cuda(v)])
+end function
+
+function FN_VGetHostArrayPointer_Cuda(v) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+real(C_DOUBLE), dimension(:), pointer :: swig_result
+type(N_Vector), target, intent(inout) :: v
+type(C_PTR) :: fresult
+type(C_PTR) :: farg1
+
+farg1 = c_loc(v)
+fresult = swigc_FN_VGetHostArrayPointer_Cuda(farg1)
+call c_f_pointer(fresult, swig_result, [FN_VGetLength_Cuda(v)])
+end function
+
+function FN_VSetKernelExecPolicy_Cuda(x, stream_exec_policy, reduce_exec_policy) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swig_result
+type(N_Vector), target, intent(inout) :: x
+class(SUNCudaThreadDirectExecPolicy), intent(in) :: stream_exec_policy
+class(SUNCudaBlockReduceExecPolicy), intent(in) :: reduce_exec_policy
+integer(C_INT) :: fresult 
+type(C_PTR) :: farg1 
+type(SUNCudaExecPolicy) :: farg2 
+type(SUNCudaExecPolicy) :: farg3 
+
+farg1 = c_loc(x)
+farg2 = stream_exec_policy
+farg3 = reduce_exec_policy
+fresult = swigc_FN_VSetKernelExecPolicy_Cuda(farg1, farg2, farg3)
 swig_result = fresult
 end function
 
