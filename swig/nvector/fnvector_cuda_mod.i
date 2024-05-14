@@ -8,7 +8,9 @@
 
 %ignore N_VSetKernelExecPolicy_Cuda;
 //%apply void* { SUNCudaExecPolicy * };
-%import "sundials/fsundials_cuda_policies_mod.i"
+
+// fake interface file so that Swig can generate the correct wrapper code
+%import "sundials/fsundials_cuda_policies_mod.i" 
 
 // include code common to all nvector implementations
 %include "fnvector.i"
@@ -138,8 +140,8 @@ class(SUNCudaExecPolicy), pointer :: farg2
 class(SUNCudaExecPolicy), pointer :: farg3
 
 farg1 = c_loc(x)
-farg2 = stream_exec_policy
-farg3 = reduce_exec_policy
+farg2 => stream_exec_policy
+farg3 => reduce_exec_policy
 fresult = swigc_FN_VSetKernelExecPolicy_Cuda(farg1, farg2, farg3)
 swig_result = fresult
 end function
