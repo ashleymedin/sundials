@@ -657,8 +657,8 @@ bind(C, name="_wrap_FN_VSetKernelExecPolicy_Cuda") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 type(C_PTR), value :: farg1
-type(SUNCudaExecPolicy) :: farg2
-type(SUNCudaExecPolicy) :: farg3
+class(SUNCudaExecPolicy), pointer :: farg2
+class(SUNCudaExecPolicy), pointer :: farg3
 integer(C_INT) :: fresult
 end function
 
@@ -1664,8 +1664,8 @@ class(SUNCudaThreadDirectExecPolicy), intent(in) :: stream_exec_policy
 class(SUNCudaBlockReduceExecPolicy), intent(in) :: reduce_exec_policy
 integer(C_INT) :: fresult 
 type(C_PTR) :: farg1 
-type(SUNCudaExecPolicy) :: farg2 
-type(SUNCudaExecPolicy) :: farg3 
+class(SUNCudaExecPolicy), pointer :: farg2
+class(SUNCudaExecPolicy), pointer :: farg3
 
 farg1 = c_loc(x)
 farg2 = stream_exec_policy
