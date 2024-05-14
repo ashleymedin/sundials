@@ -105,6 +105,9 @@ module fnvector_cuda_mod
 
 ! WRAPPER DECLARATIONS
 interface
+
+use fsundials_cuda_policies_mod
+
 function swigc_FN_VNewEmpty_Cuda(farg1) &
 bind(C, name="_wrap_FN_VNewEmpty_Cuda") &
 result(fresult)
@@ -652,7 +655,6 @@ type(C_PTR), value :: farg1
 type(C_PTR) :: fresult
 end function
 
-use fsundials_cuda_policies_mod
 function swigc_FN_VSetKernelExecPolicy_Cuda(farg1, farg2, farg3) &
 bind(C, name="_wrap_FN_VSetKernelExecPolicy_Cuda") &
 result(fresult)
