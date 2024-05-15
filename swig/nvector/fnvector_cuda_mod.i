@@ -58,8 +58,8 @@ SWIGEXPORT int _wrap_FN_VSetKernelExecPolicy_Cuda(N_Vector farg1, SUNCudaExecPol
   SUNErrCode result;
   
   arg1 = (N_Vector)(farg1);
-  arg2 = (SUNCudaExecPolicy *)(farg2->cptr);
-  arg3 = (SUNCudaExecPolicy *)(farg3->cptr);
+  arg2 = (SUNCudaExecPolicy *)(farg2);
+  arg3 = (SUNCudaExecPolicy *)(farg3);
   result = (SUNErrCode)N_VSetKernelExecPolicy_Cuda(arg1,arg2,arg3);
   fresult = (SUNErrCode)(result);
   return fresult;
