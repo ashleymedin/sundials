@@ -94,8 +94,8 @@ bind(C, name="_wrap_FN_VSetKernelExecPolicy_Cuda") &
 result(fresult)
 use, intrinsic :: ISO_C_BINDING
 type(C_PTR), value :: farg1
-class(FExecPolicy), pointer :: farg2
-class(FExecPolicy), pointer :: farg3
+type(C_PTR), value :: farg2
+type(C_PTR), value :: farg3
 integer(C_INT) :: fresult
 end function
 %}
@@ -132,24 +132,16 @@ result(swig_result)
 use, intrinsic :: ISO_C_BINDING
 integer(C_INT) :: swig_result
 type(N_Vector), target, intent(inout) :: x
-class(FExecPolicy), intent(in) :: stream_exec_policy
-class(FExecPolicy), intent(in) :: reduce_exec_policy
+type(SUNCudaThreadDirectExecPolicy), target, intent(in) :: stream_exec_policy
+type(SUNCudaBlockReduceExecPolicy), target, intent(in) :: reduce_exec_policy
 integer(C_INT) :: fresult 
-type(C_PTR) :: farg1 
-class(FExecPolicy), pointer :: farg2
-class(FExecPolicy), pointer :: farg3
+type(C_PTR) :: farg1
+type(C_PTR) :: farg2
+type(C_PTR) :: farg3
 
 farg1 = c_loc(x)
-
-select type (stream_exec_policy)
-type is (SUNCudaThreadDirectFExecPolicy)
-    farg2 => stream_exec_policy
-end select
-
-select type (reduce_exec_policy)
-type is (SUNCudaBlockReduceFExecPolicy)
-    farg3 => reduce_exec_policy
-end select
+farg2 = c_loc(stream_exec_policy)
+farg3 = c_loc(reduce_exec_policy)
 
 fresult = swigc_FN_VSetKernelExecPolicy_Cuda(farg1, farg2, farg3)
 swig_result = fresult
