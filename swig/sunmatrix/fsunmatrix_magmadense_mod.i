@@ -6,11 +6,12 @@
 
 %module fsunmatrix_magmadense_mod
 
-// include code common to all nvector implementations
+// include code common to all sunmatrix implementations
 %include "fsunmatrix.i"
 
 %{
 #include "sunmatrix/sunmatrix_magmadense.h"
+#include "sundials/sundials_memory.h"
 %}
 
 // sunmatrix_impl macro defines some ignore and inserts with the matrix name appended
@@ -26,6 +27,7 @@
 
 // Process and wrap functions in the following files
 %include "sunmatrix/sunmatrix_magmadense.h"
+%include "sundials/sundials_memory.h"
 
 %insert("wrapper") %{
 SWIGEXPORT double * _wrap_FSUNMatrix_MagmaDense_Data(SUNMatrix farg1) {
