@@ -237,6 +237,8 @@ enum {
 
 #include "sunmatrix/sunmatrix_magmadense.h"
 #include "sundials/sundials_memory.h"
+#include "sunmemory/sunmemory_cuda.h" //if CUDA is supported
+//#include "sunmemory/sunmemory_hip.h" //if HIP is supported
 
 
 typedef struct {
@@ -1257,6 +1259,154 @@ SWIGEXPORT int _wrap_FSUNMemoryHelper_ImplementsRequiredOps(SwigClassWrapper con
   arg1 = (SUNMemoryHelper)(farg1->cptr);
   result = (int)SUNMemoryHelper_ImplementsRequiredOps(arg1);
   fresult = (int)(result);
+  return fresult;
+}
+
+
+SWIGEXPORT SwigClassWrapper _wrap_FSUNMemoryHelper_Cuda(void *farg1) {
+  SwigClassWrapper fresult ;
+  SUNContext arg1 = (SUNContext) 0 ;
+  SUNMemoryHelper result;
+  
+  arg1 = (SUNContext)(farg1);
+  result = (SUNMemoryHelper)SUNMemoryHelper_Cuda(arg1);
+  fresult.cptr = result;
+  fresult.cmemflags = SWIG_MEM_RVALUE | (0 ? SWIG_MEM_OWN : 0);
+  return fresult;
+}
+
+
+SWIGEXPORT int _wrap_FSUNMemoryHelper_Alloc_Cuda(SwigClassWrapper const *farg1, void *farg2, size_t const *farg3, int const *farg4, void *farg5) {
+  int fresult ;
+  SUNMemoryHelper arg1 = (SUNMemoryHelper) 0 ;
+  SUNMemory *arg2 = (SUNMemory *) 0 ;
+  size_t arg3 ;
+  SUNMemoryType arg4 ;
+  void *arg5 = (void *) 0 ;
+  SUNErrCode result;
+  
+  SWIG_check_mutable(*farg1, "SUNMemoryHelper", "SUNMemoryHelper_", "SUNMemoryHelper_Alloc_Cuda(SUNMemoryHelper,SUNMemory *,size_t,SUNMemoryType,void *)", return 0);
+  arg1 = (SUNMemoryHelper)(farg1->cptr);
+  arg2 = (SUNMemory *)(farg2);
+  arg3 = (size_t)(*farg3);
+  arg4 = (SUNMemoryType)(*farg4);
+  arg5 = (void *)(farg5);
+  result = (SUNErrCode)SUNMemoryHelper_Alloc_Cuda(arg1,arg2,arg3,arg4,arg5);
+  fresult = (SUNErrCode)(result);
+  return fresult;
+}
+
+
+SWIGEXPORT SwigClassWrapper _wrap_FSUNMemoryHelper_Clone_Cuda(SwigClassWrapper const *farg1) {
+  SwigClassWrapper fresult ;
+  SUNMemoryHelper arg1 = (SUNMemoryHelper) 0 ;
+  SUNMemoryHelper result;
+  
+  SWIG_check_mutable(*farg1, "SUNMemoryHelper", "SUNMemoryHelper_", "SUNMemoryHelper_Clone_Cuda(SUNMemoryHelper)", return SwigClassWrapper_uninitialized());
+  arg1 = (SUNMemoryHelper)(farg1->cptr);
+  result = (SUNMemoryHelper)SUNMemoryHelper_Clone_Cuda(arg1);
+  fresult.cptr = result;
+  fresult.cmemflags = SWIG_MEM_RVALUE | (0 ? SWIG_MEM_OWN : 0);
+  return fresult;
+}
+
+
+SWIGEXPORT int _wrap_FSUNMemoryHelper_Dealloc_Cuda(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, void *farg3) {
+  int fresult ;
+  SUNMemoryHelper arg1 = (SUNMemoryHelper) 0 ;
+  SUNMemory arg2 = (SUNMemory) 0 ;
+  void *arg3 = (void *) 0 ;
+  SUNErrCode result;
+  
+  SWIG_check_mutable(*farg1, "SUNMemoryHelper", "SUNMemoryHelper_", "SUNMemoryHelper_Dealloc_Cuda(SUNMemoryHelper,SUNMemory,void *)", return 0);
+  arg1 = (SUNMemoryHelper)(farg1->cptr);
+  SWIG_check_mutable(*farg2, "SUNMemory", "SUNMemory_", "SUNMemoryHelper_Dealloc_Cuda(SUNMemoryHelper,SUNMemory,void *)", return 0);
+  arg2 = (SUNMemory)(farg2->cptr);
+  arg3 = (void *)(farg3);
+  result = (SUNErrCode)SUNMemoryHelper_Dealloc_Cuda(arg1,arg2,arg3);
+  fresult = (SUNErrCode)(result);
+  return fresult;
+}
+
+
+SWIGEXPORT int _wrap_FSUNMemoryHelper_Copy_Cuda(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, size_t const *farg4, void *farg5) {
+  int fresult ;
+  SUNMemoryHelper arg1 = (SUNMemoryHelper) 0 ;
+  SUNMemory arg2 = (SUNMemory) 0 ;
+  SUNMemory arg3 = (SUNMemory) 0 ;
+  size_t arg4 ;
+  void *arg5 = (void *) 0 ;
+  SUNErrCode result;
+  
+  SWIG_check_mutable(*farg1, "SUNMemoryHelper", "SUNMemoryHelper_", "SUNMemoryHelper_Copy_Cuda(SUNMemoryHelper,SUNMemory,SUNMemory,size_t,void *)", return 0);
+  arg1 = (SUNMemoryHelper)(farg1->cptr);
+  SWIG_check_mutable(*farg2, "SUNMemory", "SUNMemory_", "SUNMemoryHelper_Copy_Cuda(SUNMemoryHelper,SUNMemory,SUNMemory,size_t,void *)", return 0);
+  arg2 = (SUNMemory)(farg2->cptr);
+  SWIG_check_mutable(*farg3, "SUNMemory", "SUNMemory_", "SUNMemoryHelper_Copy_Cuda(SUNMemoryHelper,SUNMemory,SUNMemory,size_t,void *)", return 0);
+  arg3 = (SUNMemory)(farg3->cptr);
+  arg4 = (size_t)(*farg4);
+  arg5 = (void *)(farg5);
+  result = (SUNErrCode)SUNMemoryHelper_Copy_Cuda(arg1,arg2,arg3,arg4,arg5);
+  fresult = (SUNErrCode)(result);
+  return fresult;
+}
+
+
+SWIGEXPORT int _wrap_FSUNMemoryHelper_CopyAsync_Cuda(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2, SwigClassWrapper const *farg3, size_t const *farg4, void *farg5) {
+  int fresult ;
+  SUNMemoryHelper arg1 = (SUNMemoryHelper) 0 ;
+  SUNMemory arg2 = (SUNMemory) 0 ;
+  SUNMemory arg3 = (SUNMemory) 0 ;
+  size_t arg4 ;
+  void *arg5 = (void *) 0 ;
+  SUNErrCode result;
+  
+  SWIG_check_mutable(*farg1, "SUNMemoryHelper", "SUNMemoryHelper_", "SUNMemoryHelper_CopyAsync_Cuda(SUNMemoryHelper,SUNMemory,SUNMemory,size_t,void *)", return 0);
+  arg1 = (SUNMemoryHelper)(farg1->cptr);
+  SWIG_check_mutable(*farg2, "SUNMemory", "SUNMemory_", "SUNMemoryHelper_CopyAsync_Cuda(SUNMemoryHelper,SUNMemory,SUNMemory,size_t,void *)", return 0);
+  arg2 = (SUNMemory)(farg2->cptr);
+  SWIG_check_mutable(*farg3, "SUNMemory", "SUNMemory_", "SUNMemoryHelper_CopyAsync_Cuda(SUNMemoryHelper,SUNMemory,SUNMemory,size_t,void *)", return 0);
+  arg3 = (SUNMemory)(farg3->cptr);
+  arg4 = (size_t)(*farg4);
+  arg5 = (void *)(farg5);
+  result = (SUNErrCode)SUNMemoryHelper_CopyAsync_Cuda(arg1,arg2,arg3,arg4,arg5);
+  fresult = (SUNErrCode)(result);
+  return fresult;
+}
+
+
+SWIGEXPORT int _wrap_FSUNMemoryHelper_Destroy_Cuda(SwigClassWrapper const *farg1) {
+  int fresult ;
+  SUNMemoryHelper arg1 = (SUNMemoryHelper) 0 ;
+  SUNErrCode result;
+  
+  SWIG_check_mutable(*farg1, "SUNMemoryHelper", "SUNMemoryHelper_", "SUNMemoryHelper_Destroy_Cuda(SUNMemoryHelper)", return 0);
+  arg1 = (SUNMemoryHelper)(farg1->cptr);
+  result = (SUNErrCode)SUNMemoryHelper_Destroy_Cuda(arg1);
+  fresult = (SUNErrCode)(result);
+  return fresult;
+}
+
+
+SWIGEXPORT int _wrap_FSUNMemoryHelper_GetAllocStats_Cuda(SwigClassWrapper const *farg1, int const *farg2, long *farg3, long *farg4, size_t *farg5, size_t *farg6) {
+  int fresult ;
+  SUNMemoryHelper arg1 = (SUNMemoryHelper) 0 ;
+  SUNMemoryType arg2 ;
+  unsigned long *arg3 = (unsigned long *) 0 ;
+  unsigned long *arg4 = (unsigned long *) 0 ;
+  size_t *arg5 = (size_t *) 0 ;
+  size_t *arg6 = (size_t *) 0 ;
+  SUNErrCode result;
+  
+  SWIG_check_mutable(*farg1, "SUNMemoryHelper", "SUNMemoryHelper_", "SUNMemoryHelper_GetAllocStats_Cuda(SUNMemoryHelper,SUNMemoryType,unsigned long *,unsigned long *,size_t *,size_t *)", return 0);
+  arg1 = (SUNMemoryHelper)(farg1->cptr);
+  arg2 = (SUNMemoryType)(*farg2);
+  arg3 = (unsigned long *)(farg3);
+  arg4 = (unsigned long *)(farg4);
+  arg5 = (size_t *)(farg5);
+  arg6 = (size_t *)(farg6);
+  result = (SUNErrCode)SUNMemoryHelper_GetAllocStats_Cuda(arg1,arg2,arg3,arg4,arg5,arg6);
+  fresult = (SUNErrCode)(result);
   return fresult;
 }
 

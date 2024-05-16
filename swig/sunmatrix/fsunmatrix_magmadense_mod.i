@@ -12,6 +12,8 @@
 %{
 #include "sunmatrix/sunmatrix_magmadense.h"
 #include "sundials/sundials_memory.h"
+#include "sunmemory/sunmemory_cuda.h" //if CUDA is supported
+//#include "sunmemory/sunmemory_hip.h" //if HIP is supported
 %}
 
 // sunmatrix_impl macro defines some ignore and inserts with the matrix name appended
@@ -28,6 +30,8 @@
 // Process and wrap functions in the following files
 %include "sunmatrix/sunmatrix_magmadense.h"
 %include "sundials/sundials_memory.h"
+%include "sunmemory/sunmemory_cuda.h" //if CUDA is supported
+//#include "sunmemory/sunmemory_hip.h" //if HIP is supported
 
 %insert("wrapper") %{
 SWIGEXPORT double * _wrap_FSUNMatrix_MagmaDense_Data(SUNMatrix farg1) {

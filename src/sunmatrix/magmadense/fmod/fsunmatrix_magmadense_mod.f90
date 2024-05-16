@@ -139,6 +139,14 @@ integer, parameter, public :: SWIGTYPE_SUNMemoryType = C_INT
  public :: FSUNMemoryHelper_NewEmpty
  public :: FSUNMemoryHelper_CopyOps
  public :: FSUNMemoryHelper_ImplementsRequiredOps
+ public :: FSUNMemoryHelper_Cuda
+ public :: FSUNMemoryHelper_Alloc_Cuda
+ public :: FSUNMemoryHelper_Clone_Cuda
+ public :: FSUNMemoryHelper_Dealloc_Cuda
+ public :: FSUNMemoryHelper_Copy_Cuda
+ public :: FSUNMemoryHelper_CopyAsync_Cuda
+ public :: FSUNMemoryHelper_Destroy_Cuda
+ public :: FSUNMemoryHelper_GetAllocStats_Cuda
 
  public :: FSUNMatrix_MagmaDense_Data
  public :: FSUNMatrix_MagmaDense_BlockData
@@ -788,6 +796,97 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 import :: swigclasswrapper
 type(SwigClassWrapper) :: farg1
+integer(C_INT) :: fresult
+end function
+
+function swigc_FSUNMemoryHelper_Cuda(farg1) &
+bind(C, name="_wrap_FSUNMemoryHelper_Cuda") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(C_PTR), value :: farg1
+type(SwigClassWrapper) :: fresult
+end function
+
+function swigc_FSUNMemoryHelper_Alloc_Cuda(farg1, farg2, farg3, farg4, farg5) &
+bind(C, name="_wrap_FSUNMemoryHelper_Alloc_Cuda") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper) :: farg1
+type(C_PTR), value :: farg2
+integer(C_SIZE_T), intent(in) :: farg3
+integer(C_INT), intent(in) :: farg4
+type(C_PTR), value :: farg5
+integer(C_INT) :: fresult
+end function
+
+function swigc_FSUNMemoryHelper_Clone_Cuda(farg1) &
+bind(C, name="_wrap_FSUNMemoryHelper_Clone_Cuda") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper) :: farg1
+type(SwigClassWrapper) :: fresult
+end function
+
+function swigc_FSUNMemoryHelper_Dealloc_Cuda(farg1, farg2, farg3) &
+bind(C, name="_wrap_FSUNMemoryHelper_Dealloc_Cuda") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper) :: farg1
+type(SwigClassWrapper) :: farg2
+type(C_PTR), value :: farg3
+integer(C_INT) :: fresult
+end function
+
+function swigc_FSUNMemoryHelper_Copy_Cuda(farg1, farg2, farg3, farg4, farg5) &
+bind(C, name="_wrap_FSUNMemoryHelper_Copy_Cuda") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper) :: farg1
+type(SwigClassWrapper) :: farg2
+type(SwigClassWrapper) :: farg3
+integer(C_SIZE_T), intent(in) :: farg4
+type(C_PTR), value :: farg5
+integer(C_INT) :: fresult
+end function
+
+function swigc_FSUNMemoryHelper_CopyAsync_Cuda(farg1, farg2, farg3, farg4, farg5) &
+bind(C, name="_wrap_FSUNMemoryHelper_CopyAsync_Cuda") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper) :: farg1
+type(SwigClassWrapper) :: farg2
+type(SwigClassWrapper) :: farg3
+integer(C_SIZE_T), intent(in) :: farg4
+type(C_PTR), value :: farg5
+integer(C_INT) :: fresult
+end function
+
+function swigc_FSUNMemoryHelper_Destroy_Cuda(farg1) &
+bind(C, name="_wrap_FSUNMemoryHelper_Destroy_Cuda") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper) :: farg1
+integer(C_INT) :: fresult
+end function
+
+function swigc_FSUNMemoryHelper_GetAllocStats_Cuda(farg1, farg2, farg3, farg4, farg5, farg6) &
+bind(C, name="_wrap_FSUNMemoryHelper_GetAllocStats_Cuda") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper) :: farg1
+integer(C_INT), intent(in) :: farg2
+type(C_PTR), value :: farg3
+type(C_PTR), value :: farg4
+type(C_PTR), value :: farg5
+type(C_PTR), value :: farg6
 integer(C_INT) :: fresult
 end function
 
@@ -1879,6 +1978,168 @@ type(SwigClassWrapper) :: farg1
 
 farg1 = arg0%swigdata
 fresult = swigc_FSUNMemoryHelper_ImplementsRequiredOps(farg1)
+swig_result = fresult
+end function
+
+function FSUNMemoryHelper_Cuda(sunctx) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+type(SUNMemoryHelper_) :: swig_result
+type(C_PTR) :: sunctx
+type(SwigClassWrapper) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = sunctx
+fresult = swigc_FSUNMemoryHelper_Cuda(farg1)
+swig_result%swigdata = fresult
+end function
+
+function FSUNMemoryHelper_Alloc_Cuda(helper, memptr, mem_size, mem_type, queue) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swig_result
+class(SUNMemoryHelper_), intent(in) :: helper
+type(C_PTR), target, intent(inout) :: memptr
+integer(C_SIZE_T), intent(in) :: mem_size
+integer(SUNMemoryType), intent(in) :: mem_type
+type(C_PTR) :: queue
+integer(C_INT) :: fresult 
+type(SwigClassWrapper) :: farg1 
+type(C_PTR) :: farg2 
+integer(C_SIZE_T) :: farg3 
+integer(C_INT) :: farg4 
+type(C_PTR) :: farg5 
+
+farg1 = helper%swigdata
+farg2 = c_loc(memptr)
+farg3 = mem_size
+farg4 = mem_type
+farg5 = queue
+fresult = swigc_FSUNMemoryHelper_Alloc_Cuda(farg1, farg2, farg3, farg4, farg5)
+swig_result = fresult
+end function
+
+function FSUNMemoryHelper_Clone_Cuda(helper) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+type(SUNMemoryHelper_) :: swig_result
+class(SUNMemoryHelper_), intent(in) :: helper
+type(SwigClassWrapper) :: fresult 
+type(SwigClassWrapper) :: farg1 
+
+farg1 = helper%swigdata
+fresult = swigc_FSUNMemoryHelper_Clone_Cuda(farg1)
+swig_result%swigdata = fresult
+end function
+
+function FSUNMemoryHelper_Dealloc_Cuda(helper, mem, queue) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swig_result
+class(SUNMemoryHelper_), intent(in) :: helper
+class(SUNMemory_), intent(in) :: mem
+type(C_PTR) :: queue
+integer(C_INT) :: fresult 
+type(SwigClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg2 
+type(C_PTR) :: farg3 
+
+farg1 = helper%swigdata
+farg2 = mem%swigdata
+farg3 = queue
+fresult = swigc_FSUNMemoryHelper_Dealloc_Cuda(farg1, farg2, farg3)
+swig_result = fresult
+end function
+
+function FSUNMemoryHelper_Copy_Cuda(helper, dst, src, memory_size, queue) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swig_result
+class(SUNMemoryHelper_), intent(in) :: helper
+class(SUNMemory_), intent(in) :: dst
+class(SUNMemory_), intent(in) :: src
+integer(C_SIZE_T), intent(in) :: memory_size
+type(C_PTR) :: queue
+integer(C_INT) :: fresult 
+type(SwigClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg2 
+type(SwigClassWrapper) :: farg3 
+integer(C_SIZE_T) :: farg4 
+type(C_PTR) :: farg5 
+
+farg1 = helper%swigdata
+farg2 = dst%swigdata
+farg3 = src%swigdata
+farg4 = memory_size
+farg5 = queue
+fresult = swigc_FSUNMemoryHelper_Copy_Cuda(farg1, farg2, farg3, farg4, farg5)
+swig_result = fresult
+end function
+
+function FSUNMemoryHelper_CopyAsync_Cuda(helper, dst, src, memory_size, queue) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swig_result
+class(SUNMemoryHelper_), intent(in) :: helper
+class(SUNMemory_), intent(in) :: dst
+class(SUNMemory_), intent(in) :: src
+integer(C_SIZE_T), intent(in) :: memory_size
+type(C_PTR) :: queue
+integer(C_INT) :: fresult 
+type(SwigClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg2 
+type(SwigClassWrapper) :: farg3 
+integer(C_SIZE_T) :: farg4 
+type(C_PTR) :: farg5 
+
+farg1 = helper%swigdata
+farg2 = dst%swigdata
+farg3 = src%swigdata
+farg4 = memory_size
+farg5 = queue
+fresult = swigc_FSUNMemoryHelper_CopyAsync_Cuda(farg1, farg2, farg3, farg4, farg5)
+swig_result = fresult
+end function
+
+function FSUNMemoryHelper_Destroy_Cuda(helper) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swig_result
+class(SUNMemoryHelper_), intent(in) :: helper
+integer(C_INT) :: fresult 
+type(SwigClassWrapper) :: farg1 
+
+farg1 = helper%swigdata
+fresult = swigc_FSUNMemoryHelper_Destroy_Cuda(farg1)
+swig_result = fresult
+end function
+
+function FSUNMemoryHelper_GetAllocStats_Cuda(helper, mem_type, num_allocations, num_deallocations, bytes_allocated, &
+  bytes_high_watermark) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swig_result
+class(SUNMemoryHelper_), intent(in) :: helper
+integer(SUNMemoryType), intent(in) :: mem_type
+integer(C_LONG), target, intent(inout) :: num_allocations
+integer(C_LONG), target, intent(inout) :: num_deallocations
+integer(C_SIZE_T), target, intent(inout) :: bytes_allocated
+integer(C_SIZE_T), target, intent(inout) :: bytes_high_watermark
+integer(C_INT) :: fresult 
+type(SwigClassWrapper) :: farg1 
+integer(C_INT) :: farg2 
+type(C_PTR) :: farg3 
+type(C_PTR) :: farg4 
+type(C_PTR) :: farg5 
+type(C_PTR) :: farg6 
+
+farg1 = helper%swigdata
+farg2 = mem_type
+farg3 = c_loc(num_allocations)
+farg4 = c_loc(num_deallocations)
+farg5 = c_loc(bytes_allocated)
+farg6 = c_loc(bytes_high_watermark)
+fresult = swigc_FSUNMemoryHelper_GetAllocStats_Cuda(farg1, farg2, farg3, farg4, farg5, farg6)
 swig_result = fresult
 end function
 
