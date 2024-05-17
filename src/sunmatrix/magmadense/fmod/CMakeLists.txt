@@ -7,7 +7,7 @@
 if(SUNDIALS_MAGMA_BACKENDS MATCHES "CUDA")
   set_source_files_properties(fsunmatrix_magmadense_mod.cpp PROPERTIES LANGUAGE CUDA)
   set(_libs_needed sundials_fnveccuda_mod)
-  set(CMAKE_C_COMPILER ${CMAKE_CUDA_COMPILER})
+  #set(CMAKE_C_COMPILER ${CMAKE_CUDA_COMPILER})
 elseif(SUNDIALS_MAGMA_BACKENDS MATCHES "HIP")
   message(STATUS "F2003 interface won't yet work with SUNDIALS_MAGMA_BACKENDS=HIP ")
   set_source_files_properties(fsunmatrix_magmadense_mod.cpp PROPERTIES LANGUAGE CXX)
@@ -17,14 +17,14 @@ endif()
 
 sundials_add_f2003_library(sundials_fsunmatrixmagmadense_mod
   SOURCES
-    fsunmatrix_magmadense_mod.f90 fsunmatrix_magmadense_mod.cpp
+    fsunmatrix_magmadense_mod.f90 fsunmatrix_magmadense_mod.c
   INCLUDE_DIRECTORIES
     PUBLIC ${MAGMA_INCLUDE_DIR}
   LINK_LIBRARIES
     PUBLIC SUNDIALS::MAGMA ${_libs_needed} sundials_fcore_mod
   OBJECT_LIBRARIES
   COMPILE_DEFINITIONS
-    PRIVATE USE_CUDA
+    #PRIVATE USE_CUDA
   OUTPUT_NAME
     sundials_fsunmatrixmagmadense_mod
   VERSION
