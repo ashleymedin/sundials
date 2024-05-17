@@ -21,6 +21,8 @@ sundials_add_f2003_library(sundials_fsunmatrixmagmadense_mod
   LINK_LIBRARIES
     PUBLIC SUNDIALS::MAGMA ${_libs_needed} sundials_fcore_mod
   OBJECT_LIBRARIES
+  COMPILE_DEFINITIONS
+    PRIVATE USE_CUDA
   OUTPUT_NAME
     sundials_fsunmatrixmagmadense_mod
   VERSION
