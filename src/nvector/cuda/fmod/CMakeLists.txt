@@ -8,7 +8,7 @@ set(nveccuda_SOURCES fnvector_cuda_mod.f90 fnvector_cuda_mod.cu)
 
 sundials_add_f2003_library(sundials_fnveccuda_mod
   SOURCES
-    fnvector_cuda_mod.f90 fnvector_cuda_mod.cu
+    fnvector_cuda_mod.f90 fnvector_cuda_mod.c
   LINK_LIBRARIES
     PUBLIC sundials_fcore_mod
   OBJECT_LIBRARIES
