@@ -15,7 +15,7 @@ endif()
 
 sundials_add_f2003_library(sundials_fsunmatrixmagmadense_mod
   SOURCES
-    fsunmatrix_magmadense_mod.f90 fsunmatrix_magmadense_mod.c
+    fsunmatrix_magmadense_mod.f90 fsunmatrix_magmadense_mod.cpp
   INCLUDE_DIRECTORIES
     PUBLIC ${MAGMA_INCLUDE_DIR}
   LINK_LIBRARIES
