@@ -7,7 +7,7 @@
 %module fnvector_cuda_mod
 
 %ignore N_VSetKernelExecPolicy_Cuda;
-//%apply void* { SUNCudaFExecPolicy * };
+%apply void* { SUNCudaFExecPolicy };
 
 // fake interface file so that Swig can generate the correct wrapper code
 %import "sundials/fsundials_cuda_policies_mod.i" 
@@ -16,9 +16,7 @@
 %include "fnvector.i"
 
 // include the header file in the swig wrapper
-%{
-#include "nvector/nvector_cuda.h"
-%}
+%include "nvector/nvector_cuda.h"
 
 // nvector_impl macro defines some ignore and inserts with the vector name appended
 %nvector_impl(Cuda)

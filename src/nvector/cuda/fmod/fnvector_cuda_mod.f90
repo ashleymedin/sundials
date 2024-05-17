@@ -26,9 +26,6 @@ module fnvector_cuda_mod
  private
 
  ! DECLARATION CONSTRUCTS
- public :: FN_VNewEmpty_Cuda
- public :: FN_VNew_Cuda
- public :: FN_VNewManaged_Cuda
 
  integer, parameter :: swig_cmem_own_bit = 0
  integer, parameter :: swig_cmem_rvalue_bit = 1
@@ -37,9 +34,42 @@ module fnvector_cuda_mod
   type(C_PTR), public :: cptr = C_NULL_PTR
   integer(C_INT), public :: cmemflags = 0
  end type
+ type, public :: SWIGTYPE_p_SUNMemory
+  type(SwigClassWrapper), public :: swigdata
+ end type
+ type, public :: SWIGTYPE_p_SUNCudaExecPolicy
+  type(SwigClassWrapper), public :: swigdata
+ end type
  type, public :: SWIGTYPE_p_SUNMemoryHelper
   type(SwigClassWrapper), public :: swigdata
  end type
+ ! struct struct _N_VectorContent_Cuda
+ type, public :: N_VectorContent_Cuda_
+  type(SwigClassWrapper), public :: swigdata
+ contains
+  procedure :: set_length => swigf__N_VectorContent_Cuda_length_set
+  procedure :: get_length => swigf__N_VectorContent_Cuda_length_get
+  procedure :: set_own_helper => swigf__N_VectorContent_Cuda_own_helper_set
+  procedure :: get_own_helper => swigf__N_VectorContent_Cuda_own_helper_get
+  procedure :: set_host_data => swigf__N_VectorContent_Cuda_host_data_set
+  procedure :: get_host_data => swigf__N_VectorContent_Cuda_host_data_get
+  procedure :: set_device_data => swigf__N_VectorContent_Cuda_device_data_set
+  procedure :: get_device_data => swigf__N_VectorContent_Cuda_device_data_get
+  procedure :: set_stream_exec_policy => swigf__N_VectorContent_Cuda_stream_exec_policy_set
+  procedure :: get_stream_exec_policy => swigf__N_VectorContent_Cuda_stream_exec_policy_get
+  procedure :: set_reduce_exec_policy => swigf__N_VectorContent_Cuda_reduce_exec_policy_set
+  procedure :: get_reduce_exec_policy => swigf__N_VectorContent_Cuda_reduce_exec_policy_get
+  procedure :: set_mem_helper => swigf__N_VectorContent_Cuda_mem_helper_set
+  procedure :: get_mem_helper => swigf__N_VectorContent_Cuda_mem_helper_get
+  procedure :: set_priv => swigf__N_VectorContent_Cuda_priv_set
+  procedure :: get_priv => swigf__N_VectorContent_Cuda_priv_get
+  procedure :: release => swigf_release__N_VectorContent_Cuda
+  procedure, private :: swigf__N_VectorContent_Cuda_op_assign__
+  generic :: assignment(=) => swigf__N_VectorContent_Cuda_op_assign__
+ end type N_VectorContent_Cuda_
+ public :: FN_VNewEmpty_Cuda
+ public :: FN_VNew_Cuda
+ public :: FN_VNewManaged_Cuda
  public :: FN_VNewWithMemHelp_Cuda
  public :: FN_VMake_Cuda
  public :: FN_VMakeManaged_Cuda
@@ -49,6 +79,8 @@ module fnvector_cuda_mod
  public :: FN_VCopyToDevice_Cuda
  public :: FN_VCopyFromDevice_Cuda
  public :: FN_VGetLength_Cuda
+ public :: FN_VGetHostArrayPointer_Cuda
+ public :: FN_VGetDeviceArrayPointer_Cuda
  public :: FN_VGetVectorID_Cuda
  public :: FN_VCloneEmpty_Cuda
  public :: FN_VClone_Cuda
@@ -79,6 +111,8 @@ module fnvector_cuda_mod
  public :: FN_VLinearSumVectorArray_Cuda
  public :: FN_VScaleVectorArray_Cuda
  public :: FN_VConstVectorArray_Cuda
+ public :: FN_VScaleAddMultiVectorArray_Cuda
+ public :: FN_VLinearCombinationVectorArray_Cuda
  public :: FN_VWrmsNormVectorArray_Cuda
  public :: FN_VWrmsNormMaskVectorArray_Cuda
  public :: FN_VWSqrSumLocal_Cuda
@@ -97,6 +131,8 @@ module fnvector_cuda_mod
  public :: FN_VEnableConstVectorArray_Cuda
  public :: FN_VEnableWrmsNormVectorArray_Cuda
  public :: FN_VEnableWrmsNormMaskVectorArray_Cuda
+ public :: FN_VEnableScaleAddMultiVectorArray_Cuda
+ public :: FN_VEnableLinearCombinationVectorArray_Cuda
 
  public :: FN_VGetDeviceArrayPointer_Cuda
  public :: FN_VGetHostArrayPointer_Cuda 
@@ -105,6 +141,157 @@ module fnvector_cuda_mod
 
 ! WRAPPER DECLARATIONS
 interface
+subroutine swigc__N_VectorContent_Cuda_length_set(farg1, farg2) &
+bind(C, name="_wrap__N_VectorContent_Cuda_length_set")
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper) :: farg1
+integer(C_INT64_T), intent(in) :: farg2
+end subroutine
+
+function swigc__N_VectorContent_Cuda_length_get(farg1) &
+bind(C, name="_wrap__N_VectorContent_Cuda_length_get") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper) :: farg1
+integer(C_INT64_T) :: fresult
+end function
+
+subroutine swigc__N_VectorContent_Cuda_own_helper_set(farg1, farg2) &
+bind(C, name="_wrap__N_VectorContent_Cuda_own_helper_set")
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper) :: farg1
+integer(C_INT), intent(in) :: farg2
+end subroutine
+
+function swigc__N_VectorContent_Cuda_own_helper_get(farg1) &
+bind(C, name="_wrap__N_VectorContent_Cuda_own_helper_get") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper) :: farg1
+integer(C_INT) :: fresult
+end function
+
+subroutine swigc__N_VectorContent_Cuda_host_data_set(farg1, farg2) &
+bind(C, name="_wrap__N_VectorContent_Cuda_host_data_set")
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper) :: farg1
+type(SwigClassWrapper) :: farg2
+end subroutine
+
+function swigc__N_VectorContent_Cuda_host_data_get(farg1) &
+bind(C, name="_wrap__N_VectorContent_Cuda_host_data_get") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper) :: farg1
+type(SwigClassWrapper) :: fresult
+end function
+
+subroutine swigc__N_VectorContent_Cuda_device_data_set(farg1, farg2) &
+bind(C, name="_wrap__N_VectorContent_Cuda_device_data_set")
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper) :: farg1
+type(SwigClassWrapper) :: farg2
+end subroutine
+
+function swigc__N_VectorContent_Cuda_device_data_get(farg1) &
+bind(C, name="_wrap__N_VectorContent_Cuda_device_data_get") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper) :: farg1
+type(SwigClassWrapper) :: fresult
+end function
+
+subroutine swigc__N_VectorContent_Cuda_stream_exec_policy_set(farg1, farg2) &
+bind(C, name="_wrap__N_VectorContent_Cuda_stream_exec_policy_set")
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper) :: farg1
+type(SwigClassWrapper) :: farg2
+end subroutine
+
+function swigc__N_VectorContent_Cuda_stream_exec_policy_get(farg1) &
+bind(C, name="_wrap__N_VectorContent_Cuda_stream_exec_policy_get") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper) :: farg1
+type(SwigClassWrapper) :: fresult
+end function
+
+subroutine swigc__N_VectorContent_Cuda_reduce_exec_policy_set(farg1, farg2) &
+bind(C, name="_wrap__N_VectorContent_Cuda_reduce_exec_policy_set")
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper) :: farg1
+type(SwigClassWrapper) :: farg2
+end subroutine
+
+function swigc__N_VectorContent_Cuda_reduce_exec_policy_get(farg1) &
+bind(C, name="_wrap__N_VectorContent_Cuda_reduce_exec_policy_get") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper) :: farg1
+type(SwigClassWrapper) :: fresult
+end function
+
+subroutine swigc__N_VectorContent_Cuda_mem_helper_set(farg1, farg2) &
+bind(C, name="_wrap__N_VectorContent_Cuda_mem_helper_set")
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper) :: farg1
+type(SwigClassWrapper) :: farg2
+end subroutine
+
+function swigc__N_VectorContent_Cuda_mem_helper_get(farg1) &
+bind(C, name="_wrap__N_VectorContent_Cuda_mem_helper_get") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper) :: farg1
+type(SwigClassWrapper) :: fresult
+end function
+
+subroutine swigc__N_VectorContent_Cuda_priv_set(farg1, farg2) &
+bind(C, name="_wrap__N_VectorContent_Cuda_priv_set")
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper) :: farg1
+type(C_PTR), value :: farg2
+end subroutine
+
+function swigc__N_VectorContent_Cuda_priv_get(farg1) &
+bind(C, name="_wrap__N_VectorContent_Cuda_priv_get") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper) :: farg1
+type(C_PTR) :: fresult
+end function
+
+subroutine swigc_delete__N_VectorContent_Cuda(farg1) &
+bind(C, name="_wrap_delete__N_VectorContent_Cuda")
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper), intent(inout) :: farg1
+end subroutine
+
+subroutine swigc__N_VectorContent_Cuda_op_assign__(farg1, farg2) &
+bind(C, name="_wrap__N_VectorContent_Cuda_op_assign__")
+use, intrinsic :: ISO_C_BINDING
+import :: swigclasswrapper
+type(SwigClassWrapper), intent(inout) :: farg1
+type(SwigClassWrapper) :: farg2
+end subroutine
+
 function swigc_FN_VNewEmpty_Cuda(farg1) &
 bind(C, name="_wrap_FN_VNewEmpty_Cuda") &
 result(fresult)
@@ -204,6 +391,22 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 type(C_PTR), value :: farg1
 integer(C_INT64_T) :: fresult
+end function
+
+function swigc_FN_VGetHostArrayPointer_Cuda(farg1) &
+bind(C, name="_wrap_FN_VGetHostArrayPointer_Cuda") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
+end function
+
+function swigc_FN_VGetDeviceArrayPointer_Cuda(farg1) &
+bind(C, name="_wrap_FN_VGetDeviceArrayPointer_Cuda") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+type(C_PTR) :: fresult
 end function
 
 function swigc_FN_VGetVectorID_Cuda(farg1) &
@@ -472,6 +675,31 @@ type(C_PTR), value :: farg3
 integer(C_INT) :: fresult
 end function
 
+function swigc_FN_VScaleAddMultiVectorArray_Cuda(farg1, farg2, farg3, farg4, farg5, farg6) &
+bind(C, name="_wrap_FN_VScaleAddMultiVectorArray_Cuda") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT), intent(in) :: farg1
+integer(C_INT), intent(in) :: farg2
+type(C_PTR), value :: farg3
+type(C_PTR), value :: farg4
+type(C_PTR), value :: farg5
+type(C_PTR), value :: farg6
+integer(C_INT) :: fresult
+end function
+
+function swigc_FN_VLinearCombinationVectorArray_Cuda(farg1, farg2, farg3, farg4, farg5) &
+bind(C, name="_wrap_FN_VLinearCombinationVectorArray_Cuda") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT), intent(in) :: farg1
+integer(C_INT), intent(in) :: farg2
+type(C_PTR), value :: farg3
+type(C_PTR), value :: farg4
+type(C_PTR), value :: farg5
+integer(C_INT) :: fresult
+end function
+
 function swigc_FN_VWrmsNormVectorArray_Cuda(farg1, farg2, farg3, farg4) &
 bind(C, name="_wrap_FN_VWrmsNormVectorArray_Cuda") &
 result(fresult)
@@ -635,6 +863,24 @@ integer(C_INT), intent(in) :: farg2
 integer(C_INT) :: fresult
 end function
 
+function swigc_FN_VEnableScaleAddMultiVectorArray_Cuda(farg1, farg2) &
+bind(C, name="_wrap_FN_VEnableScaleAddMultiVectorArray_Cuda") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+integer(C_INT) :: fresult
+end function
+
+function swigc_FN_VEnableLinearCombinationVectorArray_Cuda(farg1, farg2) &
+bind(C, name="_wrap_FN_VEnableLinearCombinationVectorArray_Cuda") &
+result(fresult)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR), value :: farg1
+integer(C_INT), intent(in) :: farg2
+integer(C_INT) :: fresult
+end function
+
 
 function swigc_FN_VGetDeviceArrayPointer_Cuda(farg1) &
 bind(C, name="_wrap_FN_VGetDeviceArrayPointer_Cuda") &
@@ -667,6 +913,233 @@ end interface
 
 contains
  ! MODULE SUBPROGRAMS
+subroutine swigf__N_VectorContent_Cuda_length_set(self, length)
+use, intrinsic :: ISO_C_BINDING
+class(N_VectorContent_Cuda_), intent(in) :: self
+integer(C_INT64_T), intent(in) :: length
+type(SwigClassWrapper) :: farg1 
+integer(C_INT64_T) :: farg2 
+
+farg1 = self%swigdata
+farg2 = length
+call swigc__N_VectorContent_Cuda_length_set(farg1, farg2)
+end subroutine
+
+function swigf__N_VectorContent_Cuda_length_get(self) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT64_T) :: swig_result
+class(N_VectorContent_Cuda_), intent(in) :: self
+integer(C_INT64_T) :: fresult 
+type(SwigClassWrapper) :: farg1 
+
+farg1 = self%swigdata
+fresult = swigc__N_VectorContent_Cuda_length_get(farg1)
+swig_result = fresult
+end function
+
+subroutine swigf__N_VectorContent_Cuda_own_helper_set(self, own_helper)
+use, intrinsic :: ISO_C_BINDING
+class(N_VectorContent_Cuda_), intent(in) :: self
+integer(C_INT), intent(in) :: own_helper
+type(SwigClassWrapper) :: farg1 
+integer(C_INT) :: farg2 
+
+farg1 = self%swigdata
+farg2 = own_helper
+call swigc__N_VectorContent_Cuda_own_helper_set(farg1, farg2)
+end subroutine
+
+function swigf__N_VectorContent_Cuda_own_helper_get(self) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swig_result
+class(N_VectorContent_Cuda_), intent(in) :: self
+integer(C_INT) :: fresult 
+type(SwigClassWrapper) :: farg1 
+
+farg1 = self%swigdata
+fresult = swigc__N_VectorContent_Cuda_own_helper_get(farg1)
+swig_result = fresult
+end function
+
+subroutine swigf__N_VectorContent_Cuda_host_data_set(self, host_data)
+use, intrinsic :: ISO_C_BINDING
+class(N_VectorContent_Cuda_), intent(in) :: self
+type(SWIGTYPE_p_SUNMemory), intent(in) :: host_data
+type(SwigClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg2 
+
+farg1 = self%swigdata
+farg2 = host_data%swigdata
+call swigc__N_VectorContent_Cuda_host_data_set(farg1, farg2)
+end subroutine
+
+function swigf__N_VectorContent_Cuda_host_data_get(self) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+type(SWIGTYPE_p_SUNMemory) :: swig_result
+class(N_VectorContent_Cuda_), intent(in) :: self
+type(SwigClassWrapper) :: fresult 
+type(SwigClassWrapper) :: farg1 
+
+farg1 = self%swigdata
+fresult = swigc__N_VectorContent_Cuda_host_data_get(farg1)
+swig_result%swigdata = fresult
+end function
+
+subroutine swigf__N_VectorContent_Cuda_device_data_set(self, device_data)
+use, intrinsic :: ISO_C_BINDING
+class(N_VectorContent_Cuda_), intent(in) :: self
+type(SWIGTYPE_p_SUNMemory), intent(in) :: device_data
+type(SwigClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg2 
+
+farg1 = self%swigdata
+farg2 = device_data%swigdata
+call swigc__N_VectorContent_Cuda_device_data_set(farg1, farg2)
+end subroutine
+
+function swigf__N_VectorContent_Cuda_device_data_get(self) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+type(SWIGTYPE_p_SUNMemory) :: swig_result
+class(N_VectorContent_Cuda_), intent(in) :: self
+type(SwigClassWrapper) :: fresult 
+type(SwigClassWrapper) :: farg1 
+
+farg1 = self%swigdata
+fresult = swigc__N_VectorContent_Cuda_device_data_get(farg1)
+swig_result%swigdata = fresult
+end function
+
+subroutine swigf__N_VectorContent_Cuda_stream_exec_policy_set(self, stream_exec_policy)
+use, intrinsic :: ISO_C_BINDING
+class(N_VectorContent_Cuda_), intent(in) :: self
+class(SWIGTYPE_p_SUNCudaExecPolicy), intent(in) :: stream_exec_policy
+type(SwigClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg2 
+
+farg1 = self%swigdata
+farg2 = stream_exec_policy%swigdata
+call swigc__N_VectorContent_Cuda_stream_exec_policy_set(farg1, farg2)
+end subroutine
+
+function swigf__N_VectorContent_Cuda_stream_exec_policy_get(self) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+type(SWIGTYPE_p_SUNCudaExecPolicy) :: swig_result
+class(N_VectorContent_Cuda_), intent(in) :: self
+type(SwigClassWrapper) :: fresult 
+type(SwigClassWrapper) :: farg1 
+
+farg1 = self%swigdata
+fresult = swigc__N_VectorContent_Cuda_stream_exec_policy_get(farg1)
+swig_result%swigdata = fresult
+end function
+
+subroutine swigf__N_VectorContent_Cuda_reduce_exec_policy_set(self, reduce_exec_policy)
+use, intrinsic :: ISO_C_BINDING
+class(N_VectorContent_Cuda_), intent(in) :: self
+class(SWIGTYPE_p_SUNCudaExecPolicy), intent(in) :: reduce_exec_policy
+type(SwigClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg2 
+
+farg1 = self%swigdata
+farg2 = reduce_exec_policy%swigdata
+call swigc__N_VectorContent_Cuda_reduce_exec_policy_set(farg1, farg2)
+end subroutine
+
+function swigf__N_VectorContent_Cuda_reduce_exec_policy_get(self) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+type(SWIGTYPE_p_SUNCudaExecPolicy) :: swig_result
+class(N_VectorContent_Cuda_), intent(in) :: self
+type(SwigClassWrapper) :: fresult 
+type(SwigClassWrapper) :: farg1 
+
+farg1 = self%swigdata
+fresult = swigc__N_VectorContent_Cuda_reduce_exec_policy_get(farg1)
+swig_result%swigdata = fresult
+end function
+
+subroutine swigf__N_VectorContent_Cuda_mem_helper_set(self, mem_helper)
+use, intrinsic :: ISO_C_BINDING
+class(N_VectorContent_Cuda_), intent(in) :: self
+type(SWIGTYPE_p_SUNMemoryHelper), intent(in) :: mem_helper
+type(SwigClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg2 
+
+farg1 = self%swigdata
+farg2 = mem_helper%swigdata
+call swigc__N_VectorContent_Cuda_mem_helper_set(farg1, farg2)
+end subroutine
+
+function swigf__N_VectorContent_Cuda_mem_helper_get(self) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+type(SWIGTYPE_p_SUNMemoryHelper) :: swig_result
+class(N_VectorContent_Cuda_), intent(in) :: self
+type(SwigClassWrapper) :: fresult 
+type(SwigClassWrapper) :: farg1 
+
+farg1 = self%swigdata
+fresult = swigc__N_VectorContent_Cuda_mem_helper_get(farg1)
+swig_result%swigdata = fresult
+end function
+
+subroutine swigf__N_VectorContent_Cuda_priv_set(self, priv)
+use, intrinsic :: ISO_C_BINDING
+class(N_VectorContent_Cuda_), intent(in) :: self
+type(C_PTR) :: priv
+type(SwigClassWrapper) :: farg1 
+type(C_PTR) :: farg2 
+
+farg1 = self%swigdata
+farg2 = priv
+call swigc__N_VectorContent_Cuda_priv_set(farg1, farg2)
+end subroutine
+
+function swigf__N_VectorContent_Cuda_priv_get(self) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+type(C_PTR) :: swig_result
+class(N_VectorContent_Cuda_), intent(in) :: self
+type(C_PTR) :: fresult 
+type(SwigClassWrapper) :: farg1 
+
+farg1 = self%swigdata
+fresult = swigc__N_VectorContent_Cuda_priv_get(farg1)
+swig_result = fresult
+end function
+
+subroutine swigf_release__N_VectorContent_Cuda(self)
+use, intrinsic :: ISO_C_BINDING
+class(N_VectorContent_Cuda_), intent(inout) :: self
+type(SwigClassWrapper) :: farg1 
+
+farg1 = self%swigdata
+if (btest(farg1%cmemflags, swig_cmem_own_bit)) then
+call swigc_delete__N_VectorContent_Cuda(farg1)
+endif
+farg1%cptr = C_NULL_PTR
+farg1%cmemflags = 0
+self%swigdata = farg1
+end subroutine
+
+subroutine swigf__N_VectorContent_Cuda_op_assign__(self, other)
+use, intrinsic :: ISO_C_BINDING
+class(N_VectorContent_Cuda_), intent(inout) :: self
+type(N_VectorContent_Cuda_), intent(in) :: other
+type(SwigClassWrapper) :: farg1 
+type(SwigClassWrapper) :: farg2 
+
+farg1 = self%swigdata
+farg2 = other%swigdata
+call swigc__N_VectorContent_Cuda_op_assign__(farg1, farg2)
+self%swigdata = farg1
+end subroutine
+
 function FN_VNewEmpty_Cuda(sunctx) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
@@ -841,6 +1314,32 @@ type(C_PTR) :: farg1
 farg1 = c_loc(x)
 fresult = swigc_FN_VGetLength_Cuda(farg1)
 swig_result = fresult
+end function
+
+function FN_VGetHostArrayPointer_Cuda(x) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+real(C_DOUBLE), dimension(:), pointer :: swig_result
+type(N_Vector), target, intent(inout) :: x
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = c_loc(x)
+fresult = swigc_FN_VGetHostArrayPointer_Cuda(farg1)
+call c_f_pointer(fresult, swig_result, [1])
+end function
+
+function FN_VGetDeviceArrayPointer_Cuda(x) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+real(C_DOUBLE), dimension(:), pointer :: swig_result
+type(N_Vector), target, intent(inout) :: x
+type(C_PTR) :: fresult 
+type(C_PTR) :: farg1 
+
+farg1 = c_loc(x)
+fresult = swigc_FN_VGetDeviceArrayPointer_Cuda(farg1)
+call c_f_pointer(fresult, swig_result, [1])
 end function
 
 function FN_VGetVectorID_Cuda(arg0) &
@@ -1333,6 +1832,59 @@ fresult = swigc_FN_VConstVectorArray_Cuda(farg1, farg2, farg3)
 swig_result = fresult
 end function
 
+function FN_VScaleAddMultiVectorArray_Cuda(nvec, nsum, a, x, y, z) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swig_result
+integer(C_INT), intent(in) :: nvec
+integer(C_INT), intent(in) :: nsum
+real(C_DOUBLE), dimension(*), target, intent(inout) :: a
+type(C_PTR) :: x
+type(C_PTR), target, intent(inout) :: y
+type(C_PTR), target, intent(inout) :: z
+integer(C_INT) :: fresult 
+integer(C_INT) :: farg1 
+integer(C_INT) :: farg2 
+type(C_PTR) :: farg3 
+type(C_PTR) :: farg4 
+type(C_PTR) :: farg5 
+type(C_PTR) :: farg6 
+
+farg1 = nvec
+farg2 = nsum
+farg3 = c_loc(a(1))
+farg4 = x
+farg5 = c_loc(y)
+farg6 = c_loc(z)
+fresult = swigc_FN_VScaleAddMultiVectorArray_Cuda(farg1, farg2, farg3, farg4, farg5, farg6)
+swig_result = fresult
+end function
+
+function FN_VLinearCombinationVectorArray_Cuda(nvec, nsum, c, x, z) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swig_result
+integer(C_INT), intent(in) :: nvec
+integer(C_INT), intent(in) :: nsum
+real(C_DOUBLE), dimension(*), target, intent(inout) :: c
+type(C_PTR), target, intent(inout) :: x
+type(C_PTR) :: z
+integer(C_INT) :: fresult 
+integer(C_INT) :: farg1 
+integer(C_INT) :: farg2 
+type(C_PTR) :: farg3 
+type(C_PTR) :: farg4 
+type(C_PTR) :: farg5 
+
+farg1 = nvec
+farg2 = nsum
+farg3 = c_loc(c(1))
+farg4 = c_loc(x)
+farg5 = z
+fresult = swigc_FN_VLinearCombinationVectorArray_Cuda(farg1, farg2, farg3, farg4, farg5)
+swig_result = fresult
+end function
+
 function FN_VWrmsNormVectorArray_Cuda(nvec, x, w, nrm) &
 result(swig_result)
 use, intrinsic :: ISO_C_BINDING
@@ -1625,6 +2177,38 @@ integer(C_INT) :: farg2
 farg1 = c_loc(v)
 farg2 = tf
 fresult = swigc_FN_VEnableWrmsNormMaskVectorArray_Cuda(farg1, farg2)
+swig_result = fresult
+end function
+
+function FN_VEnableScaleAddMultiVectorArray_Cuda(v, tf) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swig_result
+type(N_Vector), target, intent(inout) :: v
+integer(C_INT), intent(in) :: tf
+integer(C_INT) :: fresult 
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
+
+farg1 = c_loc(v)
+farg2 = tf
+fresult = swigc_FN_VEnableScaleAddMultiVectorArray_Cuda(farg1, farg2)
+swig_result = fresult
+end function
+
+function FN_VEnableLinearCombinationVectorArray_Cuda(v, tf) &
+result(swig_result)
+use, intrinsic :: ISO_C_BINDING
+integer(C_INT) :: swig_result
+type(N_Vector), target, intent(inout) :: v
+integer(C_INT), intent(in) :: tf
+integer(C_INT) :: fresult 
+type(C_PTR) :: farg1 
+integer(C_INT) :: farg2 
+
+farg1 = c_loc(v)
+farg2 = tf
+fresult = swigc_FN_VEnableLinearCombinationVectorArray_Cuda(farg1, farg2)
 swig_result = fresult
 end function
 
