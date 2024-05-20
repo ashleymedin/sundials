@@ -79,8 +79,6 @@ module fnvector_cuda_mod
  public :: FN_VCopyToDevice_Cuda
  public :: FN_VCopyFromDevice_Cuda
  public :: FN_VGetLength_Cuda
- public :: FN_VGetHostArrayPointer_Cuda
- public :: FN_VGetDeviceArrayPointer_Cuda
  public :: FN_VGetVectorID_Cuda
  public :: FN_VCloneEmpty_Cuda
  public :: FN_VClone_Cuda
@@ -391,22 +389,6 @@ result(fresult)
 use, intrinsic :: ISO_C_BINDING
 type(C_PTR), value :: farg1
 integer(C_INT64_T) :: fresult
-end function
-
-function swigc_FN_VGetHostArrayPointer_Cuda(farg1) &
-bind(C, name="_wrap_FN_VGetHostArrayPointer_Cuda") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
-type(C_PTR) :: fresult
-end function
-
-function swigc_FN_VGetDeviceArrayPointer_Cuda(farg1) &
-bind(C, name="_wrap_FN_VGetDeviceArrayPointer_Cuda") &
-result(fresult)
-use, intrinsic :: ISO_C_BINDING
-type(C_PTR), value :: farg1
-type(C_PTR) :: fresult
 end function
 
 function swigc_FN_VGetVectorID_Cuda(farg1) &
@@ -1314,32 +1296,6 @@ type(C_PTR) :: farg1
 farg1 = c_loc(x)
 fresult = swigc_FN_VGetLength_Cuda(farg1)
 swig_result = fresult
-end function
-
-function FN_VGetHostArrayPointer_Cuda(x) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE), dimension(:), pointer :: swig_result
-type(N_Vector), target, intent(inout) :: x
-type(C_PTR) :: fresult 
-type(C_PTR) :: farg1 
-
-farg1 = c_loc(x)
-fresult = swigc_FN_VGetHostArrayPointer_Cuda(farg1)
-call c_f_pointer(fresult, swig_result, [1])
-end function
-
-function FN_VGetDeviceArrayPointer_Cuda(x) &
-result(swig_result)
-use, intrinsic :: ISO_C_BINDING
-real(C_DOUBLE), dimension(:), pointer :: swig_result
-type(N_Vector), target, intent(inout) :: x
-type(C_PTR) :: fresult 
-type(C_PTR) :: farg1 
-
-farg1 = c_loc(x)
-fresult = swigc_FN_VGetDeviceArrayPointer_Cuda(farg1)
-call c_f_pointer(fresult, swig_result, [1])
 end function
 
 function FN_VGetVectorID_Cuda(arg0) &

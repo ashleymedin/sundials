@@ -669,30 +669,6 @@ SWIGEXPORT int64_t _wrap_FN_VGetLength_Cuda(N_Vector farg1) {
 }
 
 
-SWIGEXPORT double * _wrap_FN_VGetHostArrayPointer_Cuda(N_Vector farg1) {
-  double * fresult ;
-  N_Vector arg1 = (N_Vector) 0 ;
-  sunrealtype *result = 0 ;
-  
-  arg1 = (N_Vector)(farg1);
-  result = (sunrealtype *)N_VGetHostArrayPointer_Cuda(arg1);
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT double * _wrap_FN_VGetDeviceArrayPointer_Cuda(N_Vector farg1) {
-  double * fresult ;
-  N_Vector arg1 = (N_Vector) 0 ;
-  sunrealtype *result = 0 ;
-  
-  arg1 = (N_Vector)(farg1);
-  result = (sunrealtype *)N_VGetDeviceArrayPointer_Cuda(arg1);
-  fresult = result;
-  return fresult;
-}
-
-
 SWIGEXPORT int _wrap_FN_VGetVectorID_Cuda(N_Vector farg1) {
   int fresult ;
   N_Vector arg1 = (N_Vector) 0 ;

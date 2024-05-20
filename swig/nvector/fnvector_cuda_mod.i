@@ -7,6 +7,8 @@
 %module fnvector_cuda_mod
 
 %ignore N_VSetKernelExecPolicy_Cuda;
+%ignore N_VGetDeviceArrayPointer_Cuda;
+%ignore N_VGetHostArrayPointer_Cuda;
 %apply void* { SUNCudaFExecPolicy };
 
 // fake interface file so that Swig can generate the correct wrapper code
