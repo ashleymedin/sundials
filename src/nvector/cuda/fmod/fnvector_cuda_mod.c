@@ -185,26 +185,12 @@ enum {
 };
 
 
-#define SWIG_check_mutable(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
-    if ((SWIG_CLASS_WRAPPER).cmemflags & SWIG_MEM_CONST) { \
-        SWIG_exception_impl(FUNCNAME, SWIG_TypeError, \
-            "Cannot pass const " TYPENAME " (class " FNAME ") " \
-            "as a mutable reference", \
-            RETURNNULL); \
-    }
-
-
 #define SWIG_check_nonnull(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
   if (!(SWIG_CLASS_WRAPPER).cptr) { \
     SWIG_exception_impl(FUNCNAME, SWIG_TypeError, \
                         "Cannot pass null " TYPENAME " (class " FNAME ") " \
                         "as a reference", RETURNNULL); \
   }
-
-
-#define SWIG_check_mutable_nonnull(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL) \
-    SWIG_check_nonnull(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL); \
-    SWIG_check_mutable(SWIG_CLASS_WRAPPER, TYPENAME, FNAME, FUNCNAME, RETURNNULL);
 
 
 #include <stdio.h>
@@ -235,6 +221,10 @@ enum {
 #include "sundials/sundials_nvector.h"
 
 
+#define NO_HPP_FILES
+#include "nvector/nvector_cuda.h"
+
+
 typedef struct {
     void* cptr;
     int cmemflags;
@@ -247,274 +237,6 @@ SWIGINTERN SwigClassWrapper SwigClassWrapper_uninitialized() {
     result.cmemflags = 0;
     return result;
 }
-
-
-#include <stdlib.h>
-#ifdef _MSC_VER
-# ifndef strtoull
-#  define strtoull _strtoui64
-# endif
-# ifndef strtoll
-#  define strtoll _strtoi64
-# endif
-#endif
-
-
-#include <string.h>
-
-
-SWIGINTERN void SWIG_assign(SwigClassWrapper* self, SwigClassWrapper other) {
-  if (self->cptr == NULL) {
-    /* LHS is unassigned */
-    if (other.cmemflags & SWIG_MEM_RVALUE) {
-      /* Capture pointer from RHS, clear 'moving' flag */
-      self->cptr = other.cptr;
-      self->cmemflags = other.cmemflags & (~SWIG_MEM_RVALUE);
-    } else {
-      /* Become a reference to the other object */
-      self->cptr = other.cptr;
-      self->cmemflags = other.cmemflags & (~SWIG_MEM_OWN);
-    }
-  } else if (other.cptr == NULL) {
-    /* Replace LHS with a null pointer */
-    free(self->cptr);
-    *self = SwigClassWrapper_uninitialized();
-  } else {
-    if (self->cmemflags & SWIG_MEM_OWN) {
-      free(self->cptr);
-    }
-    self->cptr = other.cptr;
-    if (other.cmemflags & SWIG_MEM_RVALUE) {
-      /* Capture RHS */
-      self->cmemflags = other.cmemflags & ~SWIG_MEM_RVALUE;
-    } else {
-      /* Point to RHS */
-      self->cmemflags = other.cmemflags & ~SWIG_MEM_OWN;
-    }
-  }
-}
-
-SWIGEXPORT void _wrap__N_VectorContent_Cuda_length_set(SwigClassWrapper const *farg1, int64_t const *farg2) {
-  struct _N_VectorContent_Cuda *arg1 = (struct _N_VectorContent_Cuda *) 0 ;
-  sunindextype arg2 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "struct _N_VectorContent_Cuda *", "N_VectorContent_Cuda_", "_N_VectorContent_Cuda::length", return );
-  arg1 = (struct _N_VectorContent_Cuda *)(farg1->cptr);
-  arg2 = (sunindextype)(*farg2);
-  if (arg1) (arg1)->length = arg2;
-}
-
-
-SWIGEXPORT int64_t _wrap__N_VectorContent_Cuda_length_get(SwigClassWrapper const *farg1) {
-  int64_t fresult ;
-  struct _N_VectorContent_Cuda *arg1 = (struct _N_VectorContent_Cuda *) 0 ;
-  sunindextype result;
-  
-  SWIG_check_mutable_nonnull(*farg1, "struct _N_VectorContent_Cuda *", "N_VectorContent_Cuda_", "_N_VectorContent_Cuda::length", return 0);
-  arg1 = (struct _N_VectorContent_Cuda *)(farg1->cptr);
-  result =  ((arg1)->length);
-  fresult = (sunindextype)(result);
-  return fresult;
-}
-
-
-SWIGEXPORT void _wrap__N_VectorContent_Cuda_own_helper_set(SwigClassWrapper const *farg1, int const *farg2) {
-  struct _N_VectorContent_Cuda *arg1 = (struct _N_VectorContent_Cuda *) 0 ;
-  int arg2 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "struct _N_VectorContent_Cuda *", "N_VectorContent_Cuda_", "_N_VectorContent_Cuda::own_helper", return );
-  arg1 = (struct _N_VectorContent_Cuda *)(farg1->cptr);
-  arg2 = (int)(*farg2);
-  if (arg1) (arg1)->own_helper = arg2;
-}
-
-
-SWIGEXPORT int _wrap__N_VectorContent_Cuda_own_helper_get(SwigClassWrapper const *farg1) {
-  int fresult ;
-  struct _N_VectorContent_Cuda *arg1 = (struct _N_VectorContent_Cuda *) 0 ;
-  int result;
-  
-  SWIG_check_mutable_nonnull(*farg1, "struct _N_VectorContent_Cuda *", "N_VectorContent_Cuda_", "_N_VectorContent_Cuda::own_helper", return 0);
-  arg1 = (struct _N_VectorContent_Cuda *)(farg1->cptr);
-  result = (int) ((arg1)->own_helper);
-  fresult = (int)(result);
-  return fresult;
-}
-
-
-SWIGEXPORT void _wrap__N_VectorContent_Cuda_host_data_set(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
-  struct _N_VectorContent_Cuda *arg1 = (struct _N_VectorContent_Cuda *) 0 ;
-  SUNMemory arg2 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "struct _N_VectorContent_Cuda *", "N_VectorContent_Cuda_", "_N_VectorContent_Cuda::host_data", return );
-  arg1 = (struct _N_VectorContent_Cuda *)(farg1->cptr);
-  SWIG_check_nonnull(*farg2, "SUNMemory", "SWIGTYPE_p_SUNMemory", "_N_VectorContent_Cuda::host_data", return );
-  arg2 = *(SUNMemory *)(farg2->cptr);
-  if (arg1) (arg1)->host_data = arg2;
-}
-
-
-SWIGEXPORT SwigClassWrapper _wrap__N_VectorContent_Cuda_host_data_get(SwigClassWrapper const *farg1) {
-  SwigClassWrapper fresult ;
-  struct _N_VectorContent_Cuda *arg1 = (struct _N_VectorContent_Cuda *) 0 ;
-  SUNMemory result;
-  
-  SWIG_check_mutable_nonnull(*farg1, "struct _N_VectorContent_Cuda *", "N_VectorContent_Cuda_", "_N_VectorContent_Cuda::host_data", return SwigClassWrapper_uninitialized());
-  arg1 = (struct _N_VectorContent_Cuda *)(farg1->cptr);
-  result =  ((arg1)->host_data);
-  fresult.cptr = (SUNMemory *)memcpy((SUNMemory *)calloc(1,sizeof(SUNMemory)),&result,sizeof(SUNMemory));
-  fresult.cmemflags = SWIG_MEM_RVALUE | SWIG_MEM_OWN;
-  return fresult;
-}
-
-
-SWIGEXPORT void _wrap__N_VectorContent_Cuda_device_data_set(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
-  struct _N_VectorContent_Cuda *arg1 = (struct _N_VectorContent_Cuda *) 0 ;
-  SUNMemory arg2 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "struct _N_VectorContent_Cuda *", "N_VectorContent_Cuda_", "_N_VectorContent_Cuda::device_data", return );
-  arg1 = (struct _N_VectorContent_Cuda *)(farg1->cptr);
-  SWIG_check_nonnull(*farg2, "SUNMemory", "SWIGTYPE_p_SUNMemory", "_N_VectorContent_Cuda::device_data", return );
-  arg2 = *(SUNMemory *)(farg2->cptr);
-  if (arg1) (arg1)->device_data = arg2;
-}
-
-
-SWIGEXPORT SwigClassWrapper _wrap__N_VectorContent_Cuda_device_data_get(SwigClassWrapper const *farg1) {
-  SwigClassWrapper fresult ;
-  struct _N_VectorContent_Cuda *arg1 = (struct _N_VectorContent_Cuda *) 0 ;
-  SUNMemory result;
-  
-  SWIG_check_mutable_nonnull(*farg1, "struct _N_VectorContent_Cuda *", "N_VectorContent_Cuda_", "_N_VectorContent_Cuda::device_data", return SwigClassWrapper_uninitialized());
-  arg1 = (struct _N_VectorContent_Cuda *)(farg1->cptr);
-  result =  ((arg1)->device_data);
-  fresult.cptr = (SUNMemory *)memcpy((SUNMemory *)calloc(1,sizeof(SUNMemory)),&result,sizeof(SUNMemory));
-  fresult.cmemflags = SWIG_MEM_RVALUE | SWIG_MEM_OWN;
-  return fresult;
-}
-
-
-SWIGEXPORT void _wrap__N_VectorContent_Cuda_stream_exec_policy_set(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
-  struct _N_VectorContent_Cuda *arg1 = (struct _N_VectorContent_Cuda *) 0 ;
-  SUNCudaExecPolicy *arg2 = (SUNCudaExecPolicy *) 0 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "struct _N_VectorContent_Cuda *", "N_VectorContent_Cuda_", "_N_VectorContent_Cuda::stream_exec_policy", return );
-  arg1 = (struct _N_VectorContent_Cuda *)(farg1->cptr);
-  SWIG_check_mutable(*farg2, "SUNCudaExecPolicy *", "SWIGTYPE_p_SUNCudaExecPolicy", "_N_VectorContent_Cuda::stream_exec_policy", return );
-  arg2 = (SUNCudaExecPolicy *)(farg2->cptr);
-  if (arg1) (arg1)->stream_exec_policy = arg2;
-}
-
-
-SWIGEXPORT SwigClassWrapper _wrap__N_VectorContent_Cuda_stream_exec_policy_get(SwigClassWrapper const *farg1) {
-  SwigClassWrapper fresult ;
-  struct _N_VectorContent_Cuda *arg1 = (struct _N_VectorContent_Cuda *) 0 ;
-  SUNCudaExecPolicy *result = 0 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "struct _N_VectorContent_Cuda *", "N_VectorContent_Cuda_", "_N_VectorContent_Cuda::stream_exec_policy", return SwigClassWrapper_uninitialized());
-  arg1 = (struct _N_VectorContent_Cuda *)(farg1->cptr);
-  result = (SUNCudaExecPolicy *) ((arg1)->stream_exec_policy);
-  fresult.cptr = result;
-  fresult.cmemflags = SWIG_MEM_RVALUE | (0 ? SWIG_MEM_OWN : 0);
-  return fresult;
-}
-
-
-SWIGEXPORT void _wrap__N_VectorContent_Cuda_reduce_exec_policy_set(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
-  struct _N_VectorContent_Cuda *arg1 = (struct _N_VectorContent_Cuda *) 0 ;
-  SUNCudaExecPolicy *arg2 = (SUNCudaExecPolicy *) 0 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "struct _N_VectorContent_Cuda *", "N_VectorContent_Cuda_", "_N_VectorContent_Cuda::reduce_exec_policy", return );
-  arg1 = (struct _N_VectorContent_Cuda *)(farg1->cptr);
-  SWIG_check_mutable(*farg2, "SUNCudaExecPolicy *", "SWIGTYPE_p_SUNCudaExecPolicy", "_N_VectorContent_Cuda::reduce_exec_policy", return );
-  arg2 = (SUNCudaExecPolicy *)(farg2->cptr);
-  if (arg1) (arg1)->reduce_exec_policy = arg2;
-}
-
-
-SWIGEXPORT SwigClassWrapper _wrap__N_VectorContent_Cuda_reduce_exec_policy_get(SwigClassWrapper const *farg1) {
-  SwigClassWrapper fresult ;
-  struct _N_VectorContent_Cuda *arg1 = (struct _N_VectorContent_Cuda *) 0 ;
-  SUNCudaExecPolicy *result = 0 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "struct _N_VectorContent_Cuda *", "N_VectorContent_Cuda_", "_N_VectorContent_Cuda::reduce_exec_policy", return SwigClassWrapper_uninitialized());
-  arg1 = (struct _N_VectorContent_Cuda *)(farg1->cptr);
-  result = (SUNCudaExecPolicy *) ((arg1)->reduce_exec_policy);
-  fresult.cptr = result;
-  fresult.cmemflags = SWIG_MEM_RVALUE | (0 ? SWIG_MEM_OWN : 0);
-  return fresult;
-}
-
-
-SWIGEXPORT void _wrap__N_VectorContent_Cuda_mem_helper_set(SwigClassWrapper const *farg1, SwigClassWrapper const *farg2) {
-  struct _N_VectorContent_Cuda *arg1 = (struct _N_VectorContent_Cuda *) 0 ;
-  SUNMemoryHelper arg2 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "struct _N_VectorContent_Cuda *", "N_VectorContent_Cuda_", "_N_VectorContent_Cuda::mem_helper", return );
-  arg1 = (struct _N_VectorContent_Cuda *)(farg1->cptr);
-  SWIG_check_nonnull(*farg2, "SUNMemoryHelper", "SWIGTYPE_p_SUNMemoryHelper", "_N_VectorContent_Cuda::mem_helper", return );
-  arg2 = *(SUNMemoryHelper *)(farg2->cptr);
-  if (arg1) (arg1)->mem_helper = arg2;
-}
-
-
-SWIGEXPORT SwigClassWrapper _wrap__N_VectorContent_Cuda_mem_helper_get(SwigClassWrapper const *farg1) {
-  SwigClassWrapper fresult ;
-  struct _N_VectorContent_Cuda *arg1 = (struct _N_VectorContent_Cuda *) 0 ;
-  SUNMemoryHelper result;
-  
-  SWIG_check_mutable_nonnull(*farg1, "struct _N_VectorContent_Cuda *", "N_VectorContent_Cuda_", "_N_VectorContent_Cuda::mem_helper", return SwigClassWrapper_uninitialized());
-  arg1 = (struct _N_VectorContent_Cuda *)(farg1->cptr);
-  result =  ((arg1)->mem_helper);
-  fresult.cptr = (SUNMemoryHelper *)memcpy((SUNMemoryHelper *)calloc(1,sizeof(SUNMemoryHelper)),&result,sizeof(SUNMemoryHelper));
-  fresult.cmemflags = SWIG_MEM_RVALUE | SWIG_MEM_OWN;
-  return fresult;
-}
-
-
-SWIGEXPORT void _wrap__N_VectorContent_Cuda_priv_set(SwigClassWrapper const *farg1, void *farg2) {
-  struct _N_VectorContent_Cuda *arg1 = (struct _N_VectorContent_Cuda *) 0 ;
-  void *arg2 = (void *) 0 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "struct _N_VectorContent_Cuda *", "N_VectorContent_Cuda_", "_N_VectorContent_Cuda::priv", return );
-  arg1 = (struct _N_VectorContent_Cuda *)(farg1->cptr);
-  arg2 = (void *)(farg2);
-  if (arg1) (arg1)->priv = arg2;
-}
-
-
-SWIGEXPORT void * _wrap__N_VectorContent_Cuda_priv_get(SwigClassWrapper const *farg1) {
-  void * fresult ;
-  struct _N_VectorContent_Cuda *arg1 = (struct _N_VectorContent_Cuda *) 0 ;
-  void *result = 0 ;
-  
-  SWIG_check_mutable_nonnull(*farg1, "struct _N_VectorContent_Cuda *", "N_VectorContent_Cuda_", "_N_VectorContent_Cuda::priv", return 0);
-  arg1 = (struct _N_VectorContent_Cuda *)(farg1->cptr);
-  result = (void *) ((arg1)->priv);
-  fresult = result;
-  return fresult;
-}
-
-
-SWIGEXPORT void _wrap_delete__N_VectorContent_Cuda(SwigClassWrapper *farg1) {
-  struct _N_VectorContent_Cuda *arg1 = (struct _N_VectorContent_Cuda *) 0 ;
-  
-  SWIG_check_mutable(*farg1, "struct _N_VectorContent_Cuda *", "N_VectorContent_Cuda_", "_N_VectorContent_Cuda::~_N_VectorContent_Cuda()", return );
-  arg1 = (struct _N_VectorContent_Cuda *)(farg1->cptr);
-  free((char *) arg1);
-}
-
-
-SWIGEXPORT void _wrap__N_VectorContent_Cuda_op_assign__(SwigClassWrapper *farg1, SwigClassWrapper const *farg2) {
-  struct _N_VectorContent_Cuda *arg1 = (struct _N_VectorContent_Cuda *) 0 ;
-  struct _N_VectorContent_Cuda *arg2 = 0 ;
-  
-  (void)sizeof(arg1);
-  (void)sizeof(arg2);
-  SWIG_assign(farg1, *farg2);
-  
-}
-
 
 SWIGEXPORT N_Vector _wrap_FN_VNewEmpty_Cuda(void *farg1) {
   N_Vector fresult ;
@@ -1081,48 +803,6 @@ SWIGEXPORT int _wrap_FN_VConstVectorArray_Cuda(int const *farg1, double const *f
 }
 
 
-SWIGEXPORT int _wrap_FN_VScaleAddMultiVectorArray_Cuda(int const *farg1, int const *farg2, double *farg3, void *farg4, void *farg5, void *farg6) {
-  int fresult ;
-  int arg1 ;
-  int arg2 ;
-  sunrealtype *arg3 = (sunrealtype *) 0 ;
-  N_Vector *arg4 = (N_Vector *) 0 ;
-  N_Vector **arg5 = (N_Vector **) 0 ;
-  N_Vector **arg6 = (N_Vector **) 0 ;
-  SUNErrCode result;
-  
-  arg1 = (int)(*farg1);
-  arg2 = (int)(*farg2);
-  arg3 = (sunrealtype *)(farg3);
-  arg4 = (N_Vector *)(farg4);
-  arg5 = (N_Vector **)(farg5);
-  arg6 = (N_Vector **)(farg6);
-  result = (SUNErrCode)N_VScaleAddMultiVectorArray_Cuda(arg1,arg2,arg3,arg4,arg5,arg6);
-  fresult = (SUNErrCode)(result);
-  return fresult;
-}
-
-
-SWIGEXPORT int _wrap_FN_VLinearCombinationVectorArray_Cuda(int const *farg1, int const *farg2, double *farg3, void *farg4, void *farg5) {
-  int fresult ;
-  int arg1 ;
-  int arg2 ;
-  sunrealtype *arg3 = (sunrealtype *) 0 ;
-  N_Vector **arg4 = (N_Vector **) 0 ;
-  N_Vector *arg5 = (N_Vector *) 0 ;
-  SUNErrCode result;
-  
-  arg1 = (int)(*farg1);
-  arg2 = (int)(*farg2);
-  arg3 = (sunrealtype *)(farg3);
-  arg4 = (N_Vector **)(farg4);
-  arg5 = (N_Vector *)(farg5);
-  result = (SUNErrCode)N_VLinearCombinationVectorArray_Cuda(arg1,arg2,arg3,arg4,arg5);
-  fresult = (SUNErrCode)(result);
-  return fresult;
-}
-
-
 SWIGEXPORT int _wrap_FN_VWrmsNormVectorArray_Cuda(int const *farg1, void *farg2, void *farg3, double *farg4) {
   int fresult ;
   int arg1 ;
@@ -1372,34 +1052,6 @@ SWIGEXPORT int _wrap_FN_VEnableWrmsNormMaskVectorArray_Cuda(N_Vector farg1, int 
   arg1 = (N_Vector)(farg1);
   arg2 = (int)(*farg2);
   result = (SUNErrCode)N_VEnableWrmsNormMaskVectorArray_Cuda(arg1,arg2);
-  fresult = (SUNErrCode)(result);
-  return fresult;
-}
-
-
-SWIGEXPORT int _wrap_FN_VEnableScaleAddMultiVectorArray_Cuda(N_Vector farg1, int const *farg2) {
-  int fresult ;
-  N_Vector arg1 = (N_Vector) 0 ;
-  int arg2 ;
-  SUNErrCode result;
-  
-  arg1 = (N_Vector)(farg1);
-  arg2 = (int)(*farg2);
-  result = (SUNErrCode)N_VEnableScaleAddMultiVectorArray_Cuda(arg1,arg2);
-  fresult = (SUNErrCode)(result);
-  return fresult;
-}
-
-
-SWIGEXPORT int _wrap_FN_VEnableLinearCombinationVectorArray_Cuda(N_Vector farg1, int const *farg2) {
-  int fresult ;
-  N_Vector arg1 = (N_Vector) 0 ;
-  int arg2 ;
-  SUNErrCode result;
-  
-  arg1 = (N_Vector)(farg1);
-  arg2 = (int)(*farg2);
-  result = (SUNErrCode)N_VEnableLinearCombinationVectorArray_Cuda(arg1,arg2);
   fresult = (SUNErrCode)(result);
   return fresult;
 }
