@@ -45,7 +45,7 @@ struct _N_VectorContent_Cuda
   sunbooleantype own_helper;
   SUNMemory host_data;
   SUNMemory device_data;
-#ifdef __cplusplus
+#ifndef NO_HPP_FILES
   SUNCudaExecPolicy* stream_exec_policy;
   SUNCudaExecPolicy* reduce_exec_policy;
 #else
@@ -84,7 +84,7 @@ SUNDIALS_EXPORT void N_VSetDeviceArrayPointer_Cuda(sunrealtype* d_vdata,
 SUNDIALS_EXPORT sunbooleantype N_VIsManagedMemory_Cuda(N_Vector x);
 SUNDIALS_EXPORT
 SUNErrCode N_VSetKernelExecPolicy_Cuda(N_Vector x,
-#ifdef __cplusplus
+#ifndef NO_HPP_FILES
                                        SUNCudaExecPolicy* stream_exec_policy,
                                        SUNCudaExecPolicy* reduce_exec_policy);
 #else

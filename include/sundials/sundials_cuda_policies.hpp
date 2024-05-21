@@ -235,8 +235,22 @@ private:
 } // namespace sundials
 
 extern "C" {
-  ExecPolicyPtr ExecPolicy_new(cudaStream_t stream) {
-    return new sundials::cuda::ExecPolicy(stream);
+  typedef sundials::cuda::ExecPolicy* ExecPolicyPtr;
+
+  ExecPolicyPtr ThreadDirectExecPolicy_new(cudaStream_t stream) {
+    return new sundials::cuda::ThreadDirectExecPolicy(stream);
+  }
+
+  ExecPolicyPtr GridStrideExecPolicy_new(cudaStream_t stream) {
+    return new sundials::cuda::GridStrideExecPolicy(stream);
+  }
+
+  ExecPolicyPtr BlockReduceExecPolicy_new(cudaStream_t stream) {
+    return new sundials::cuda::BlockReduceExecPolicy(stream);
+  }
+
+  ExecPolicyPtr BlockReduceAtomicExecPolicy_new(cudaStream_t stream) {
+    return new sundials::cuda::BlockReduceAtomicExecPolicy(stream);
   }
 
   size_t ExecPolicy_gridSize(ExecPolicyPtr this, size_t numWorkUnits, size_t blockDim) {
