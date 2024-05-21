@@ -12,7 +12,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * SUNDIALS Copyright End
  * -----------------------------------------------------------------
- * This header files defines the ExecPolicy classes which
+ * This header file defines the ExecPolicy classes which
  * are utilized to determine CUDA kernel launch parameters.
  * -----------------------------------------------------------------
  */
@@ -233,6 +233,25 @@ private:
 
 } // namespace cuda
 } // namespace sundials
+
+extern "C" {
+  ExecPolicyPtr ExecPolicy_new(cudaStream_t stream) {
+    return new sundials::cuda::ExecPolicy(stream);
+  }
+
+  size_t ExecPolicy_gridSize(ExecPolicyPtr this, size_t numWorkUnits, size_t blockDim) {
+    return static_cast<sundials::cuda::ExecPolicy*>(this)->gridSize(numWorkUnits, blockDim);
+  }
+
+  size_t ExecPolicy_blockSize(ExecPolicyPtr this, size_t numWorkUnits, size_t gridDim) {
+    return static_cast<sundials::cuda::ExecPolicy*>(this)->blockSize(numWorkUnits, gridDim);
+  }
+
+  void ExecPolicy_delete(ExecPolicyPtr this) {
+    delete static_cast<sundials::cuda::ExecPolicy*>(this);
+  }
+}
+
 
 typedef sundials::cuda::ExecPolicy SUNCudaExecPolicy;
 typedef sundials::cuda::ThreadDirectExecPolicy SUNCudaThreadDirectExecPolicy;

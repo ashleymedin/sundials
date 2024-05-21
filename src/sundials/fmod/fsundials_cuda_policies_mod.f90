@@ -1,3 +1,12 @@
+! 
+! -----------------------------------------------------------------
+! Programmer: Ashley E. Van Beusekom @ USask
+! -----------------------------------------------------------------
+! This file defines the fortran ExecPolicy classes which
+! are utilized to determine CUDA kernel launch parameters.
+! -----------------------------------------------------------------
+! 
+
 module fsundials_cuda_policies_mod
   use, intrinsic :: ISO_C_BINDING
   implicit none

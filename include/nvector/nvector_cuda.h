@@ -23,6 +23,8 @@
 #include <sundials/sundials_config.h>
 #ifndef NO_HPP_FILES
 #include "sundials/sundials_cuda_policies.hpp"
+#else
+#include <sundials/sundials_cuda_policies.h>
 #endif
 #include <sundials/sundials_nvector.h>
 #include <sunmemory/sunmemory_cuda.h>
@@ -43,8 +45,13 @@ struct _N_VectorContent_Cuda
   sunbooleantype own_helper;
   SUNMemory host_data;
   SUNMemory device_data;
+#ifdef __cplusplus
   SUNCudaExecPolicy* stream_exec_policy;
   SUNCudaExecPolicy* reduce_exec_policy;
+#else
+  ExecPolicyPtr stream_exec_policy;
+  ExecPolicyPtr reduce_exec_policy;
+#endif
   SUNMemoryHelper mem_helper;
   void* priv; /* 'private' data */
 };
@@ -77,8 +84,13 @@ SUNDIALS_EXPORT void N_VSetDeviceArrayPointer_Cuda(sunrealtype* d_vdata,
 SUNDIALS_EXPORT sunbooleantype N_VIsManagedMemory_Cuda(N_Vector x);
 SUNDIALS_EXPORT
 SUNErrCode N_VSetKernelExecPolicy_Cuda(N_Vector x,
+#ifdef __cplusplus
                                        SUNCudaExecPolicy* stream_exec_policy,
                                        SUNCudaExecPolicy* reduce_exec_policy);
+#else
+                                        ExecPolicyPtr stream_exec_policy,
+                                        ExecPolicyPtr reduce_exec_policy);
+#endif
 SUNDIALS_EXPORT void N_VCopyToDevice_Cuda(N_Vector v);
 SUNDIALS_EXPORT void N_VCopyFromDevice_Cuda(N_Vector v);
 
