@@ -1080,16 +1080,16 @@ SWIGEXPORT double * _wrap_FN_VGetHostArrayPointer_Cuda(N_Vector farg1) {
   return fresult;
 }
 
-SWIGEXPORT int _wrap_FN_VSetKernelExecPolicy_Cuda(N_Vector farg1, SUNCudaExecPolicy *farg2, SUNCudaExecPolicy *farg3) {
+SWIGEXPORT int _wrap_FN_VSetKernelExecPolicy_Cuda(N_Vector farg1, ExecPolicyPtr *farg2, ExecPolicyPtr *farg3) {
   int fresult ;
   N_Vector arg1 = (N_Vector) 0 ;
-  SUNCudaExecPolicy *arg2 = (SUNCudaExecPolicy *) 0 ;
-  SUNCudaExecPolicy *arg3 = (SUNCudaExecPolicy *) 0 ;
+  ExecPolicyPtr *arg2 = (ExecPolicyPtr *) 0 ;
+  ExecPolicyPtr *arg3 = (ExecPolicyPtr *) 0 ;
   SUNErrCode result;
   
   arg1 = (N_Vector)(farg1);
-  arg2 = (SUNCudaExecPolicy *)(farg2);
-  arg3 = (SUNCudaExecPolicy *)(farg3);
+  arg2 = (ExecPolicyPtr *)(farg2);
+  arg3 = (ExecPolicyPtr *)(farg3);
   result = (SUNErrCode)N_VSetKernelExecPolicy_Cuda(arg1,arg2,arg3);
   fresult = (SUNErrCode)(result);
   return fresult;
