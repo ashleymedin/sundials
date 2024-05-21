@@ -13,14 +13,9 @@
 
 typedef void* ExecPolicyPtr;
 
-ExecPolicyPtr ThreadDirectExecPolicy_new(void* stream);
-ExecPolicyPtr GridStrideExecPolicy_new(void* stream);
-ExecPolicyPtr BlockReduceExecPolicy_new(void* stream);
-ExecPolicyPtr BlockReduceAtomicExecPolicy_new(void* stream);
-
-size_t ExecPolicy_gridSize(ExecPolicyPtr this, size_t numWorkUnits, size_t blockDim);
-size_t ExecPolicy_blockSize(ExecPolicyPtr this, size_t numWorkUnits, size_t gridDim);
-
-void ExecPolicy_delete(ExecPolicyPtr this);
+ExecPolicyPtr ThreadDirectExecPolicy_new(size_t blockDim, void* stream);
+ExecPolicyPtr GridStrideExecPolicy_new(size_t blockDim, size_t gridDim, void* stream);
+ExecPolicyPtr BlockReduceExecPolicy_new(size_t blockDim, size_t gridDim, void* stream);
+ExecPolicyPtr BlockReduceAtomicExecPolicy_new(size_t blockDim, size_t gridDim, void* stream);
 
 #endif

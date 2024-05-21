@@ -237,32 +237,20 @@ private:
 extern "C" {
   typedef sundials::cuda::ExecPolicy* ExecPolicyPtr;
 
-  ExecPolicyPtr ThreadDirectExecPolicy_new(cudaStream_t stream) {
-    return new sundials::cuda::ThreadDirectExecPolicy(stream);
+  ExecPolicyPtr ThreadDirectExecPolicy_new(const size_t blockDim, cudaStream_t stream = 0) {
+    return new sundials::cuda::ThreadDirectExecPolicy(blockDim, stream);
   }
 
-  ExecPolicyPtr GridStrideExecPolicy_new(cudaStream_t stream) {
-    return new sundials::cuda::GridStrideExecPolicy(stream);
+  ExecPolicyPtr GridStrideExecPolicy_new(const size_t blockDim, const size_t gridDim, cudaStream_t stream = 0) {
+    return new sundials::cuda::GridStrideExecPolicy(blockDim, gridDim, stream);
   }
 
-  ExecPolicyPtr BlockReduceExecPolicy_new(cudaStream_t stream) {
-    return new sundials::cuda::BlockReduceExecPolicy(stream);
+  ExecPolicyPtr BlockReduceExecPolicy_new(const size_t blockDim, const size_t gridDim = 0, cudaStream_t stream = 0) {
+    return new sundials::cuda::BlockReduceExecPolicy(blockDim, gridDim, stream);
   }
 
-  ExecPolicyPtr BlockReduceAtomicExecPolicy_new(cudaStream_t stream) {
-    return new sundials::cuda::BlockReduceAtomicExecPolicy(stream);
-  }
-
-  size_t ExecPolicy_gridSize(ExecPolicyPtr this, size_t numWorkUnits, size_t blockDim) {
-    return static_cast<sundials::cuda::ExecPolicy*>(this)->gridSize(numWorkUnits, blockDim);
-  }
-
-  size_t ExecPolicy_blockSize(ExecPolicyPtr this, size_t numWorkUnits, size_t gridDim) {
-    return static_cast<sundials::cuda::ExecPolicy*>(this)->blockSize(numWorkUnits, gridDim);
-  }
-
-  void ExecPolicy_delete(ExecPolicyPtr this) {
-    delete static_cast<sundials::cuda::ExecPolicy*>(this);
+  ExecPolicyPtr BlockReduceAtomicExecPolicy_new(const size_t blockDim, const size_t gridDim = 0, cudaStream_t stream = 0) {
+    return new sundials::cuda::BlockReduceAtomicExecPolicy(blockDim, gridDim, stream);
   }
 }
 
