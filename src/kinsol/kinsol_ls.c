@@ -1145,7 +1145,7 @@ int kinLsInitialize(KINMem kin_mem)
 int kinLsSetup(KINMem kin_mem)
 {
   KINLsMem kinls_mem;
-  int doprint, retval;
+  int retval;
 
   /* Access KINLsMem structure */
   if (kin_mem->kin_lmem == NULL)
@@ -1179,12 +1179,6 @@ int kinLsSetup(KINMem kin_mem)
     retval = kinls_mem->jac(kin_mem->kin_uu, kin_mem->kin_fval, kinls_mem->J,
                             kinls_mem->J_data, kin_mem->kin_vtemp1,
                             kin_mem->kin_vtemp2);
-    /* PRINT JACOBIAN*/
-    doprint = 0;
-    if (doprint == 1) {
-      printf("Initial Jacobian");
-      SUNDenseMatrix_Print(kinls_mem->J,stdout);
-    }
     if (retval != 0)
     {
       KINProcessError(kin_mem, KINLS_JACFUNC_ERR, __LINE__, __func__, __FILE__,
