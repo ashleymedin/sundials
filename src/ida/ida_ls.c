@@ -1403,7 +1403,7 @@ int idaLsSetup(IDAMem IDA_mem, N_Vector y, N_Vector yp, N_Vector r,
     retval = idals_mem->jac(IDA_mem->ida_tn, IDA_mem->ida_cj, y, yp, r,
                             idals_mem->J, idals_mem->J_data, vt1, vt2, vt3);
     /* PRINT JACOBIAN*/
-    doprint = 0;
+    doprint = 1;
     if (doprint == 1) {
       printf("Initial Jacobian");
       SUNDenseMatrix_Print(idals_mem->J,stdout);
