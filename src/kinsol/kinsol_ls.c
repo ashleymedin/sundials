@@ -1180,7 +1180,7 @@ int kinLsSetup(KINMem kin_mem)
                             kinls_mem->J_data, kin_mem->kin_vtemp1,
                             kin_mem->kin_vtemp2);
     /* PRINT JACOBIAN*/
-    doprint = 1;
+    doprint = 0;
     if (doprint == 1) {
       printf("Initial Jacobian");
       SUNDenseMatrix_Print(kinls_mem->J,stdout);
